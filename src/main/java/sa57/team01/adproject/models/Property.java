@@ -20,6 +20,9 @@ public abstract class Property {
     private String streetName;
     private int floorArea;
 
+    @ManyToOne
+    private Owner owner;
+
     @OneToOne(mappedBy = "property")
     private Appointment appointment;
 
