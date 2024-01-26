@@ -13,3 +13,6 @@ This application is using gradle as build tool and spring boot as framework. It 
 
 
 
+## REST API Endpoints
+
+/api/property/list 
