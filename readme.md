@@ -8,11 +8,8 @@ This application is using gradle as build tool and spring boot as framework. It 
 - spring-boot-starter-web
 - spring-session-core
 
-## ERD
-
-
-
+## ER
 
 ## REST API Endpoints
 
-/api/property/list 
+/api/property/list - propertylist page, GET all the properties

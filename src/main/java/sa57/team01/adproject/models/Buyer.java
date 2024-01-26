@@ -6,4 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Buyer extends Customer{
+
+    public Buyer() {
+        super();
+    }
 }
