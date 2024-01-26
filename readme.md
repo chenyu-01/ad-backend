@@ -8,7 +8,10 @@ This application is using gradle as build tool and spring boot as framework. It 
 - spring-boot-starter-web
 - spring-session-core
 
-## ER
+## Todo List
+
+- [] finish endpoints list
+- [] design the page
 
 ## REST API Endpoints
 
