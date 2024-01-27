@@ -8,6 +8,16 @@ This application is using gradle as build tool and spring boot as framework. It 
 - spring-boot-starter-web
 - spring-session-core
 
+## How to run
+
+### Prerequisite
+Set up a mysql database with the following properties:
+- database name: hdbinsight
+- username: ${MYSQL_USER}
+- password: ${MYSQL_PASSWORD}
+
+### Set up environment variables
+![how to set up environment variables](./docs/how-to-set-environment-var.png)
 ## Todo List
 
 - [ ] finish endpoints list
