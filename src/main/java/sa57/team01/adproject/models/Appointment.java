@@ -17,7 +17,7 @@ public class Appointment {
     private Date date;
 
     @ManyToOne
-    private Owner targetCustomer;
+    private Owner contactCustomer;
 
     @OneToOne
     private Property property;

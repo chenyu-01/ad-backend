@@ -29,6 +29,15 @@ public class AdprojectApplication {
                                    AppointmentReposity appointmentReposity) {
         return args -> {
 
+            // clean database
+            buyerReposity.deleteAll();
+            ownerReposity.deleteAll();
+            preferencesReposity.deleteAll();
+            rentalPropertyReposity.deleteAll();
+            rentalSeekerReposity.deleteAll();
+            salePropertyReposity.deleteAll();
+            appointmentReposity.deleteAll();
+
             //add rentalproperty
             RentalProperty rentalProperty = new RentalProperty();
             rentalProperty.setTown("redhill");
@@ -59,37 +68,27 @@ public class AdprojectApplication {
 
 
             // add preference
-            Preferences preferences = preferencesReposity.save(new Preferences(true, true, true, true, "q", 10, true, true, true));
-
-
+            Preferences preferencesBuyer = preferencesReposity.save(new Preferences(true, true, true, true, "q", 10, true, true, true));
+            Preferences preferencesOwner = preferencesReposity.save(new Preferences(true, true, true, true, "q", 10, true, true, true));
             // add buyer
             Buyer buyer = new Buyer();
             buyer.setName("buyer");
-            buyer.setEmail("123@qq.com");
+            buyer.setEmail("buyer@qq.com");
             buyer.setPassword("123");
             buyer.setContactNumber("123");
-            buyer.setPreferences(preferences);
+            buyer.setPreferences(preferencesBuyer);
             buyerReposity.save(buyer);
 
             // add owner
             Owner owner = new Owner();
             owner.setName("owner");
-            owner.setEmail("234@qq.com");
+            owner.setEmail("owner@qq.com");
             owner.setPassword("234");
             owner.setContactNumber("234");
-            owner.setPreferences(preferences);
+            owner.setPreferences(preferencesOwner);
             owner.setProperties(listProperty);
             ownerReposity.save(owner);
 
-
-            // add rentalSeeker
-            RentalSeeker rentalSeeker = new RentalSeeker();
-            rentalSeeker.setName("rentalSeeker");
-            rentalSeeker.setEmail("123@qq.com");
-            rentalSeeker.setPassword("123");
-            rentalSeeker.setContactNumber("123");
-            rentalSeeker.setPreferences(preferences);
-            rentalSeekerReposity.save(rentalSeeker);
 
             //add appointment
             String pattern = "yyyy-MM-dd";
@@ -97,10 +96,11 @@ public class AdprojectApplication {
             Appointment appointment = new Appointment();
             appointment.setAppointmentId(1);
             appointment.setDate(dateFormat.parse("2024-0-27"));
-            appointment.setTargetCustomer(owner);
+            appointment.setContactCustomer(owner);
             appointment.setProperty(rentalProperty);
             appointment.setRequestCustomer(buyer);
             appointmentReposity.save(appointment);
+
 
 
         };
