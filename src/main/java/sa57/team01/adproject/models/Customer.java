@@ -24,8 +24,9 @@ public abstract class Customer {
     @OneToOne
     private Preferences preferences;
 
-    @OneToMany(mappedBy = "customer")
-    private List<Appointment> appointmentList;
+    @OneToMany(mappedBy = "requestCustomer")
+    private List<Appointment> appointmentRequestList;
+
 
 
     public Customer() {

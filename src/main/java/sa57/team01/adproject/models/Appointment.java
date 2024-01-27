@@ -1,11 +1,9 @@
 package sa57.team01.adproject.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import jakarta.persistence.Id;
+
 import java.util.Date;
 
 @Getter
@@ -17,12 +15,13 @@ public class Appointment {
     private long AppointmentId;
 
     private Date date;
-    private String requestPerson;
-    private String contactPerson;
+
+    @ManyToOne
+    private Owner targetCustomer;
 
     @OneToOne
     private Property property;
 
     @ManyToOne
-    private Customer customer;
+    private Customer requestCustomer;
 }
