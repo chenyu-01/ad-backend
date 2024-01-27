@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import sa57.team01.adproject.models.*;
-import sa57.team01.adproject.reposity.*;
+import sa57.team01.adproject.repositories.*;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;

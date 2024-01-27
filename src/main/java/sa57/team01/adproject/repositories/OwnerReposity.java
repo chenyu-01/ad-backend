@@ -1,4 +1,4 @@
-package sa57.team01.adproject.reposity;
+package sa57.team01.adproject.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
