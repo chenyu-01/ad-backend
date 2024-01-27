@@ -14,6 +14,7 @@ public abstract class Property {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long propertyid;
     private String town;
+    @Enumerated(EnumType.STRING)
     private PropertyStatus propertyStatus;
     private int flatType;
     private String storeyRange;
@@ -28,7 +29,7 @@ public abstract class Property {
 
     public Property(){
         super();
-    };
+    }
 
     public Property (long propertyid, String town, PropertyStatus propertyStatus,int flatType,String storeyRange, String streetName,int floorArea){
       this.propertyid = propertyid;
@@ -39,9 +40,4 @@ public abstract class Property {
       this.streetName=streetName;
       this.floorArea=floorArea;
     }
-
-
-
-
-
 }
