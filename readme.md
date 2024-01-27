@@ -17,3 +17,10 @@ This application is using gradle as build tool and spring boot as framework. It 
 
 - `/api/property/salelist` - GET method, return a list of properties for sale
 - `/api/property/rentlist` - GET method, return a list of properties for rent
+- `/api/property/detail/{id}` - GET, return the detail of a property
+- `/api/user/details/{id}` - GET, return the detail of a user
+- `/api/user/login` - POST, login a user
+- `/api/user/logout` - POST, logout a user
+- `/api/user/register` - POST, register a user
+- `/api/user/update` - POST, update a user
+- `/api/appointment/create` - POST, create an appointment
