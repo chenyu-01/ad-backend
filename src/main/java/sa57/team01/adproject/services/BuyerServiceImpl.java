@@ -1,0 +1,21 @@
+package sa57.team01.adproject.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import sa57.team01.adproject.models.Buyer;
+import sa57.team01.adproject.repositories.BuyerReposity;
+
+@Service
+public class BuyerServiceImpl implements BuyerService{
+    private final BuyerReposity buyerReposity;
+
+    @Autowired
+    public BuyerServiceImpl(BuyerReposity buyerReposity){
+        this.buyerReposity = buyerReposity;
+    }
+
+    @Override
+    public void saveBuyer(Buyer buyer){
+        buyerReposity.save(buyer);
+    }
+}
