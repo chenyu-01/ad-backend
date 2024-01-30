@@ -3,10 +3,8 @@ package sa57.team01.adproject.DTO;
 import lombok.Getter;
 import lombok.Setter;
 import sa57.team01.adproject.models.Property;
-import sa57.team01.adproject.models.RentalProperty;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Getter
 @Setter
