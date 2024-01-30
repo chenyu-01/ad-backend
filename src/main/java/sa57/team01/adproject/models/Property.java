@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @Entity
 @Inheritance (strategy = InheritanceType.JOINED)
-public abstract class Property {
+public class Property {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -20,6 +22,9 @@ public abstract class Property {
     private String storeyRange;
     private String streetName;
     private int floorArea;
+    private Date datePosted;
+    private double price;
+
 
     @ManyToOne
     private Owner owner;
@@ -31,13 +36,15 @@ public abstract class Property {
         super();
     }
 
-    public Property (long propertyid, String town, PropertyStatus propertyStatus,int flatType,String storeyRange, String streetName,int floorArea){
-      this.propertyid = propertyid;
+    public Property (String town, PropertyStatus propertyStatus, int flatType, String storeyRange, String streetName, int floorArea,
+                     Date datePosted,double price){
       this.town = town;
       this.propertyStatus = propertyStatus;
       this.flatType=flatType;
       this.storeyRange=storeyRange;
       this.streetName=streetName;
       this.floorArea=floorArea;
+      this.datePosted=datePosted;
+      this.price=price;
     }
 }

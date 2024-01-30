@@ -26,7 +26,7 @@ public class AdprojectApplication {
                                    PreferencesReposity preferencesReposity,
                                    RentalPropertyReposity rentalPropertyReposity,
                                    RentalSeekerReposity rentalSeekerReposity, SalePropertyReposity salePropertyReposity,
-                                   AppointmentReposity appointmentReposity) {
+                                   AppointmentReposity appointmentReposity,PropertyReposity propertyReposity) {
         return args -> {
 
             // clean database
@@ -37,6 +37,7 @@ public class AdprojectApplication {
             rentalSeekerReposity.deleteAll();
             salePropertyReposity.deleteAll();
             appointmentReposity.deleteAll();
+            propertyReposity.deleteAll();
 
             //add rentalproperty
             RentalProperty rentalProperty = new RentalProperty();
@@ -101,8 +102,16 @@ public class AdprojectApplication {
             appointment.setRequestCustomer(buyer);
             appointmentReposity.save(appointment);
 
-
-
+            //add property
+            Property property=new Property();
+//            property.setPropertyid(1);
+            property.setPrice(500000);
+            property.setDatePosted(dateFormat.parse("2023-12-12"));
+            property.setFlatType(4);
+            property.setTown("Jurong West");
+            property.setFloorArea(12568735);
+            property.setStoreyRange("12");
+            propertyReposity.save(property);
         };
     }
 }

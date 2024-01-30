@@ -34,3 +34,13 @@ Set up a mysql database with the following properties:
 - `/api/user/register` - POST, register a user
 - `/api/user/update` - POST, update a user
 - `/api/appointment/create` - POST, create an appointment
+- Properties
+- `/api/property/list`- GET method, return a list of properties 
+- `/api/property/{id}`-GET, return the detail of a property
+- `/api/property/listbydate`-GET, return the detail of a property by date
+- `/api/property/listbyprice`-GET, return the detail of a property by price
+- `/api/property/listbytown`-GET, return the detail of a property by town
+- `/api/property/listbystreet`-GET, return the detail of a property by street
+- `/api/property/listbystorey`-GET, return the detail of a property by storey
+- `/api/property/listbyfloorarea`-GET, return the detail of a property by floorarea
+
