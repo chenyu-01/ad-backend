@@ -34,3 +34,5 @@ Set up a mysql database with the following properties:
 - `/api/user/register` - POST, register a user
 - `/api/user/update` - POST, update a user
 - `/api/appointment/create` - POST, create an appointment
+- `/api/appointment/modify` - POST, modify an appointment
+- `/api/appointment/cancel` - POST, cancel an appointment
