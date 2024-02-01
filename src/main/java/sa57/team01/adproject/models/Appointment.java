@@ -24,4 +24,6 @@ public class Appointment {
 
     @ManyToOne
     private Customer requestCustomer;
+
+    private AppointmentStatus status;
 }
