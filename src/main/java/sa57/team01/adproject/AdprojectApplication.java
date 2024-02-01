@@ -38,6 +38,30 @@ public class AdprojectApplication {
             salePropertyReposity.deleteAll();
             appointmentReposity.deleteAll();
 
+
+
+
+            // add preference
+            Preferences preferencesBuyer = preferencesReposity.save(new Preferences(true, true, true, true, "q", 10, true, true, true));
+            Preferences preferencesOwner = preferencesReposity.save(new Preferences(true, true, true, true, "q", 10, true, true, true));
+            // add buyer
+            Buyer buyer = new Buyer();
+            buyer.setName("buyer");
+            buyer.setEmail("buyer@qq.com");
+            buyer.setPassword("123");
+            buyer.setContactNumber("123");
+            buyer.setPreferences(preferencesBuyer);
+
+            buyerReposity.save(buyer);
+
+            // add owner
+            Owner owner = new Owner();
+            owner.setName("owner");
+            owner.setEmail("owner@qq.com");
+            owner.setPassword("234");
+            owner.setContactNumber("234");
+            owner.setPreferences(preferencesOwner);
+            ownerReposity.save(owner);
             //add rentalproperty
             RentalProperty rentalProperty = new RentalProperty();
             rentalProperty.setTown("redhill");
@@ -47,6 +71,7 @@ public class AdprojectApplication {
             rentalProperty.setStreetName("?");
             rentalProperty.setFlatType(1);
             rentalProperty.setRentalPrice(1400);
+            rentalProperty.setOwner(owner);
             rentalProperty.setContractMonthPeriod(1);
             rentalPropertyReposity.save(rentalProperty);
 
@@ -60,32 +85,12 @@ public class AdprojectApplication {
             saleProperty.setFlatType(1);
             saleProperty.setLeaseCommenceDate(LocalDate.parse("2024-01-27"));
             saleProperty.setRemainingLease(1);
+            saleProperty.setOwner(owner);
             saleProperty.setResalePrice(1400);
             salePropertyReposity.save(saleProperty);
 
-
+            // update owner properties
             List<Property> listProperty = new ArrayList<>(List.of(rentalProperty, saleProperty));
-
-
-            // add preference
-            Preferences preferencesBuyer = preferencesReposity.save(new Preferences(true, true, true, true, "q", 10, true, true, true));
-            Preferences preferencesOwner = preferencesReposity.save(new Preferences(true, true, true, true, "q", 10, true, true, true));
-            // add buyer
-            Buyer buyer = new Buyer();
-            buyer.setName("buyer");
-            buyer.setEmail("buyer@qq.com");
-            buyer.setPassword("123");
-            buyer.setContactNumber("123");
-            buyer.setPreferences(preferencesBuyer);
-            buyerReposity.save(buyer);
-
-            // add owner
-            Owner owner = new Owner();
-            owner.setName("owner");
-            owner.setEmail("owner@qq.com");
-            owner.setPassword("234");
-            owner.setContactNumber("234");
-            owner.setPreferences(preferencesOwner);
             owner.setProperties(listProperty);
             ownerReposity.save(owner);
 
