@@ -69,10 +69,10 @@ public class AdprojectApplication {
             rentalProperty.setFloorArea(100);
             rentalProperty.setPropertyStatus(forRent);
             rentalProperty.setFlatType(1);
-            rentalProperty.setStoreyRange("?");
-            rentalProperty.setStreetName("?");
+            rentalProperty.setStoreyRange("10 TO 12");
+            rentalProperty.setStreetName("BEDOK NTH ST 3");
             rentalProperty.setFlatType(1);
-            rentalProperty.setRentalPrice(1400);
+            rentalProperty.setPrice(1400);
             rentalProperty.setOwner(owner);
             rentalProperty.setContractMonthPeriod(1);
             rentalPropertyReposity.save(rentalProperty);
@@ -84,13 +84,13 @@ public class AdprojectApplication {
             saleProperty.setFloorArea(100);
             saleProperty.setPropertyStatus(forSale);
             saleProperty.setFlatType(1);
-            saleProperty.setStoreyRange("?");
-            saleProperty.setStreetName("?");
+            saleProperty.setStoreyRange("10 TO 12");
+            saleProperty.setStreetName("ANG MO KIO AVE 10");
             saleProperty.setFlatType(1);
             saleProperty.setLeaseCommenceDate(LocalDate.parse("2024-01-27"));
             saleProperty.setRemainingLease(1);
             saleProperty.setOwner(owner);
-            saleProperty.setResalePrice(1400);
+            saleProperty.setPrice(1400);
             salePropertyReposity.save(saleProperty);
 
             // update owner properties

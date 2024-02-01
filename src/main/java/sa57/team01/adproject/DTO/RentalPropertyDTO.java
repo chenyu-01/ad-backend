@@ -10,12 +10,10 @@ import java.util.List;
 @Getter
 @Setter
 public class RentalPropertyDTO extends PropertyDTO implements Serializable {
-    private double rentalPrice;
     private int contractMonthPeriod;
 
     public RentalPropertyDTO(RentalProperty other) {
         super(other);
-        this.rentalPrice = other.getRentalPrice();
         this.contractMonthPeriod = other.getContractMonthPeriod();
     }
 

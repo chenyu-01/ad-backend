@@ -33,6 +33,9 @@ public abstract class Property {
     @ManyToOne
     private Owner owner;
 
+    @NotNull
+    private double price;
+
     @OneToOne(mappedBy = "property")
     private Appointment appointment;
 

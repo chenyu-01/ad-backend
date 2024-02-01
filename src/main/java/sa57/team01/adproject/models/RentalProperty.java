@@ -9,8 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RentalProperty extends Property {
-    @NotNull
-    private double rentalPrice;
+
     @NotNull
     private int contractMonthPeriod;
 

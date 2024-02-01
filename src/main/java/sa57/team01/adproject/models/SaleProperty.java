@@ -16,8 +16,7 @@ public class SaleProperty extends Property {
     private LocalDate leaseCommenceDate;
     @NotNull
     private int remainingLease; // number of months
-    @NotNull
-    private double resalePrice;
+
 
     public SaleProperty(){
         super();
