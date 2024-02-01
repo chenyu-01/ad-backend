@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sa57.team01.adproject.DTO.PropertyDTO;
 import sa57.team01.adproject.DTO.RentalPropertyDTO;
 import sa57.team01.adproject.DTO.SalePropertyDTO;
 import sa57.team01.adproject.models.RentalProperty;
@@ -15,7 +15,8 @@ import sa57.team01.adproject.services.SalePropertyService;
 
 import java.util.List;
 
-@RestController("/api/property")
+@RestController
+@RequestMapping("/api/property")
 public class PropertyController {
 
     private final RentalPropertyService rentalPropertyService;
@@ -26,7 +27,7 @@ public class PropertyController {
         this.salePropertyService = salePropertyService;
     }
     @GetMapping("/rentlist/{page}")
-    public ResponseEntity<?> getAllRentProperties(@PathVariable int page) {
+    public ResponseEntity<?> getRentPropertiesInPage(@PathVariable int page) {
         // each page has 10 items
         List<RentalProperty> rentalProperties = rentalPropertyService.findRentalPropertyInPage(page);
         // convert to DTO
@@ -35,7 +36,7 @@ public class PropertyController {
     }
 
     @GetMapping("/salelist/{page}")
-    public ResponseEntity<?> getAllSaleProperties(@PathVariable int page) {
+    public ResponseEntity<?> getSalePropertiesInPage(@PathVariable int page) {
         // each page has 10 items
         List<SaleProperty> saleProperties = salePropertyService.findSalePropertyInPage(page);
         List<SalePropertyDTO> salePropertyDTOS = SalePropertyDTO.from(saleProperties);
