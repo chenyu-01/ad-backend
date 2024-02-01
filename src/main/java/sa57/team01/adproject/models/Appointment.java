@@ -1,6 +1,7 @@
 package sa57.team01.adproject.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,5 +27,6 @@ public class Appointment {
     @ManyToOne
     private Customer requestCustomer;
 
+    @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 }
