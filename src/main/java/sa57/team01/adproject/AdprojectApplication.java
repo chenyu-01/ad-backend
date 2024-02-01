@@ -65,6 +65,8 @@ public class AdprojectApplication {
             //add rentalproperty
             RentalProperty rentalProperty = new RentalProperty();
             rentalProperty.setTown("redhill");
+            rentalProperty.setBlock("101");
+            rentalProperty.setFloorArea(100);
             rentalProperty.setPropertyStatus(forRent);
             rentalProperty.setFlatType(1);
             rentalProperty.setStoreyRange("?");
@@ -78,6 +80,8 @@ public class AdprojectApplication {
             //add saleproperty
             SaleProperty saleProperty = new SaleProperty();
             saleProperty.setTown("redhill");
+            saleProperty.setBlock("101");
+            saleProperty.setFloorArea(100);
             saleProperty.setPropertyStatus(forSale);
             saleProperty.setFlatType(1);
             saleProperty.setStoreyRange("?");
@@ -96,11 +100,10 @@ public class AdprojectApplication {
 
 
             //add appointment
-            String pattern = "yyyy-MM-dd";
-            SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+            LocalDate date = LocalDate.parse("2024-01-27");
             Appointment appointment = new Appointment();
             appointment.setAppointmentId(1);
-            appointment.setDate(dateFormat.parse("2024-0-27"));
+            appointment.setDate(date);
             appointment.setContactCustomer(owner);
             appointment.setProperty(rentalProperty);
             appointment.setRequestCustomer(buyer);

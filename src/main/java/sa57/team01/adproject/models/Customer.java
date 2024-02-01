@@ -2,6 +2,7 @@ package sa57.team01.adproject.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +19,9 @@ public abstract class Customer {
 
     private String name;
     @Email
+    @NotNull
     private String email;
+    @NotNull
     private String password;
     private String contactNumber;
     @OneToOne
