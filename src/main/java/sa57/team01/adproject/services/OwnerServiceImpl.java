@@ -20,4 +20,9 @@ public class OwnerServiceImpl implements OwnerService{
     public void saveOwner(Owner owner){
         ownerReposity.save(owner);
     }
+
+    @Override
+    public Owner findOwnerById(long id){
+        return ownerReposity.findById(id).orElse(null);
+    }
 }

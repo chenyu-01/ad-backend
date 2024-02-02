@@ -39,33 +39,7 @@ public class AdprojectApplication {
             appointmentReposity.deleteAll();
             propertyReposity.deleteAll();
 
-            //add rentalproperty
-            RentalProperty rentalProperty = new RentalProperty();
-            rentalProperty.setTown("redhill");
-            rentalProperty.setPropertyStatus(forRent);
-            rentalProperty.setFlatType(1);
-            rentalProperty.setStoreyRange("?");
-            rentalProperty.setStreetName("?");
-            rentalProperty.setFlatType(1);
-            rentalProperty.setRentalPrice(1400);
-            rentalProperty.setContractMonthPeriod(1);
-            rentalPropertyReposity.save(rentalProperty);
 
-            //add saleproperty
-            SaleProperty saleProperty = new SaleProperty();
-            saleProperty.setTown("redhill");
-            saleProperty.setPropertyStatus(forSale);
-            saleProperty.setFlatType(1);
-            saleProperty.setStoreyRange("?");
-            saleProperty.setStreetName("?");
-            saleProperty.setFlatType(1);
-            saleProperty.setLeaseCommenceDate(LocalDate.parse("2024-01-27"));
-            saleProperty.setRemainingLease(1);
-            saleProperty.setResalePrice(1400);
-            salePropertyReposity.save(saleProperty);
-
-
-            List<Property> listProperty = new ArrayList<>(List.of(rentalProperty, saleProperty));
 
 
             // add preference
@@ -78,6 +52,7 @@ public class AdprojectApplication {
             buyer.setPassword("123");
             buyer.setContactNumber("123");
             buyer.setPreferences(preferencesBuyer);
+
             buyerReposity.save(buyer);
 
             // add owner
@@ -87,16 +62,49 @@ public class AdprojectApplication {
             owner.setPassword("234");
             owner.setContactNumber("234");
             owner.setPreferences(preferencesOwner);
+            ownerReposity.save(owner);
+            //add rentalproperty
+            RentalProperty rentalProperty = new RentalProperty();
+            rentalProperty.setTown("redhill");
+            rentalProperty.setBlock("101");
+            rentalProperty.setFloorArea(100);
+            rentalProperty.setPropertyStatus(forRent);
+            rentalProperty.setFlatType(1);
+            rentalProperty.setStoreyRange("10 TO 12");
+            rentalProperty.setStreetName("BEDOK NTH ST 3");
+            rentalProperty.setFlatType(1);
+            rentalProperty.setPrice(1400);
+            rentalProperty.setOwner(owner);
+            rentalProperty.setContractMonthPeriod(1);
+            rentalPropertyReposity.save(rentalProperty);
+
+            //add saleproperty
+            SaleProperty saleProperty = new SaleProperty();
+            saleProperty.setTown("redhill");
+            saleProperty.setBlock("101");
+            saleProperty.setFloorArea(100);
+            saleProperty.setPropertyStatus(forSale);
+            saleProperty.setFlatType(1);
+            saleProperty.setStoreyRange("10 TO 12");
+            saleProperty.setStreetName("ANG MO KIO AVE 10");
+            saleProperty.setFlatType(1);
+            saleProperty.setLeaseCommenceDate(LocalDate.parse("2024-01-27"));
+            saleProperty.setRemainingLease(1);
+            saleProperty.setOwner(owner);
+            saleProperty.setPrice(1400);
+            salePropertyReposity.save(saleProperty);
+
+            // update owner properties
+            List<Property> listProperty = new ArrayList<>(List.of(rentalProperty, saleProperty));
             owner.setProperties(listProperty);
             ownerReposity.save(owner);
 
 
             //add appointment
-            String pattern = "yyyy-MM-dd";
-            SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+            LocalDate date = LocalDate.parse("2024-01-27");
             Appointment appointment = new Appointment();
             appointment.setAppointmentId(1);
-            appointment.setDate(dateFormat.parse("2024-0-27"));
+            appointment.setDate(date);
             appointment.setContactCustomer(owner);
             appointment.setProperty(rentalProperty);
             appointment.setRequestCustomer(buyer);

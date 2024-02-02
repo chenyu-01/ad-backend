@@ -1,10 +1,11 @@
 package sa57.team01.adproject.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -12,9 +13,10 @@ import java.util.Date;
 public class Appointment {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long AppointmentId;
 
-    private Date date;
+    private LocalDate date;
 
     @ManyToOne
     private Owner contactCustomer;
@@ -24,4 +26,7 @@ public class Appointment {
 
     @ManyToOne
     private Customer requestCustomer;
+
+    @Enumerated(EnumType.STRING)
+    private AppointmentStatus status;
 }
