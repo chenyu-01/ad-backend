@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Property {
+public class Property {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

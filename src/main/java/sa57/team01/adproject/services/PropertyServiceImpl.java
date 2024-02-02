@@ -23,10 +23,10 @@ public class PropertyServiceImpl implements PropertyService{
         return propertyReposity.findById(id);
     }
 
-    @Override
-    public List<Property> getListByDate(Date date) {
-        return propertyReposity.findByDate(date);
-    }
+//    @Override
+//    public List<Property> getListByDate(Date date) {
+//        return propertyReposity.findByDate(date);
+//    }
 
     @Override
     public List<Property> getListByPrice(double price) {

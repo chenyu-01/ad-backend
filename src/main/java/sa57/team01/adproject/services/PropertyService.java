@@ -12,7 +12,7 @@ public interface PropertyService {
 
     Optional<Property> getPropertyById(Long id);
 
-    List<Property> getListByDate(Date date);
+//    List<Property> getListByDate(Date date);
 
     List<Property> getListByPrice(double price);
 

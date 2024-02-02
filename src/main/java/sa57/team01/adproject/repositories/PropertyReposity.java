@@ -8,9 +8,9 @@ import java.util.Date;
 import java.util.List;
 
 public interface PropertyReposity extends JpaRepository<Property,Long> {
-   @Query("Select p from Property p where p.datePosted = :date")
-    List<Property> findByDate(Date date);
-   @Query("Select p from Property p order by p.price")
+//   @Query("Select p from Property p where p.datePosted = :date")
+//    List<Property> findByDate(Date date);
+   @Query("Select p from Property p where p.price = :price")
     List<Property> findByPrice(double price);
 
    @Query("Select p from Property p where p.town = :town ")

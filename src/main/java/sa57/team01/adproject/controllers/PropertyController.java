@@ -51,25 +51,18 @@ public class PropertyController {
         List<SalePropertyDTO> salePropertyDTOS = SalePropertyDTO.from(saleProperties);
         return ResponseEntity.ok(salePropertyDTOS);
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<Property> getPropertyById(@PathVariable Long id){
-        Optional<Property> propertyOptional = propertyService.getPropertyById(id);
-        return propertyOptional
-                .map(property -> ResponseEntity.ok(property))
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
 
-    @GetMapping("/listbydate")
-    public ResponseEntity<List<Property>> getListByDate(Date date){
-        List<Property>properties=propertyService.getListByDate(date);
-        if(properties.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(properties,HttpStatus.OK);
-    }
+//    @GetMapping("/listbydate")
+//    public ResponseEntity<List<Property>> getListByDate(Date date){
+//        List<Property>properties=propertyService.getListByDate(date);
+//        if(properties.isEmpty()){
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(properties,HttpStatus.OK);
+//    }
 
-    @GetMapping("/listbyprice")
-    public ResponseEntity<List<Property>> getListByPrice(double price){
+    @GetMapping("/list/{price}")
+    public ResponseEntity<List<Property>> getListByPrice(@PathVariable double price){
         List<Property>properties=propertyService.getListByPrice(price);
         if(properties.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
