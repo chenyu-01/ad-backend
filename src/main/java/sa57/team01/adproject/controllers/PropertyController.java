@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sa57.team01.adproject.DTO.PropertyDTO;
 import sa57.team01.adproject.DTO.RentalPropertyDTO;
 import sa57.team01.adproject.DTO.SalePropertyDTO;
 import sa57.team01.adproject.models.Property;
@@ -62,12 +63,14 @@ public class PropertyController {
 //    }
 
     @GetMapping("/list/{price}")
-    public ResponseEntity<List<Property>> getListByPrice(@PathVariable double price){
+    public ResponseEntity<?> getListByPrice(@PathVariable double price){
         List<Property>properties=propertyService.getListByPrice(price);
+//        List<RentalProperty> rentalProperties = rentalPropertyService.findRentalPropertyByPrice(price);
         if(properties.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(properties,HttpStatus.OK);
+        List<PropertyDTO> propertyDTOS = properties.stream().map(PropertyDTO::new).toList();
+        return new ResponseEntity<>(propertyDTOS,HttpStatus.OK);
     }
     @GetMapping("/listbytown")
     public ResponseEntity<List<Property>> getListByTown(String town){

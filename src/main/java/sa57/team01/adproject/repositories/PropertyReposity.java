@@ -2,11 +2,13 @@ package sa57.team01.adproject.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import sa57.team01.adproject.models.Property;
 
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public interface PropertyReposity extends JpaRepository<Property,Long> {
 //   @Query("Select p from Property p where p.datePosted = :date")
 //    List<Property> findByDate(Date date);
