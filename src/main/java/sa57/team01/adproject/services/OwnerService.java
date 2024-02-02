@@ -7,4 +7,6 @@ import sa57.team01.adproject.models.Owner;
 @Service
 public interface OwnerService {
     void saveOwner(Owner owner);
+
+    Owner findOwnerById(long id);
 }

@@ -43,4 +43,10 @@ public class PropertyController {
         return ResponseEntity.ok(salePropertyDTOS);
     }
 
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<?> searchProperties(@PathVariable String keyword) {
+        // Todo: implement search
+        return null;
+    }
+
 }
