@@ -62,7 +62,7 @@ public class PropertyController {
 //        return new ResponseEntity<>(properties,HttpStatus.OK);
 //    }
 
-    @GetMapping("/list/{price}")
+    @GetMapping("/list/price/{price}")
     public ResponseEntity<?> getListByPrice(@PathVariable double price){
         List<Property>properties=propertyService.getListByPrice(price);
 //        List<RentalProperty> rentalProperties = rentalPropertyService.findRentalPropertyByPrice(price);
@@ -72,42 +72,46 @@ public class PropertyController {
         List<PropertyDTO> propertyDTOS = properties.stream().map(PropertyDTO::new).toList();
         return new ResponseEntity<>(propertyDTOS,HttpStatus.OK);
     }
-    @GetMapping("/listbytown")
-    public ResponseEntity<List<Property>> getListByTown(String town){
+    @GetMapping("/list/town/{town}")
+    public ResponseEntity<?> getListByTown(@PathVariable String town){
         List<Property>properties=propertyService.getListByTown(town);
         if(properties.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(properties,HttpStatus.OK);
+        List<PropertyDTO> propertyDTOS = properties.stream().map(PropertyDTO::new).toList();
+        return new ResponseEntity<>(propertyDTOS,HttpStatus.OK);
     }
 
-    @GetMapping("/listbyfloorarea")
-    public ResponseEntity<List<Property>> getListByFloorarea(int floorarea){
+    @GetMapping("/list/floorarea/{floorarea}")
+    public ResponseEntity<?> getListByFloorarea(@PathVariable int floorarea){
         List<Property>properties=propertyService.getListByFloorArea(floorarea);
         if(properties.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(properties,HttpStatus.OK);
+        List<PropertyDTO> propertyDTOS = properties.stream().map(PropertyDTO::new).toList();
+        return new ResponseEntity<>(propertyDTOS,HttpStatus.OK);
     }
 
-    @GetMapping("/listbystorey")
-    public ResponseEntity<List<Property>> getListByStorey(String storey){
+    @GetMapping("/list/storey/{storey}")
+    public ResponseEntity<?> getListByStorey(@PathVariable String storey){
         List<Property>properties=propertyService.getListByStoreyRange(storey);
         if(properties.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(properties,HttpStatus.OK);
+        List<PropertyDTO> propertyDTOS = properties.stream().map(PropertyDTO::new).toList();
+        return new ResponseEntity<>(propertyDTOS,HttpStatus.OK);
 
     }
 
-    @GetMapping("/listbystreet")
-    public ResponseEntity<List<Property>> getListByStreet(String street){
+    @GetMapping("/list/street/{street}")
+    public ResponseEntity<?> getListByStreet(@PathVariable String street){
         List<Property>properties=propertyService.getListByStreet(street);
 
         if(properties.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(properties,HttpStatus.OK);
+        List<PropertyDTO> propertyDTOS = properties.stream().map(PropertyDTO::new).toList();
+        return new ResponseEntity<>(propertyDTOS,HttpStatus.OK);
     }
 
 
