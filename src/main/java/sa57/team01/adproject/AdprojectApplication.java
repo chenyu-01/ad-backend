@@ -78,24 +78,28 @@ public class AdprojectApplication {
             rentalProperty.setContractMonthPeriod(1);
             rentalPropertyReposity.save(rentalProperty);
 
+            List<Property> listProperty = new ArrayList<>();
+            listProperty.add(rentalProperty);
             //add saleproperty
-            SaleProperty saleProperty = new SaleProperty();
-            saleProperty.setTown("redhill");
-            saleProperty.setBlock("101");
-            saleProperty.setFloorArea(100);
-            saleProperty.setPropertyStatus(forSale);
-            saleProperty.setFlatType(1);
-            saleProperty.setStoreyRange("10 TO 12");
-            saleProperty.setStreetName("ANG MO KIO AVE 10");
-            saleProperty.setFlatType(1);
-            saleProperty.setLeaseCommenceDate(LocalDate.parse("2024-01-27"));
-            saleProperty.setRemainingLease(1);
-            saleProperty.setOwner(owner);
-            saleProperty.setPrice(1400);
-            salePropertyReposity.save(saleProperty);
+            for(int i = 0; i < 10; i++) {
+                SaleProperty saleProperty = new SaleProperty();
+                saleProperty.setTown("redhill");
+                saleProperty.setBlock("101");
+                saleProperty.setFloorArea(100);
+                saleProperty.setPropertyStatus(forSale);
+                saleProperty.setFlatType(1);
+                saleProperty.setStoreyRange("10 TO 12");
+                saleProperty.setStreetName("ANG MO KIO AVE 10");
+                saleProperty.setFlatType(1);
+                saleProperty.setLeaseCommenceDate(LocalDate.parse("2024-01-27"));
+                saleProperty.setRemainingLease(1);
+                saleProperty.setOwner(owner);
+                saleProperty.setPrice(1000 + i * 100);
+                salePropertyReposity.save(saleProperty);
+                listProperty.add(saleProperty);
+            }
 
             // update owner properties
-            List<Property> listProperty = new ArrayList<>(List.of(rentalProperty, saleProperty));
             owner.setProperties(listProperty);
             ownerReposity.save(owner);
 
