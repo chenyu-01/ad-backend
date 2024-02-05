@@ -14,8 +14,7 @@ public class Property {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long propertyid;
-    @NotNull
-    private String town;
+    private TownName town;
     @Enumerated(EnumType.STRING)
     @NotNull
     private PropertyStatus propertyStatus;
@@ -44,7 +43,7 @@ public class Property {
     }
 
     public Property(long propertyid,
-                    String town,
+                    TownName town,
                     PropertyStatus propertyStatus,
                     int flatType,
                     String storeyRange,

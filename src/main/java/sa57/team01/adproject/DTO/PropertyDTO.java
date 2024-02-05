@@ -24,7 +24,7 @@ public class PropertyDTO implements Serializable {
 
     public PropertyDTO(Property other) {
         this.id = other.getPropertyid();
-        this.town = other.getTown();
+        this.town = other.getTown().toString();
         this.propertyStatus = other.getPropertyStatus().toString();
         this.flatType = other.getFlatType();
         this.storeyRange = other.getStoreyRange();

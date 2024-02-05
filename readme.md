@@ -20,14 +20,19 @@ Set up a mysql database with the following properties:
 ![how to set up environment variables](./docs/how-to-set-environment-var.png)
 ## Todo List
 
-- [ ] finish endpoints list
-- [ ] design the page
+- [x] finish endpoints list
+- [x] design the page
+- [ ] implement the page
+- [ ] implement the backend endpoints
+- [ ] if you have time, add validation to entities
+- [ ] if you have time, add unit tests
 
 ## REST API Endpoints
 
 - `/api/property/salelist` - GET method, return a list of properties for sale
 - `/api/property/rentlist` - GET method, return a list of properties for rent
 - `/api/property/detail/{id}` - GET, return the detail of a property
+- `/api/property/list/search - POST, search properties, return a list of properties
 - `/api/user/details/{id}` - GET, return the detail of a user
 - `/api/user/login` - POST, login a user
 - `/api/user/logout` - POST, logout a user
@@ -37,10 +42,4 @@ Set up a mysql database with the following properties:
 - Properties
 - `/api/property/list`- GET method, return a list of properties 
 - `/api/property/{id}`-GET, return the detail of a property
-- `/api/property/listbydate`-GET, return the detail of a property by date
-- `/api/property/listbyprice`-GET, return the detail of a property by price
-- `/api/property/listbytown`-GET, return the detail of a property by town
-- `/api/property/listbystreet`-GET, return the detail of a property by street
-- `/api/property/listbystorey`-GET, return the detail of a property by storey
-- `/api/property/listbyfloorarea`-GET, return the detail of a property by floorarea
 
