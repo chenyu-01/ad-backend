@@ -14,6 +14,7 @@ public class Property {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long propertyid;
+    @Enumerated(EnumType.STRING)
     private TownName town;
     @Enumerated(EnumType.STRING)
     @NotNull
