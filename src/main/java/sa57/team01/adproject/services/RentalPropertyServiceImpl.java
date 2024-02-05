@@ -28,4 +28,9 @@ public class RentalPropertyServiceImpl implements RentalPropertyService{
         PageRequest pageRequest = PageRequest.of(page-1, pageSize);
         return rentalPropertyReposity.findAll(pageRequest).getContent();
     }
+
+    @Override
+    public RentalProperty findRentalPropertyById(Long id) {
+        return rentalPropertyReposity.findById(id).orElse(null);
+    }
 }

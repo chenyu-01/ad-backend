@@ -8,4 +8,5 @@ import sa57.team01.adproject.repositories.BuyerReposity;
 public interface BuyerService {
     void saveBuyer(Buyer buyer);
 
+    Buyer findBuyerById(long id);
 }

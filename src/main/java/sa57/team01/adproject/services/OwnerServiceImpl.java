@@ -25,4 +25,6 @@ public class OwnerServiceImpl implements OwnerService{
     public Owner findOwnerById(long id){
         return ownerReposity.findById(id).orElse(null);
     }
+
+
 }
