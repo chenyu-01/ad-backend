@@ -65,7 +65,7 @@ public class AdprojectApplication {
             ownerReposity.save(owner);
             //add rentalproperty
             RentalProperty rentalProperty = new RentalProperty();
-            rentalProperty.setTown("redhill");
+            rentalProperty.setTown(TownName.getRandomTown());
             rentalProperty.setBlock("101");
             rentalProperty.setFloorArea(100);
             rentalProperty.setPropertyStatus(forRent);
@@ -81,9 +81,9 @@ public class AdprojectApplication {
             List<Property> listProperty = new ArrayList<>();
             listProperty.add(rentalProperty);
             //add saleproperty
-            for(int i = 0; i < 10; i++) {
+            for(int i = 0; i < 100; i++) {
                 SaleProperty saleProperty = new SaleProperty();
-                saleProperty.setTown("redhill");
+                saleProperty.setTown(TownName.getRandomTown());
                 saleProperty.setBlock("101");
                 saleProperty.setFloorArea(100);
                 saleProperty.setPropertyStatus(forSale);

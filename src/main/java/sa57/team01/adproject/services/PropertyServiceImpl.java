@@ -63,7 +63,7 @@ public class PropertyServiceImpl implements PropertyService {
         return properties.stream()
                 .filter(property -> {
                     // convert to lower case, trim the non-alphabetic characters
-                    String town = property.getTown().toLowerCase().replaceAll("[^a-z]", ""); // remove non-alphabetic characters
+                    String town = property.getTown().toString().toLowerCase().replaceAll("[^a-z]", ""); // remove non-alphabetic characters
                     String search = searchTown.toLowerCase().replaceAll("[^a-z]", ""); // remove non-alphabetic characters
                     // check if the town contains the searchDTO town
                     return town.contains(search);
