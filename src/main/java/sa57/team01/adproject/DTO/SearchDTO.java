@@ -15,6 +15,7 @@ public class SearchDTO {
     private boolean roomFour; // flatType == 4 && room4 == true
 
     private String town;
-
+    private long page;
+    private String propertyType;
 
 }

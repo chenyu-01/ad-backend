@@ -32,45 +32,23 @@ public class PropertyController {
         this.salePropertyService = salePropertyService;
         this.propertyService=propertyService;
     }
-    @GetMapping("/rentlist/{page}")
-    public ResponseEntity<?> getRentPropertiesInPage(@PathVariable int page) {
-
-        // each page has 10 items
-        List<RentalProperty> rentalProperties = rentalPropertyService.findRentalPropertyInPage(page);
-        // convert to DTO
-        List<RentalPropertyDTO> propertyDTOS = RentalPropertyDTO.from(rentalProperties);
-        // generate response key-value pairs
-        Map<String, Object> response = Map.of(
-                "properties", propertyDTOS,
-                "totalRecords", rentalPropertyService.countRentalProperty()
-        );
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/salelist/{page}")
-    public ResponseEntity<?> getSalePropertiesInPage(@PathVariable int page) {
-        // each page has 10 items
-        List<SaleProperty> saleProperties = salePropertyService.findSalePropertyInPage(page);
-        List<SalePropertyDTO> salePropertyDTOS = SalePropertyDTO.from(saleProperties);
-        Map<String, Object> response = Map.of(
-                "properties", salePropertyDTOS,
-                "totalRecords", salePropertyService.countSaleProperty()
-        );
-        return ResponseEntity.ok(response);
-    }
 
 
 
     @PostMapping("/list/search/")
     public ResponseEntity<?> getListByPrice(@RequestBody SearchDTO searchDTO){
-
         try {
             List<Property> properties = propertyService.getAllPropertiesWithSearchDTO(searchDTO);
             if(properties.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT); // return 204 No Content
             }
-            List<PropertyDTO> propertyDTOS = properties.stream().map(PropertyDTO::new).toList();
-            return new ResponseEntity<>(propertyDTOS,HttpStatus.OK); // return 200 OK
+            long page = searchDTO.getPage();
+            List<PropertyDTO> propertyDTOS = properties.stream().skip(( page- 1) * 10).limit(10).map(PropertyDTO::new).toList();
+            Map<String, Object> response = Map.of(
+                    "properties", propertyDTOS,
+                    "totalRecords", properties.size()
+            );
+            return new ResponseEntity<>(response,HttpStatus.OK); // return 200 OK
         } catch (Exception e) {
             return new ResponseEntity<>( e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR); // return 500 Internal Server Error
         }

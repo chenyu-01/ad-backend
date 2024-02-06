@@ -30,6 +30,8 @@ public class Property {
     @NotNull
     private String block;
     @NotNull
+    private boolean forSale;
+    @NotNull
     @ManyToOne
     private Owner owner;
 

@@ -63,25 +63,28 @@ public class AdprojectApplication {
             owner.setContactNumber("234");
             owner.setPreferences(preferencesOwner);
             ownerReposity.save(owner);
-            //add rentalproperty
-            RentalProperty rentalProperty = new RentalProperty();
-            rentalProperty.setTown(TownName.getRandomTown());
-            rentalProperty.setBlock("101");
-            rentalProperty.setFloorArea(100);
-            rentalProperty.setPropertyStatus(forRent);
-            rentalProperty.setFlatType(1);
-            rentalProperty.setStoreyRange("10 TO 12");
-            rentalProperty.setStreetName("BEDOK NTH ST 3");
-            rentalProperty.setFlatType(1);
-            rentalProperty.setPrice(1400);
-            rentalProperty.setOwner(owner);
-            rentalProperty.setContractMonthPeriod(1);
-            rentalPropertyReposity.save(rentalProperty);
+
 
             List<Property> listProperty = new ArrayList<>();
-            listProperty.add(rentalProperty);
-            //add saleproperty
-            for(int i = 0; i < 200; i++) {
+            //add properties
+            for(int i = 0; i < 456; i++) {
+                //add rentalproperty
+                RentalProperty rentalProperty = new RentalProperty();
+                rentalProperty.setTown(TownName.getRandomTown());
+                rentalProperty.setBlock("101");
+                rentalProperty.setFloorArea(100);
+                rentalProperty.setPropertyStatus(forRent);
+                rentalProperty.setFlatType(1);
+                rentalProperty.setStoreyRange("10 TO 12");
+                rentalProperty.setStreetName("BEDOK NTH ST 3");
+                rentalProperty.setFlatType(1);
+                rentalProperty.setPrice(990 + i * 100);
+                rentalProperty.setOwner(owner);
+                rentalProperty.setContractMonthPeriod(1);
+                rentalProperty.setForSale(false);
+                listProperty.add(rentalProperty);
+                rentalPropertyReposity.save(rentalProperty);
+                //add saleproperty
                 SaleProperty saleProperty = new SaleProperty();
                 saleProperty.setTown(TownName.getRandomTown());
                 saleProperty.setBlock("101");
@@ -90,11 +93,12 @@ public class AdprojectApplication {
                 saleProperty.setFlatType(1);
                 saleProperty.setStoreyRange("10 TO 12");
                 saleProperty.setStreetName("ANG MO KIO AVE 10");
-                saleProperty.setFlatType(1);
+                saleProperty.setFlatType(i % 4 + 1);
                 saleProperty.setLeaseCommenceDate(LocalDate.parse("2024-01-27"));
                 saleProperty.setRemainingLease(1);
                 saleProperty.setOwner(owner);
-                saleProperty.setPrice(1000 + i * 100);
+                saleProperty.setPrice(100000 + i * 11111);
+                saleProperty.setForSale(true);
                 salePropertyReposity.save(saleProperty);
                 listProperty.add(saleProperty);
             }
@@ -110,7 +114,7 @@ public class AdprojectApplication {
             appointment.setAppointmentId(1);
             appointment.setDate(date);
             appointment.setContactCustomer(owner);
-            appointment.setProperty(rentalProperty);
+            appointment.setProperty(listProperty.get(0));
             appointment.setRequestCustomer(buyer);
             appointmentReposity.save(appointment);
 
