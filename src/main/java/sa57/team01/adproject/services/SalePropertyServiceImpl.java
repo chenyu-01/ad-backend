@@ -31,4 +31,9 @@ public class SalePropertyServiceImpl implements SalePropertyService{
         PageRequest pageRequest = PageRequest.of(page-1, pageSize);
         return salePropertyReposity.findAll(pageRequest).getContent();
     }
+
+    @Override
+    public SaleProperty findSalePropertyById(Long id) {
+        return salePropertyReposity.findById(id).orElse(null);
+    }
 }

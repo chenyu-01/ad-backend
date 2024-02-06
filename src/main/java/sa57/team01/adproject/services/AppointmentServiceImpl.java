@@ -2,13 +2,10 @@ package sa57.team01.adproject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sa57.team01.adproject.models.Appointment;
-import sa57.team01.adproject.models.Customer;
-import sa57.team01.adproject.models.Owner;
+import sa57.team01.adproject.models.*;
 import sa57.team01.adproject.repositories.AppointmentReposity;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService{
@@ -45,6 +42,16 @@ public class AppointmentServiceImpl implements AppointmentService{
     @Override
     public void rejectAppointment(Long id){
         // TODO:  status
+    }
+
+    @Override
+    public void createAppointment(Owner owner, Buyer buyer, Property saleProperty, String appointmentDate) {
+        try {
+            Appointment appointment = new Appointment(owner, buyer, saleProperty, appointmentDate);
+            appointmentReposity.save(appointment);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /*

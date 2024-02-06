@@ -66,4 +66,17 @@ public class PropertyController {
     }
 
 
+    @GetMapping("/details/{id}")
+    public ResponseEntity<?> getPropertyDetails(@PathVariable Long id) {
+        RentalProperty rentalProperty = rentalPropertyService.findRentalPropertyById(id);
+        if (rentalProperty == null) {
+            SaleProperty saleProperty = salePropertyService.findSalePropertyById(id);
+            if (saleProperty == null) {
+                return ResponseEntity.notFound().build();
+            }
+            SalePropertyDTO salePropertyDTO = new SalePropertyDTO(saleProperty);
+            return ResponseEntity.ok(salePropertyDTO);
+        }
+        RentalPropertyDTO rentalPropertyDTO = new RentalPropertyDTO(rentalProperty);
+        return ResponseEntity.ok(rentalPropertyDTO);}
 }

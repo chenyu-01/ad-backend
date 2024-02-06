@@ -11,4 +11,6 @@ public interface SalePropertyService {
     void saveSaleProperty(SaleProperty saleProperty);
 
     List<SaleProperty> findSalePropertyInPage(int page);
+
+    SaleProperty findSalePropertyById(Long id);
 }

@@ -10,4 +10,6 @@ public interface RentalPropertyService {
     void saveRentalProperty(RentalProperty rentalProperty);
 
     List<RentalProperty> findRentalPropertyInPage(int page);
+
+    RentalProperty findRentalPropertyById(Long id);
 }
