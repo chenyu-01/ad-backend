@@ -27,6 +27,8 @@ public abstract class Customer {
     @OneToOne
     private Preferences preferences;
 
+    private String Role;
+
     @OneToMany(mappedBy = "requestCustomer")
     private List<Appointment> appointmentRequestList;
 
@@ -46,4 +48,7 @@ public abstract class Customer {
     }
 
 
+    public long getId() {
+        return this.customerId;
+    }
 }

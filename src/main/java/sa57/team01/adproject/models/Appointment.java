@@ -16,14 +16,18 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long AppointmentId;
 
+    @NotNull
     private LocalDate date;
 
+    @NotNull
     @ManyToOne
     private Owner contactCustomer;
 
+    @NotNull
     @OneToOne
     private Property property;
 
+    @NotNull
     @ManyToOne
     private Customer requestCustomer;
 
