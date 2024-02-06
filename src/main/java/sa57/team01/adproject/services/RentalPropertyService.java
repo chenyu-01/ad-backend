@@ -12,4 +12,6 @@ public interface RentalPropertyService {
     List<RentalProperty> findRentalPropertyInPage(int page);
 
     RentalProperty findRentalPropertyById(Long id);
+
+    long countRentalProperty();
 }

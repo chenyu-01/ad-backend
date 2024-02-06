@@ -33,4 +33,9 @@ public class RentalPropertyServiceImpl implements RentalPropertyService{
     public RentalProperty findRentalPropertyById(Long id) {
         return rentalPropertyReposity.findById(id).orElse(null);
     }
+
+    @Override
+    public long countRentalProperty(){
+        return rentalPropertyReposity.count();
+    }
 }

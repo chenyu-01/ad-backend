@@ -12,5 +12,7 @@ public interface SalePropertyService {
 
     List<SaleProperty> findSalePropertyInPage(int page);
 
+    long countSaleProperty();
+
     SaleProperty findSalePropertyById(Long id);
 }

@@ -81,7 +81,7 @@ public class AdprojectApplication {
             List<Property> listProperty = new ArrayList<>();
             listProperty.add(rentalProperty);
             //add saleproperty
-            for(int i = 0; i < 100; i++) {
+            for(int i = 0; i < 200; i++) {
                 SaleProperty saleProperty = new SaleProperty();
                 saleProperty.setTown(TownName.getRandomTown());
                 saleProperty.setBlock("101");

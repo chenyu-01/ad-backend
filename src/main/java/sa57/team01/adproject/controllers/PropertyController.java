@@ -16,6 +16,7 @@ import sa57.team01.adproject.services.RentalPropertyService;
 import sa57.team01.adproject.services.SalePropertyService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/property")
@@ -33,11 +34,17 @@ public class PropertyController {
     }
     @GetMapping("/rentlist/{page}")
     public ResponseEntity<?> getRentPropertiesInPage(@PathVariable int page) {
+
         // each page has 10 items
         List<RentalProperty> rentalProperties = rentalPropertyService.findRentalPropertyInPage(page);
         // convert to DTO
         List<RentalPropertyDTO> propertyDTOS = RentalPropertyDTO.from(rentalProperties);
-        return ResponseEntity.ok(propertyDTOS);
+        // generate response key-value pairs
+        Map<String, Object> response = Map.of(
+                "properties", propertyDTOS,
+                "totalRecords", rentalPropertyService.countRentalProperty()
+        );
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/salelist/{page}")
@@ -45,7 +52,11 @@ public class PropertyController {
         // each page has 10 items
         List<SaleProperty> saleProperties = salePropertyService.findSalePropertyInPage(page);
         List<SalePropertyDTO> salePropertyDTOS = SalePropertyDTO.from(saleProperties);
-        return ResponseEntity.ok(salePropertyDTOS);
+        Map<String, Object> response = Map.of(
+                "properties", salePropertyDTOS,
+                "totalRecords", salePropertyService.countSaleProperty()
+        );
+        return ResponseEntity.ok(response);
     }
 
 

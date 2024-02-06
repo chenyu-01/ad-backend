@@ -36,4 +36,9 @@ public class SalePropertyServiceImpl implements SalePropertyService{
     public SaleProperty findSalePropertyById(Long id) {
         return salePropertyReposity.findById(id).orElse(null);
     }
+
+    @Override
+    public long countSaleProperty(){
+        return salePropertyReposity.count();
+    }
 }
