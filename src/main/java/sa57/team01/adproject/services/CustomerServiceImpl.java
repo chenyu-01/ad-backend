@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import sa57.team01.adproject.DTO.MixPropertyDTO;
-import sa57.team01.adproject.DTO.PreferencesDTO;
-import sa57.team01.adproject.DTO.ProfileDTO;
-import sa57.team01.adproject.DTO.PropertyDTO;
+import sa57.team01.adproject.DTO.*;
 import sa57.team01.adproject.models.*;
 import sa57.team01.adproject.repositories.*;
 
@@ -31,16 +28,23 @@ public class CustomerServiceImpl implements CustomerService {
 
     public RentalPropertyReposity rentalPropertyReposity;
 
+    public BuyerReposity buyerReposity;
+
+    public RentalSeekerReposity rentalSeekerReposity;
+
     @Autowired
     public CustomerServiceImpl(CustomerReposity customerReposity, PreferencesReposity preferencesReposity,
                                OwnerReposity ownerReposity, PropertyReposity propertyReposity,
-                               SalePropertyReposity salePropertyReposity, RentalPropertyReposity rentalPropertyReposity) {
+                               SalePropertyReposity salePropertyReposity, RentalPropertyReposity rentalPropertyReposity,
+                               BuyerReposity buyerReposity,RentalSeekerReposity rentalSeekerReposity) {
         this.customerReposity = customerReposity;
         this.preferencesReposity = preferencesReposity;
         this.ownerReposity = ownerReposity;
         this.propertyReposity = propertyReposity;
         this.salePropertyReposity = salePropertyReposity;
         this.rentalPropertyReposity = rentalPropertyReposity;
+        this.buyerReposity = buyerReposity;
+        this.rentalSeekerReposity = rentalSeekerReposity;
     }
 
 
@@ -275,6 +279,35 @@ public class CustomerServiceImpl implements CustomerService {
         RentalProperty rentalProperty = rentalPropertyReposity.findById(property.getPropertyid()).get();
         mixPropertyDTO.setContractMonthPeriod(String.valueOf(rentalProperty.getContractMonthPeriod()));
         return mixPropertyDTO;
+    }
+
+    @Override
+    public ResponseEntity<?> saveByRole(CustomerDTO customerDTO){
+        String role = customerDTO.getRole();
+        if(role.equals("owner")){
+            Owner owner = new Owner();
+            owner.setName(customerDTO.getName());
+            owner.setEmail(customerDTO.getEmail());
+            owner.setRole(customerDTO.getRole());
+            owner.setPassword(customerDTO.getPassword());
+            ownerReposity.save(owner);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else if(role.equals("buyer")){
+            Buyer buyer = new Buyer();
+            buyer.setName(customerDTO.getName());
+            buyer.setEmail(customerDTO.getEmail());
+            buyer.setRole(customerDTO.getRole());
+            buyer.setPassword(customerDTO.getPassword());
+            buyerReposity.save(buyer);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        RentalSeeker rentalSeeker = new RentalSeeker();
+        rentalSeeker.setName(customerDTO.getName());
+        rentalSeeker.setEmail(customerDTO.getEmail());
+        rentalSeeker.setRole(customerDTO.getRole());
+        rentalSeeker.setPassword(customerDTO.getPassword());
+        rentalSeekerReposity.save(rentalSeeker);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

@@ -4,10 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
-import sa57.team01.adproject.DTO.MixPropertyDTO;
-import sa57.team01.adproject.DTO.PreferencesDTO;
-import sa57.team01.adproject.DTO.ProfileDTO;
-import sa57.team01.adproject.DTO.PropertyDTO;
+import sa57.team01.adproject.DTO.*;
 import sa57.team01.adproject.models.Customer;
 
 @Service
@@ -20,5 +17,7 @@ public interface CustomerService {
     ResponseEntity<?> savePreferences(long id, PreferencesDTO preferencesDTO, BindingResult result);
     ResponseEntity<?> saveProperty(long id, MixPropertyDTO mixPropertyDTO, BindingResult result);
     ResponseEntity<?> getPropertyLists(long id);
+
+    ResponseEntity<?> saveByRole(CustomerDTO customerDTO);
 
 }

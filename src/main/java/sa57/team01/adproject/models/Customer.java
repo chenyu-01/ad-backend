@@ -38,8 +38,8 @@ public abstract class Customer {
         super();
     }
 
-    public Customer(long customerId, String name, String email, String password, String contactNumber, Preferences preferences) {
-        this.customerId = customerId;
+    public Customer( String name, String email, String password, String contactNumber, Preferences preferences) {
+        //this.customerId = customerId;
         this.name = name;
         this.email = email;
         this.password = password;
