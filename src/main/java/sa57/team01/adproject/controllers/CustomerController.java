@@ -26,8 +26,8 @@ public class CustomerController {
         if(customer == null ||!customer.getPassword().equals(password)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Username and Password");
         }
-        CustomerDTO customerDTO=new CustomerDTO(customer);
-        session.setAttribute("customer",customerDTO);
+
+        session.setAttribute("customer",customer);
 
         return ResponseEntity.ok().build();
     }
@@ -51,17 +51,16 @@ public class CustomerController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Customer customer){
-        Customer existingCustomer=customerService.findByEmail(customer.getName());
+    public ResponseEntity<?> register(@RequestBody CustomerDTO customerDTO){
+        Customer existingCustomer=customerService.findByEmail(customerDTO.getEmail());
         if(existingCustomer!=null){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
-        customerService.save(customer);
-        CustomerDTO customerDTO=new CustomerDTO(customer);
+        customerService.saveByRole(customerDTO);
+
         return ResponseEntity.ok(customerDTO);
 
     }
-
 
 
 
