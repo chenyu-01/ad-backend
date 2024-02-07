@@ -4,6 +4,6 @@ import org.springframework.stereotype.Service;
 import sa57.team01.adproject.models.Preferences;
 
 @Service
-public interface PreferenceService {
+public interface PreferencesService {
     void savePreference(Preferences preferences);
 }

@@ -1,18 +1,11 @@
-package sa57.team01.adproject.models;
+package sa57.team01.adproject.DTO;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-@Entity
+import sa57.team01.adproject.models.TownName;
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Preferences {
-
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long Propertyid;
+public class PreferencesDTO {
     private boolean bedroom1;
     private boolean bedroom2;
     private boolean bedroom3;
@@ -23,14 +16,13 @@ public class Preferences {
     private boolean midPriceRange;
     private boolean highPriceRange;
 
-    @OneToOne(mappedBy = "preferences")
-    private Customer customer;
 
-    public Preferences(){
-        super();
+
+    public PreferencesDTO(){
+
     }
 
-    public Preferences(boolean bedroom1,boolean bedroom2,boolean bedroom3,boolean bedroom4,
+    public PreferencesDTO(boolean bedroom1,boolean bedroom2,boolean bedroom3,boolean bedroom4,
                        TownName town,int storyRange,boolean lowPriceRange,boolean midPriceRange,boolean highPriceRange){
         this.bedroom1 = bedroom1;
         this.bedroom2 = bedroom2;
