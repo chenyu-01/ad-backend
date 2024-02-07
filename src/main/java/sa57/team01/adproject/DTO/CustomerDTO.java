@@ -11,15 +11,16 @@ import java.io.Serializable;
 public class CustomerDTO implements Serializable {
 
   private String name;
-  private String password;
   private String email;
+  private String password;
+  private String contactNumber;
   private String role;
   public CustomerDTO(){}
-  public CustomerDTO(String contactNumber,String email, String name, String password, String preferences,String role){
-
+  public CustomerDTO(String name, String email, String password, String contactNumber,String role, String preferences){
       this.name=name;
-      this.password=password;
       this.email = email;
+      this.password=password;
+      this.contactNumber=contactNumber;
       this.role=role;
   }
 }

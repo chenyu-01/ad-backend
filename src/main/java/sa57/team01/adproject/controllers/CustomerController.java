@@ -56,12 +56,16 @@ public class CustomerController {
         if(existingCustomer!=null){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
-        customerService.saveByRole(customerDTO);
 
-        return ResponseEntity.ok(customerDTO);
+        Customer customer = new Customer();
+        customer.setName(customerDTO.getName());
+        customer.setEmail(customerDTO.getEmail());
+        customer.setContactNumber(customerDTO.getContactNumber());
+        customer.setPassword(customerDTO.getPassword());
+        customer.setRole(customerDTO.getRole());
+        customerService.save(customer);
+
+        return ResponseEntity.ok().build();
 
     }
-
-
-
 }
