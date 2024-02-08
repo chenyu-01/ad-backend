@@ -38,10 +38,14 @@ public class UsersettingController {
         return customerService.getProfile(id);
     }
 
-    @PostMapping("/saveProfile/{id}")
-    public ResponseEntity<?> saveProfileByCustomerId(@PathVariable long id,
+    @PostMapping("/saveProfile")
+    public ResponseEntity<?> saveProfileByCustomerId(HttpSession session,
                                                     @RequestBody ProfileDTO profileDTO, BindingResult result) {
+        if (session.getAttribute("customerId") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
+        }
         Map<String , Object> response = new HashMap<>();
+        long id = (long) session.getAttribute("customerId");
         try{
             return customerService.saveProfile(id,profileDTO,result);
 
@@ -51,15 +55,23 @@ public class UsersettingController {
         }
     }
 
-    @GetMapping("/getPreferences/{id}")
-    public ResponseEntity<?> getPreferencesByCustomerId(@PathVariable long id) {
+    @GetMapping("/getPreferences")
+    public ResponseEntity<?> getPreferencesByCustomerId(HttpSession session) {
+        if (session.getAttribute("customerId") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
+        }
+        long id = (long) session.getAttribute("customerId");
         return customerService.getPreferences(id);
     }
 
-    @PostMapping("/savePreferences/{id}")
-    public ResponseEntity<?> savePreferencesByCustomerId(@PathVariable long id,
+    @PostMapping("/savePreferences")
+    public ResponseEntity<?> savePreferencesByCustomerId(HttpSession session,
                                                          @RequestBody PreferencesDTO preferenceDTO, BindingResult result) {
         Map<String , Object> response = new HashMap<>();
+        if (session.getAttribute("customerId") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
+        }
+        long id = (long) session.getAttribute("customerId");
         try{
             return customerService.savePreferences(id,preferenceDTO,result);
 
@@ -69,10 +81,14 @@ public class UsersettingController {
         }
     }
 
-    @PostMapping("/saveProperty/{id}")
-    public ResponseEntity<?> savePropertyByCustomerId(@PathVariable long id,
+    @PostMapping("/saveProperty")
+    public ResponseEntity<?> savePropertyByCustomerId(HttpSession session,
                                                       @RequestBody MixPropertyDTO mixPropertyDTO, BindingResult result) {
         Map<String , Object> response = new HashMap<>();
+        if (session.getAttribute("customerId") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
+        }
+        long id = (long) session.getAttribute("customerId");
         try{
             return customerService.saveProperty(id,mixPropertyDTO,result);
 
@@ -92,8 +108,42 @@ public class UsersettingController {
         return new ResponseEntity<>(Arrays.asList(PropertyStatus.values()).stream().map(Enum::name).toList(),HttpStatus.OK);
     }
 
-    @GetMapping("/getPropertyList/{id}")
-    public ResponseEntity<?> getPropertyListByOwnerId(@PathVariable long id){
+    @GetMapping("/getPropertyList")
+    public ResponseEntity<?> getPropertyListByOwnerId(HttpSession session){
+        if (session.getAttribute("customerId") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
+        }
+        long id = (long) session.getAttribute("customerId");
         return customerService.getPropertyLists(id);
     }
+
+    @GetMapping("/savePropertyInfo/{propertyid}&{propertyStatus}")
+    public ResponseEntity<?> savePropertyInfo(@PathVariable("propertyid") long propertyid,@PathVariable("propertyStatus") String propertyStatus,HttpSession session){
+        Map<String, Object> response = new HashMap<>();
+        session.setAttribute("propertyId",propertyid);
+        session.setAttribute("propertyStatus",propertyStatus);
+        if(session.getAttribute("propertyId") == null){
+            response.put("message","No property");
+            return new ResponseEntity<>(response,HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("/getProperty")
+    public ResponseEntity<?> getProperty(HttpSession session){
+        Map<String, Object> response = new HashMap<>();
+        if (session.getAttribute("customerId") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
+        }
+        if(session.getAttribute("propertyId") == null){
+            response.put("message","No property");
+            return new ResponseEntity<>(response,HttpStatus.NO_CONTENT);
+        }
+        long propertyId = (long) session.getAttribute("propertyId");
+        String propertyStatus = (String) session.getAttribute("propertyStatus");
+        session.setAttribute("propertyId",null);
+        session.setAttribute("propertyStatus",null);
+        return customerService.getProperty(propertyId,propertyStatus);
+    }
+
+
 }

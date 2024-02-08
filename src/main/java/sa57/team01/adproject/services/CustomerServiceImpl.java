@@ -248,7 +248,7 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Owner> optOwner = ownerReposity.findById(id);
         if (optOwner.isEmpty()) {
             response.put("message", "Customer Not Found");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
         }
         Owner owner = optOwner.get();
         List<Property> propertyList = owner.getProperties();
@@ -294,6 +294,45 @@ public class CustomerServiceImpl implements CustomerService {
         newCustomer.setRole(role);
         customerReposity.save(newCustomer);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> getProperty(long id,String status){
+        if(status.equals("forSale") || status.equals("soldOut")){
+            SaleProperty saleProperty =  salePropertyReposity.findById(id).get();
+            MixPropertyDTO mixPropertyDTO = new MixPropertyDTO();
+            mixPropertyDTO.setId(saleProperty.getPropertyid());
+            mixPropertyDTO.setTown(String.valueOf(saleProperty.getTown()));
+            mixPropertyDTO.setPropertyStatus(status);
+            mixPropertyDTO.setFlatType(String.valueOf(saleProperty.getFlatType()));
+            mixPropertyDTO.setStoreyRange(saleProperty.getStoreyRange());
+            mixPropertyDTO.setStreetName(saleProperty.getStreetName());
+            mixPropertyDTO.setFloorArea(String.valueOf(saleProperty.getFloorArea()));
+            mixPropertyDTO.setOwnerid(saleProperty.getOwner().getCustomerId());
+            mixPropertyDTO.setPrice(String.valueOf(saleProperty.getPrice()));
+            mixPropertyDTO.setBlock(saleProperty.getBlock());
+            mixPropertyDTO.setBedrooms(String.valueOf(saleProperty.getBedrooms()));
+            mixPropertyDTO.setLeaseCommenceDate(String.valueOf(saleProperty.getLeaseCommenceDate()));
+            mixPropertyDTO.setRemainingLease(String.valueOf(saleProperty.getRemainingLease()));
+            return new ResponseEntity<>(mixPropertyDTO,HttpStatus.OK);
+
+        }
+        RentalProperty rentalProperty =  rentalPropertyReposity.findById(id).get();
+        MixPropertyDTO mixPropertyDTO = new MixPropertyDTO();
+        mixPropertyDTO.setId(rentalProperty.getPropertyid());
+        mixPropertyDTO.setTown(String.valueOf(rentalProperty.getTown()));
+        mixPropertyDTO.setPropertyStatus(status);
+        mixPropertyDTO.setFlatType(String.valueOf(rentalProperty.getFlatType()));
+        mixPropertyDTO.setStoreyRange(rentalProperty.getStoreyRange());
+        mixPropertyDTO.setStreetName(rentalProperty.getStreetName());
+        mixPropertyDTO.setFloorArea(String.valueOf(rentalProperty.getFloorArea()));
+        mixPropertyDTO.setOwnerid(rentalProperty.getOwner().getCustomerId());
+        mixPropertyDTO.setPrice(String.valueOf(rentalProperty.getPrice()));
+        mixPropertyDTO.setBlock(rentalProperty.getBlock());
+        mixPropertyDTO.setBedrooms(String.valueOf(rentalProperty.getBedrooms()));
+        mixPropertyDTO.setContractMonthPeriod(String.valueOf(rentalProperty.getContractMonthPeriod()));
+        return new ResponseEntity<>(mixPropertyDTO,HttpStatus.OK);
+
     }
 
 

@@ -17,10 +17,11 @@ public class PropertyDTO implements Serializable {
     private String streetName;
     private int floorArea;
     private double price;
-    private int contractMonthPeriod;
+    //private int contractMonthPeriod;
     private Long ownerId;
     private String block;
     private Long appointmentId = -1L;
+    private int bedrooms;
 
     public PropertyDTO(Property other) {
         this.id = other.getPropertyid();
@@ -36,5 +37,6 @@ public class PropertyDTO implements Serializable {
         if(other.getAppointment() != null) {
             this.appointmentId = other.getAppointment().getAppointmentId();
         }
+        this.bedrooms = other.getBedrooms();
     }
 }
