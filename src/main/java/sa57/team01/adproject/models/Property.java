@@ -26,7 +26,7 @@ public class Property {
     @NotNull
     private String streetName;
     @NotNull
-    private int floorArea;
+    private int floorArea; // in square meters
     @NotNull
     private String block;
     @NotNull

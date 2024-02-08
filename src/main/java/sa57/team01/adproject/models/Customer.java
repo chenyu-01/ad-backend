@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Customer {
+public class Customer {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long customerId;
@@ -26,7 +26,7 @@ public abstract class Customer {
     private String contactNumber;
     @OneToOne
     private Preferences preferences;
-
+    @NotNull
     private String Role;
 
     @OneToMany(mappedBy = "requestCustomer")

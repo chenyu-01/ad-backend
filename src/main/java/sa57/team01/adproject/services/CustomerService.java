@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import sa57.team01.adproject.DTO.*;
 import sa57.team01.adproject.models.Customer;
 
+import java.util.Map;
+
 @Service
 public interface CustomerService {
     Customer findByEmail(String email);
@@ -18,6 +20,6 @@ public interface CustomerService {
     ResponseEntity<?> saveProperty(long id, MixPropertyDTO mixPropertyDTO, BindingResult result);
     ResponseEntity<?> getPropertyLists(long id);
 
-    ResponseEntity<?> saveByRole(CustomerDTO customerDTO);
+    ResponseEntity<?> saveByRole(Map<String, String> credentials);
 
 }

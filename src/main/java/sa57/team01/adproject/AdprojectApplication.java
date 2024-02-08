@@ -52,11 +52,12 @@ public class AdprojectApplication {
             buyer.setPassword("123");
             buyer.setContactNumber("123");
             buyer.setPreferences(preferencesBuyer);
-
+            buyer.setRole("buyer");
             buyerReposity.save(buyer);
 
             // add owner
             Owner owner = new Owner();
+            owner.setRole("owner");
             owner.setName("owner");
             owner.setEmail("owner@qq.com");
             owner.setPassword("234");
@@ -67,7 +68,7 @@ public class AdprojectApplication {
 
             List<Property> listProperty = new ArrayList<>();
             //add properties
-            for(int i = 0; i < 456; i++) {
+            for(int i = 0; i < 200; i++) {
                 //add rentalproperty
                 RentalProperty rentalProperty = new RentalProperty();
                 rentalProperty.setTown(TownName.getRandomTown());

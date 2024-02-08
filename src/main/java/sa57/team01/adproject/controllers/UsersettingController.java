@@ -1,10 +1,12 @@
 package sa57.team01.adproject.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import sa57.team01.adproject.DTO.CustomerDTO;
 import sa57.team01.adproject.DTO.MixPropertyDTO;
 import sa57.team01.adproject.DTO.PreferencesDTO;
 import sa57.team01.adproject.DTO.ProfileDTO;
@@ -26,8 +28,13 @@ public class UsersettingController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/getProfile/{id}")
-    public ResponseEntity<?> getProfileByCustomerId(@PathVariable long id) {
+    @GetMapping("/getProfile")
+    public ResponseEntity<?> getProfileByCustomerId(HttpSession session) {
+
+        if (session.getAttribute("customerId") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
+        }
+        long id = (long) session.getAttribute("customerId");
         return customerService.getProfile(id);
     }
 

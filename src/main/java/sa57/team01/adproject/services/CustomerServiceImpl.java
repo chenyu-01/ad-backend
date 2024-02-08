@@ -282,31 +282,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ResponseEntity<?> saveByRole(CustomerDTO customerDTO){
-        String role = customerDTO.getRole();
-        if(role.equals("owner")){
-            Owner owner = new Owner();
-            owner.setName(customerDTO.getName());
-            owner.setEmail(customerDTO.getEmail());
-            owner.setRole(customerDTO.getRole());
-            owner.setPassword(customerDTO.getPassword());
-            ownerReposity.save(owner);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }else if(role.equals("buyer")){
-            Buyer buyer = new Buyer();
-            buyer.setName(customerDTO.getName());
-            buyer.setEmail(customerDTO.getEmail());
-            buyer.setRole(customerDTO.getRole());
-            buyer.setPassword(customerDTO.getPassword());
-            buyerReposity.save(buyer);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        RentalSeeker rentalSeeker = new RentalSeeker();
-        rentalSeeker.setName(customerDTO.getName());
-        rentalSeeker.setEmail(customerDTO.getEmail());
-        rentalSeeker.setRole(customerDTO.getRole());
-        rentalSeeker.setPassword(customerDTO.getPassword());
-        rentalSeekerReposity.save(rentalSeeker);
+    public ResponseEntity<?> saveByRole(Map<String, String> credentials) {
+        String role = credentials.get("role");
+        String name = credentials.get("name");
+        String email = credentials.get("email");
+        String password = credentials.get("password");
+        Customer newCustomer = new Customer();
+        newCustomer.setName(name);
+        newCustomer.setEmail(email);
+        newCustomer.setPassword(password);
+        newCustomer.setRole(role);
+        customerReposity.save(newCustomer);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
