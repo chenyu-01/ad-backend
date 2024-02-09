@@ -50,6 +50,7 @@ public class CustomerController {
     public ResponseEntity<?> logout(HttpSession session){
         session.invalidate();
         return ResponseEntity.ok().build();
+
     }
 
     @PostMapping("/register")

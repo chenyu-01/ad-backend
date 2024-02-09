@@ -22,4 +22,7 @@ public interface CustomerService {
 
     ResponseEntity<?> saveByRole(Map<String, String> credentials);
 
+    ResponseEntity<?> getProperty(long id,String status);
+
+
 }
