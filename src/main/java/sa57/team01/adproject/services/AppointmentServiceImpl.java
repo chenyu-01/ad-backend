@@ -6,6 +6,7 @@ import sa57.team01.adproject.models.*;
 import sa57.team01.adproject.repositories.AppointmentReposity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService{
@@ -29,16 +30,26 @@ public class AppointmentServiceImpl implements AppointmentService{
         return appointmentReposity.findByCustomerId(id);
     }
 
+    @Override
+    public List<Appointment> getAppointments() {
+        return null;
+    }
+
+//    @Override
+//    public List<Appointment> getAppointmentsByAppointmentId(Appointment appointment){
+//        Long id = appointment.getAppointmentId();
+//        return appointmentReposity.findByAppointmentId(id);
+//    }
+
 
 
     @Override
     public void saveAppointment(Appointment appointment){
         appointmentReposity.save(appointment);
     }
-    @Override
-    public void cancelAppointment(Long id){
-        // TODO: delete or status
-    }
+
+
+
     @Override
     public void rejectAppointment(Long id){
         // TODO:  status
@@ -54,11 +65,24 @@ public class AppointmentServiceImpl implements AppointmentService{
         }
     }
 
-    /*
     @Override
-    public void addCommentToAppointment(Long id,String comment){
-
+    public boolean cancelAppointment(long appointmentId) {
+        // TODO: delete or status
+        try {
+            Optional<Appointment> optionalAppointment = appointmentReposity.findById(appointmentId);
+            optionalAppointment.ifPresent(appointment -> appointmentReposity.delete(appointment));
+//         //appointmentReposity.deleteById(appointmentId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
-     */
+
+//    @Override
+//    public void addCommentToAppointment(Long id,String comment){
+//
+//    }
+
+
 }
