@@ -22,7 +22,8 @@ public class CustomerController {
     public ResponseEntity<?> login(@RequestBody Map<String ,String> credentials, HttpSession session){
         if (session.getAttribute("customer")!=null){
             Map<String, Object> response = Map.of(
-                    "msg", "already log in "
+                    "msg", "already log in ",
+                    "status", HttpStatus.CONFLICT
             );
             return new ResponseEntity<>(response,HttpStatus.CONFLICT);
         }
@@ -31,7 +32,8 @@ public class CustomerController {
         Customer customer= customerService.findByEmail(email);
         if(customer == null ||!customer.getPassword().equals(password)){
             Map<String, Object> response = Map.of(
-                    "msg", "login failed"
+                    "msg", "login failed",
+                    "status", HttpStatus.INTERNAL_SERVER_ERROR
             );
             return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -40,7 +42,8 @@ public class CustomerController {
 
 
         Map<String, Object> response = Map.of(
-                "msg", "login ok"
+                "msg", "login ok",
+                "status", HttpStatus.OK
         );
         return new ResponseEntity<>(response,HttpStatus.OK); // return 200 OK
     }
@@ -65,11 +68,12 @@ public class CustomerController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody CustomerDTO customerDTO){
-        Customer existingCustomer=customerService.findByEmail(customerDTO.get("email"));
+        Customer existingCustomer=customerService.findByEmail(customerDTO.getEmail());
         if(existingCustomer!=null){
 
             Map<String, Object> response = Map.of(
-                    "msg", "Email already exists"
+                    "msg", "Email already exists",
+                     "status", HttpStatus.CONFLICT
             );
             return new ResponseEntity<>(response,HttpStatus.CONFLICT);
         }
@@ -83,7 +87,8 @@ public class CustomerController {
         customerService.save(customer);
 
         Map<String, Object> response = Map.of(
-                "msg", "Registration ok"
+                "msg", "Registration ok",
+                "status", HttpStatus.OK
         );
         return new ResponseEntity<>(response,HttpStatus.OK);
 
