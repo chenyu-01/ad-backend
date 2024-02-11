@@ -20,16 +20,29 @@ public class CustomerController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String ,String> credentials, HttpSession session){
+        if (session.getAttribute("customer")!=null){
+            Map<String, Object> response = Map.of(
+                    "msg", "already log in "
+            );
+            return new ResponseEntity<>(response,HttpStatus.CONFLICT);
+        }
         String email=credentials.get("email");
         String password = credentials.get("password");
         Customer customer=customerService.findByEmail(email);
         if(customer == null ||!customer.getPassword().equals(password)){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Username and Password");
+            Map<String, Object> response = Map.of(
+                    "msg", "login failed"
+            );
+            return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         session.setAttribute("customer",customer);
 
-        return ResponseEntity.ok().build();
+
+        Map<String, Object> response = Map.of(
+                "msg", "login ok"
+        );
+        return new ResponseEntity<>(response,HttpStatus.OK); // return 200 OK
     }
 
     @GetMapping("/check-auth")
@@ -54,7 +67,11 @@ public class CustomerController {
     public ResponseEntity<?> register(@RequestBody CustomerDTO customerDTO){
         Customer existingCustomer=customerService.findByEmail(customerDTO.getEmail());
         if(existingCustomer!=null){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
+
+            Map<String, Object> response = Map.of(
+                    "msg", "Email already exists"
+            );
+            return new ResponseEntity<>(response,HttpStatus.CONFLICT);
         }
 
         Customer customer = new Customer();
@@ -65,7 +82,10 @@ public class CustomerController {
         customer.setRole(customerDTO.getRole());
         customerService.save(customer);
 
-        return ResponseEntity.ok().build();
+        Map<String, Object> response = Map.of(
+                "msg", "Registration ok"
+        );
+        return new ResponseEntity<>(response,HttpStatus.OK);
 
     }
 }
