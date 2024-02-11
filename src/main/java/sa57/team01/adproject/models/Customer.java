@@ -27,7 +27,7 @@ public class Customer {
     private String contactNumber;
     @OneToOne
     private Preferences preferences;
-
+    @NotNull
     private String Role;
 
     @OneToMany(mappedBy = "requestCustomer")

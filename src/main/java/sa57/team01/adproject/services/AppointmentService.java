@@ -2,9 +2,7 @@ package sa57.team01.adproject.services;
 
 
 import org.springframework.stereotype.Service;
-import sa57.team01.adproject.models.Appointment;
-import sa57.team01.adproject.models.Customer;
-import sa57.team01.adproject.models.Owner;
+import sa57.team01.adproject.models.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +17,9 @@ public interface AppointmentService {
     void saveAppointment(Appointment appointment);
     void cancelAppointment(Long id);
     void rejectAppointment(Long id);
+
+
+    void createAppointment(Owner owner, Buyer buyer, Property saleProperty, String appointmentDate);
 
     //void addCommentToAppointment(Long id,String comment);
 

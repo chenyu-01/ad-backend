@@ -33,4 +33,11 @@ public class Appointment {
 
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
+
+    public Appointment(Owner owner, Buyer buyer, Property saleProperty, String appointmentDate) {
+
+    }
+
+    public Appointment() {
+    }
 }

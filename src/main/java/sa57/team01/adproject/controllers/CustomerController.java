@@ -28,15 +28,15 @@ public class CustomerController {
         }
         String email=credentials.get("email");
         String password = credentials.get("password");
-        Customer customer=customerService.findByEmail(email);
+        Customer customer= customerService.findByEmail(email);
         if(customer == null ||!customer.getPassword().equals(password)){
             Map<String, Object> response = Map.of(
                     "msg", "login failed"
             );
             return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        session.setAttribute("customer",customer);
+        long id=customer.getCustomerId();
+        session.setAttribute("customerId", id);
 
 
         Map<String, Object> response = Map.of(
@@ -48,11 +48,11 @@ public class CustomerController {
     @GetMapping("/check-auth")
     public ResponseEntity<?> checkAuthentication(HttpSession session){
 
-        CustomerDTO customerDTO=(CustomerDTO)session.getAttribute("customer");
-        if(customerDTO != null){
-            return ResponseEntity.ok(customerDTO);
+        if(session.getAttribute("customerId")==null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        long id=(long)session.getAttribute("customerId");
+        return ResponseEntity.ok(id);
 
     }
 
@@ -65,7 +65,7 @@ public class CustomerController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody CustomerDTO customerDTO){
-        Customer existingCustomer=customerService.findByEmail(customerDTO.getEmail());
+        Customer existingCustomer=customerService.findByEmail(customerDTO.get("email"));
         if(existingCustomer!=null){
 
             Map<String, Object> response = Map.of(

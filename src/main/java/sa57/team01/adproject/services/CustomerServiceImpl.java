@@ -248,7 +248,7 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Owner> optOwner = ownerReposity.findById(id);
         if (optOwner.isEmpty()) {
             response.put("message", "Customer Not Found");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
         }
         Owner owner = optOwner.get();
         List<Property> propertyList = owner.getProperties();
@@ -282,32 +282,57 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ResponseEntity<?> saveByRole(CustomerDTO customerDTO){
-        String role = customerDTO.getRole();
-        if(role.equals("owner")){
-            Owner owner = new Owner();
-            owner.setName(customerDTO.getName());
-            owner.setEmail(customerDTO.getEmail());
-            owner.setRole(customerDTO.getRole());
-            owner.setPassword(customerDTO.getPassword());
-            ownerReposity.save(owner);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }else if(role.equals("buyer")){
-            Buyer buyer = new Buyer();
-            buyer.setName(customerDTO.getName());
-            buyer.setEmail(customerDTO.getEmail());
-            buyer.setRole(customerDTO.getRole());
-            buyer.setPassword(customerDTO.getPassword());
-            buyerReposity.save(buyer);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        RentalSeeker rentalSeeker = new RentalSeeker();
-        rentalSeeker.setName(customerDTO.getName());
-        rentalSeeker.setEmail(customerDTO.getEmail());
-        rentalSeeker.setRole(customerDTO.getRole());
-        rentalSeeker.setPassword(customerDTO.getPassword());
-        rentalSeekerReposity.save(rentalSeeker);
+    public ResponseEntity<?> saveByRole(Map<String, String> credentials) {
+        String role = credentials.get("role");
+        String name = credentials.get("name");
+        String email = credentials.get("email");
+        String password = credentials.get("password");
+        Customer newCustomer = new Customer();
+        newCustomer.setName(name);
+        newCustomer.setEmail(email);
+        newCustomer.setPassword(password);
+        newCustomer.setRole(role);
+        customerReposity.save(newCustomer);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> getProperty(long id,String status){
+        if(status.equals("forSale") || status.equals("soldOut")){
+            SaleProperty saleProperty =  salePropertyReposity.findById(id).get();
+            MixPropertyDTO mixPropertyDTO = new MixPropertyDTO();
+            mixPropertyDTO.setId(saleProperty.getPropertyid());
+            mixPropertyDTO.setTown(String.valueOf(saleProperty.getTown()));
+            mixPropertyDTO.setPropertyStatus(status);
+            mixPropertyDTO.setFlatType(String.valueOf(saleProperty.getFlatType()));
+            mixPropertyDTO.setStoreyRange(saleProperty.getStoreyRange());
+            mixPropertyDTO.setStreetName(saleProperty.getStreetName());
+            mixPropertyDTO.setFloorArea(String.valueOf(saleProperty.getFloorArea()));
+            mixPropertyDTO.setOwnerid(saleProperty.getOwner().getCustomerId());
+            mixPropertyDTO.setPrice(String.valueOf(saleProperty.getPrice()));
+            mixPropertyDTO.setBlock(saleProperty.getBlock());
+            mixPropertyDTO.setBedrooms(String.valueOf(saleProperty.getBedrooms()));
+            mixPropertyDTO.setLeaseCommenceDate(String.valueOf(saleProperty.getLeaseCommenceDate()));
+            mixPropertyDTO.setRemainingLease(String.valueOf(saleProperty.getRemainingLease()));
+            return new ResponseEntity<>(mixPropertyDTO,HttpStatus.OK);
+
+        }
+        RentalProperty rentalProperty =  rentalPropertyReposity.findById(id).get();
+        MixPropertyDTO mixPropertyDTO = new MixPropertyDTO();
+        mixPropertyDTO.setId(rentalProperty.getPropertyid());
+        mixPropertyDTO.setTown(String.valueOf(rentalProperty.getTown()));
+        mixPropertyDTO.setPropertyStatus(status);
+        mixPropertyDTO.setFlatType(String.valueOf(rentalProperty.getFlatType()));
+        mixPropertyDTO.setStoreyRange(rentalProperty.getStoreyRange());
+        mixPropertyDTO.setStreetName(rentalProperty.getStreetName());
+        mixPropertyDTO.setFloorArea(String.valueOf(rentalProperty.getFloorArea()));
+        mixPropertyDTO.setOwnerid(rentalProperty.getOwner().getCustomerId());
+        mixPropertyDTO.setPrice(String.valueOf(rentalProperty.getPrice()));
+        mixPropertyDTO.setBlock(rentalProperty.getBlock());
+        mixPropertyDTO.setBedrooms(String.valueOf(rentalProperty.getBedrooms()));
+        mixPropertyDTO.setContractMonthPeriod(String.valueOf(rentalProperty.getContractMonthPeriod()));
+        return new ResponseEntity<>(mixPropertyDTO,HttpStatus.OK);
+
     }
 
 

@@ -14,6 +14,7 @@ public class Property {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long propertyid;
+    @Enumerated(EnumType.STRING)
     private TownName town;
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -25,9 +26,11 @@ public class Property {
     @NotNull
     private String streetName;
     @NotNull
-    private int floorArea;
+    private int floorArea; // in square meters
     @NotNull
     private String block;
+    @NotNull
+    private boolean forSale;
     @NotNull
     @ManyToOne
     private Owner owner;

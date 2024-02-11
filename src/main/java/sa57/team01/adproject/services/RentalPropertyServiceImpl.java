@@ -22,10 +22,11 @@ public class RentalPropertyServiceImpl implements RentalPropertyService{
         rentalPropertyReposity.save(rentalProperty);
     }
 
+
     @Override
-    public List<RentalProperty> findRentalPropertyInPage(int page){
-        int pageSize = 10;
-        PageRequest pageRequest = PageRequest.of(page-1, pageSize);
-        return rentalPropertyReposity.findAll(pageRequest).getContent();
+    public RentalProperty findRentalPropertyById(Long id) {
+        return rentalPropertyReposity.findById(id).orElse(null);
     }
+
+
 }
