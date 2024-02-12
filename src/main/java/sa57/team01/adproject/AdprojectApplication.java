@@ -69,7 +69,7 @@ public class AdprojectApplication {
 
             List<Property> listProperty = new ArrayList<>();
             //add properties
-            for(int i = 0; i < 200; i++) {
+            for(int i = 0; i < 20; i++) {
                 //add rentalproperty
                 RentalProperty rentalProperty = new RentalProperty();
                 rentalProperty.setTown(TownName.getRandomTown());
@@ -101,7 +101,6 @@ public class AdprojectApplication {
                 saleProperty.setPrice(100000 + i * 11111);
                 saleProperty.setForSale(true);
                 saleProperty = salePropertyReposity.save(saleProperty);
-                propertyService.uploadImage(rentalProperty.getPropertyid(), null);
                 listProperty.add(rentalProperty);
                 listProperty.add(saleProperty);
             }

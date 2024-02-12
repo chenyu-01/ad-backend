@@ -44,6 +44,8 @@ public class Property {
     @NotNull
     private int bedrooms;
 
+    private String imageUrl;
+
     public Property() {
         super();
     }

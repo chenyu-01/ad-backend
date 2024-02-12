@@ -26,7 +26,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // Assuming you store files in 'uploadDir' on your filesystem
         // And you want them to be accessible via '/uploads/**' URL path
-        String resourceLocation = "file:///" + uploadDir.replace("\\", "/");
+        String resourceLocation = "file:///" + uploadDir.replace("\\", "/"); // windows fix
+        String macLocation = "file:" + uploadDir.replace("\\", "/"); // mac fix
         registry.addResourceHandler("/uploads/**").addResourceLocations(resourceLocation);
     }
 }
