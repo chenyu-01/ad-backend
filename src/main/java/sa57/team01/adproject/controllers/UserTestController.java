@@ -6,14 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import sa57.team01.adproject.DTO.CustomerDTO;
 import sa57.team01.adproject.DTO.MixPropertyDTO;
 import sa57.team01.adproject.DTO.PreferencesDTO;
 import sa57.team01.adproject.DTO.ProfileDTO;
-import sa57.team01.adproject.models.Customer;
 import sa57.team01.adproject.models.PropertyStatus;
 import sa57.team01.adproject.models.TownName;
-import sa57.team01.adproject.repositories.CustomerReposity;
 import sa57.team01.adproject.services.CustomerService;
 
 import java.util.Arrays;
@@ -21,30 +18,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/usersetting")
-public class UsersettingController {
+@RequestMapping("/api/usertest")
+public class UserTestController {
     public final CustomerService customerService;
-    public final CustomerReposity customerReposity;
 
     @Autowired
-    public UsersettingController(CustomerService customerService,CustomerReposity customerReposity){
-
+    public UserTestController(CustomerService customerService){
         this.customerService = customerService;
-        this.customerReposity = customerReposity;
     }
 
     @GetMapping("/getProfile")
-    public ResponseEntity<?> getProfileByCustomerId(HttpSession session) {
-
-        if (session.getAttribute("customerId") == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
-        }
-        long id = (long) session.getAttribute("customerId");
-        return customerService.getProfile(id);
-    }
-
-    //test
-    @GetMapping("/getProfile/2")
     public ResponseEntity<?> getProfileByCustomerId() {
 
 
@@ -52,15 +35,13 @@ public class UsersettingController {
     }
 
     @PostMapping("/saveProfile")
-    public ResponseEntity<?> saveProfileByCustomerId(HttpSession session,
-                                                    @RequestBody ProfileDTO profileDTO, BindingResult result) {
-        if (session.getAttribute("customerId") == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
-        }
+    public ResponseEntity<?> saveProfileByCustomerId(
+            @RequestBody ProfileDTO profileDTO, BindingResult result) {
+
         Map<String , Object> response = new HashMap<>();
-        long id = (long) session.getAttribute("customerId");
+
         try{
-            return customerService.saveProfile(id,profileDTO,result);
+            return customerService.saveProfile(2,profileDTO,result);
 
         }catch (Exception e){
             response.put("message",e.getMessage());
@@ -68,28 +49,18 @@ public class UsersettingController {
         }
     }
 
-
-
     @GetMapping("/getPreferences")
-    public ResponseEntity<?> getPreferencesByCustomerId(HttpSession session) {
-        if (session.getAttribute("customerId") == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
-        }
-        long id = (long) session.getAttribute("customerId");
-        return customerService.getPreferences(id);
+    public ResponseEntity<?> getPreferencesByCustomerId() {
+        return customerService.getPreferences(2);
     }
 
 
     @PostMapping("/savePreferences")
-    public ResponseEntity<?> savePreferencesByCustomerId(HttpSession session,
-                                                         @RequestBody PreferencesDTO preferenceDTO, BindingResult result) {
+    public ResponseEntity<?> savePreferencesByCustomerId(@RequestBody PreferencesDTO preferenceDTO, BindingResult result) {
         Map<String , Object> response = new HashMap<>();
-        if (session.getAttribute("customerId") == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
-        }
-        long id = (long) session.getAttribute("customerId");
+
         try{
-            return customerService.savePreferences(id,preferenceDTO,result);
+            return customerService.savePreferences(1,preferenceDTO,result);
 
         }catch (Exception e){
             response.put("message",e.getMessage());
@@ -98,17 +69,12 @@ public class UsersettingController {
     }
 
 
-
     @PostMapping("/saveProperty")
-    public ResponseEntity<?> savePropertyByCustomerId(HttpSession session,
-                                                      @RequestBody MixPropertyDTO mixPropertyDTO, BindingResult result) {
+    public ResponseEntity<?> savePropertyByCustomerId(@RequestBody MixPropertyDTO mixPropertyDTO, BindingResult result) {
         Map<String , Object> response = new HashMap<>();
-        if (session.getAttribute("customerId") == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
-        }
-        long id = (long) session.getAttribute("customerId");
+
         try{
-            return customerService.saveProperty(id,mixPropertyDTO,result);
+            return customerService.saveProperty(2,mixPropertyDTO,result);
 
         }catch (Exception e){
             response.put("message",e.getMessage());
@@ -126,15 +92,11 @@ public class UsersettingController {
         return new ResponseEntity<>(Arrays.asList(PropertyStatus.values()).stream().map(Enum::name).toList(),HttpStatus.OK);
     }
 
-    @GetMapping("/getPropertyList")
-    public ResponseEntity<?> getPropertyListByOwnerId(HttpSession session){
-        if (session.getAttribute("customerId") == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
-        }
-        long id = (long) session.getAttribute("customerId");
-        return customerService.getPropertyLists(id);
-    }
 
+    @GetMapping("/getPropertyList")
+    public ResponseEntity<?> getProperty(){
+        return customerService.getPropertyLists(2);
+    }
 
     @GetMapping("/savePropertyInfo/{propertyid}&{propertyStatus}")
     public ResponseEntity<?> savePropertyInfo(@PathVariable("propertyid") long propertyid,@PathVariable("propertyStatus") String propertyStatus,HttpSession session){
@@ -165,17 +127,13 @@ public class UsersettingController {
     }
 
 
-    @GetMapping("/getRole")
-    public ResponseEntity<?> getPropertyListByOwnerIdDivide(HttpSession session){
-        Map<String, Object> response = new HashMap<>();
+    @GetMapping("/getPropertyList/{page}&{itemsPerPage}")
+    public ResponseEntity<?> getPropertyListByOwnerIdDivide(@PathVariable("page") int page,@PathVariable("itemsPerPage") int itemsPerPage,HttpSession session){
         if (session.getAttribute("customerId") == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
         }
         long id = (long) session.getAttribute("customerId");
-        Customer customer = customerReposity.findById(id).get();
-        String role = customer.getRole();
-        response.put("role",role);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return customerService.getPropertyListsDivide(id,page,itemsPerPage);
     }
 
 
