@@ -58,7 +58,7 @@ public class AdprojectApplication {
             // add owner
             Owner owner = new Owner();
             owner.setRole("owner");
-            owner.setName("owner");
+            owner.setName("BAO");
             owner.setEmail("owner@qq.com");
             owner.setPassword("234");
             owner.setContactNumber("234");
@@ -109,15 +109,23 @@ public class AdprojectApplication {
             ownerReposity.save(owner);
 
 
+            List<Appointment> listAppointment = new ArrayList<>();
             //add appointment
-            LocalDate date = LocalDate.parse("2024-01-27");
-            Appointment appointment = new Appointment();
-            appointment.setAppointmentId(1);
-            appointment.setDate(date);
-            appointment.setContactCustomer(owner);
-            appointment.setProperty(listProperty.get(0));
-            appointment.setRequestCustomer(buyer);
-            appointmentReposity.save(appointment);
+            for (int i = 0; i < 10; i++) {
+                LocalDate date = LocalDate.now().plusDays(i);
+                Appointment appointment = new Appointment();
+                appointment.setDate(date);
+                appointment.setContactCustomer(owner);
+                appointment.setProperty(listProperty.get(i));
+                appointment.setRequestCustomer(buyer);
+                appointment.setStatus(AppointmentStatus.pending);
+                listAppointment.add(appointmentReposity.save(appointment));
+            }
+            owner.setReceivedAppointments(listAppointment);
+            ownerReposity.save(owner);
+            buyer.setAppointmentRequestList(listAppointment);
+            buyerReposity.save(buyer);
+
 
 
         };

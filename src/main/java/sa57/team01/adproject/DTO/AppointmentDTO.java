@@ -2,6 +2,7 @@ package sa57.team01.adproject.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
+import sa57.team01.adproject.models.Appointment;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -11,23 +12,20 @@ import java.time.LocalDate;
 public class AppointmentDTO implements Serializable {
     private Long id;
     private LocalDate date;
-    private Long contactCustomerId;
+    private String contactCustomerName;
     private Long propertyId;
-    private Long requestCustomerId;
+    private String contactNumber;
     private String status;
 
-    public AppointmentDTO(Long id, LocalDate date, Long contactCustomerId, Long propertyId, Long requestCustomerId, String status) {
-        this.id = id;
-        this.date = date;
-        this.contactCustomerId = contactCustomerId;
-        this.propertyId = propertyId;
-        this.requestCustomerId = requestCustomerId;
-        this.status = status;
-    }
 
-    public AppointmentDTO(){}
-    public AppointmentDTO(long appointmentId, LocalDate date) {
-        this.id = appointmentId;
-        this.date = date;
+
+
+    public AppointmentDTO(Appointment appointment) {
+        this.id = appointment.getAppointmentId();
+        this.date = appointment.getDate();
+        this.contactCustomerName = appointment.getContactCustomer().getName();
+        this.propertyId = appointment.getProperty().getPropertyid();
+        this.contactNumber = appointment.getContactCustomer().getContactNumber();
+        this.status = appointment.getStatus().toString();
     }
 }

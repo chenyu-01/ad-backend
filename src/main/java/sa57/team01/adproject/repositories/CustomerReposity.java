@@ -11,6 +11,5 @@ public interface CustomerReposity extends JpaRepository<Customer,Long> {
     @Query("Select c from Customer c where c.email=:email")
     Customer findByEmail(String email);
 
-    @Query("Select c from Customer c where c.customerId=:customerId")
-    Customer findByCustomerId(Long customerId);
+
 }

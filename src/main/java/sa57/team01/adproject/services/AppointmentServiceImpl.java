@@ -1,10 +1,10 @@
 package sa57.team01.adproject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sa57.team01.adproject.DTO.AppointmentDTO;
 import sa57.team01.adproject.models.*;
 import sa57.team01.adproject.repositories.AppointmentReposity;
@@ -26,9 +26,14 @@ public class AppointmentServiceImpl implements AppointmentService{
         this.customerReposity = customerReposity;
     }
     @Override
-    public List<Appointment> getAppointmentsByOwnerId(Owner owner){
+    public List<AppointmentDTO> getAppointmentsByOwnerId(Owner owner){
         Long id = owner.getCustomerId();
-        return appointmentReposity.findByOwnerId(id);
+        List<Appointment> appointmentList = appointmentReposity.findByOwnerId(id);
+        List<AppointmentDTO> appointmentDTOList = new ArrayList<>();
+        for (Appointment appointment : appointmentList) {
+            appointmentDTOList.add(new AppointmentDTO(appointment));
+        }
+        return appointmentDTOList;
     }
 
 
@@ -67,15 +72,28 @@ public class AppointmentServiceImpl implements AppointmentService{
         }
     }
 
+    @Override
+    public void confirmAppointment(Long appointmentId) {
+        Appointment appointment = appointmentReposity.findById(appointmentId).orElse(null);
+        if (appointment != null) {
+            appointment.setStatus(AppointmentStatus.accepted);
+            appointmentReposity.save(appointment);
+        }
+    }
+
 
     @Override
+    @Transactional
     public ResponseEntity<?> getAppointmentsByCustomerId(long customerId) {
 
-        Customer customer = customerReposity.findByCustomerId(customerId);
+        Customer customer = customerReposity.findById(customerId).orElse(null);
+        if (customer == null) {
+            return new ResponseEntity<>("Customer not found", HttpStatus.NOT_FOUND);
+        }
         List<Appointment> appointmentList =  customer.getAppointmentRequestList();
         List<AppointmentDTO> appointmentDTOList = new ArrayList<>();
         for (Appointment appointment : appointmentList) {
-            appointmentDTOList.add(new AppointmentDTO(appointment.getAppointmentId(), appointment.getDate()));
+            appointmentDTOList.add(new AppointmentDTO(appointment));
         }
 
         return new ResponseEntity<>(appointmentDTOList, HttpStatus.OK);

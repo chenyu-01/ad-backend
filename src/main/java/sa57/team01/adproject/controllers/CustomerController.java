@@ -39,7 +39,7 @@ public class CustomerController {
         }
         long id=customer.getCustomerId();
         session.setAttribute("customerId", id);
-
+        session.setAttribute("customer", new CustomerDTO(customer));
 
         Map<String, Object> response = Map.of(
                 "msg", "login ok",
@@ -54,9 +54,8 @@ public class CustomerController {
         if(session.getAttribute("customerId")==null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        long id=(long)session.getAttribute("customerId");
-        return ResponseEntity.ok(id);
-
+        CustomerDTO customerDTO = (CustomerDTO) session.getAttribute("customer");
+        return ResponseEntity.ok(customerDTO);
     }
 
     @PostMapping("/logout")

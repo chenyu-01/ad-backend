@@ -48,7 +48,7 @@ public class AppointmentController {
         return ResponseEntity.ok("Success");
     }
 
-    @DeleteMapping("/getAppointments/{appointmentId}")
+    @DeleteMapping("/cancel/{appointmentId}")
     public ResponseEntity<String> cancelAppointment(@PathVariable Long appointmentId) {
         boolean isCancelled = appointmentService.cancelAppointment(appointmentId);
         if (isCancelled) {
@@ -65,6 +65,22 @@ public class AppointmentController {
         long id = (long) session.getAttribute("customerId");
         return appointmentService.getAppointmentsByCustomerId(id);
     }
+
+    @GetMapping("/getAppointmentsForOwner")
+    public ResponseEntity<?> getAppointmentsByOwnerId(HttpSession session) {
+        if (session.getAttribute("customerId") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
+        }
+        long id = (long) session.getAttribute("customerId");
+        return ResponseEntity.ok(appointmentService.getAppointmentsByOwnerId(ownerService.findOwnerById(id)));
+    }
+
+    @GetMapping("/confirm/{appointmentId}")
+    public ResponseEntity<?> confirmAppointment(@PathVariable Long appointmentId) {
+        appointmentService.confirmAppointment(appointmentId);
+        return ResponseEntity.ok("Appointment confirmed");
+    }
+
 
 
 }
