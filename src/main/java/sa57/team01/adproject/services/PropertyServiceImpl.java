@@ -1,22 +1,40 @@
 package sa57.team01.adproject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sa57.team01.adproject.DTO.SearchDTO;
 import sa57.team01.adproject.models.Property;
 import sa57.team01.adproject.models.RentalProperty;
 import sa57.team01.adproject.models.SaleProperty;
 import sa57.team01.adproject.repositories.PropertyReposity;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PropertyServiceImpl implements PropertyService {
 
+    @Value("${upload.path}") // Define this property in your application.properties
+    private String uploadDir;
     @Autowired
     private PropertyReposity propertyReposity;
 
+    @Override
+    public Property findPropertyById(Long id) {
+        Optional<Property> property = propertyReposity.findById(id);
+        return property.orElse(null);
+    }
+    @Override
     public List<Property> getAllPropertiesWithSearchDTO(SearchDTO searchDTO) {
 
         boolean room1, room2, room3, room4;
@@ -57,9 +75,6 @@ public class PropertyServiceImpl implements PropertyService {
         return all;
     }
 
-    public Optional<Property> getPropertyById(Long id) {
-        return propertyReposity.findById(id);
-    }
 
     private List<Property> filterByPrice(List<Property> properties, double lowPrice, double highPrice) {
         return properties.stream().filter(property -> property.getPrice() >= lowPrice && property.getPrice() <= highPrice).toList();
@@ -88,8 +103,52 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
 
+    @Override
     public Property saveProperty(Property property) {
         return propertyReposity.save(property);
+    }
+
+    @Override
+    public ResponseEntity<?> uploadImage(long propertyId, MultipartFile file) {
+        // if property has existing images, delete them
+        Property property = findPropertyById(propertyId);
+        if (property == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if (property.getImageUrl() != null) {
+            // delete existing image
+            String filename = property.getImageUrl().substring(property.getImageUrl().lastIndexOf("/") + 1);
+            Path path = Paths.get(uploadDir + filename);
+            try {
+                Files.delete(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.internalServerError().body("Could not delete the existing file: " + filename);
+            }
+        }
+        try {
+            // Construct path with property ID to avoid name clashes, use UUID
+            String filename = UUID.randomUUID() + "_" + propertyId + "_" + file.getOriginalFilename();
+            Path path = Paths.get(uploadDir + filename);
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+            // Construct URL to access the uploaded file
+            String fileAccessUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/uploads/")
+                    .path(filename)
+                    .toUriString();
+            property.setImageUrl(fileAccessUrl);
+            saveProperty(property);
+            return ResponseEntity.ok(fileAccessUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Could not upload the file: " + file.getOriginalFilename());
+        }
+    }
+
+    @Override
+    public void deleteAll() {
+        propertyReposity.deleteAll();
     }
 
     public void deleteProperty(Long id) {
