@@ -92,7 +92,6 @@ public class UserTestController {
         return new ResponseEntity<>(Arrays.asList(PropertyStatus.values()).stream().map(Enum::name).toList(),HttpStatus.OK);
     }
 
-
     @GetMapping("/getPropertyList")
     public ResponseEntity<?> getProperty(){
         return customerService.getPropertyLists(2);
