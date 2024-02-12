@@ -22,6 +22,7 @@ public class PropertyDTO implements Serializable {
     private String block;
     private Long appointmentId = -1L;
     private int bedrooms;
+    private String imageUrl;
 
     public PropertyDTO(Property other) {
         this.id = other.getPropertyid();
@@ -38,5 +39,8 @@ public class PropertyDTO implements Serializable {
             this.appointmentId = other.getAppointment().getAppointmentId();
         }
         this.bedrooms = other.getBedrooms();
+        if(other.getImageUrl() != null) {
+            this.imageUrl = other.getImageUrl();
+        }
     }
 }

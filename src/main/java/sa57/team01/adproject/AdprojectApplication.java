@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import sa57.team01.adproject.models.*;
 import sa57.team01.adproject.repositories.*;
+import sa57.team01.adproject.services.PropertyService;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -26,7 +27,7 @@ public class AdprojectApplication {
                                    PreferencesReposity preferencesReposity,
                                    RentalPropertyReposity rentalPropertyReposity,
                                    RentalSeekerReposity rentalSeekerReposity, SalePropertyReposity salePropertyReposity,
-                                   AppointmentReposity appointmentReposity,PropertyReposity propertyReposity) {
+                                   AppointmentReposity appointmentReposity, PropertyService propertyService) {
         return args -> {
 
             // clean database
@@ -37,7 +38,7 @@ public class AdprojectApplication {
             rentalSeekerReposity.deleteAll();
             salePropertyReposity.deleteAll();
             appointmentReposity.deleteAll();
-            propertyReposity.deleteAll();
+            propertyService.deleteAll();
 
 
 
@@ -58,7 +59,7 @@ public class AdprojectApplication {
             // add owner
             Owner owner = new Owner();
             owner.setRole("owner");
-            owner.setName("owner");
+            owner.setName("BAO");
             owner.setEmail("owner@qq.com");
             owner.setPassword("234");
             owner.setContactNumber("234");
@@ -68,7 +69,7 @@ public class AdprojectApplication {
 
             List<Property> listProperty = new ArrayList<>();
             //add properties
-            for(int i = 0; i < 200; i++) {
+            for(int i = 0; i < 20; i++) {
                 //add rentalproperty
                 RentalProperty rentalProperty = new RentalProperty();
                 rentalProperty.setTown(TownName.getRandomTown());
@@ -83,8 +84,7 @@ public class AdprojectApplication {
                 rentalProperty.setOwner(owner);
                 rentalProperty.setContractMonthPeriod(1);
                 rentalProperty.setForSale(false);
-                listProperty.add(rentalProperty);
-                rentalPropertyReposity.save(rentalProperty);
+                rentalProperty =  rentalPropertyReposity.save(rentalProperty);
                 //add saleproperty
                 SaleProperty saleProperty = new SaleProperty();
                 saleProperty.setTown(TownName.getRandomTown());
@@ -100,7 +100,8 @@ public class AdprojectApplication {
                 saleProperty.setOwner(owner);
                 saleProperty.setPrice(100000 + i * 11111);
                 saleProperty.setForSale(true);
-                salePropertyReposity.save(saleProperty);
+                saleProperty = salePropertyReposity.save(saleProperty);
+                listProperty.add(rentalProperty);
                 listProperty.add(saleProperty);
             }
 
@@ -109,15 +110,23 @@ public class AdprojectApplication {
             ownerReposity.save(owner);
 
 
+            List<Appointment> listAppointment = new ArrayList<>();
             //add appointment
-            LocalDate date = LocalDate.parse("2024-01-27");
-            Appointment appointment = new Appointment();
-            appointment.setAppointmentId(1);
-            appointment.setDate(date);
-            appointment.setContactCustomer(owner);
-            appointment.setProperty(listProperty.get(0));
-            appointment.setRequestCustomer(buyer);
-            appointmentReposity.save(appointment);
+            for (int i = 0; i < 10; i++) {
+                LocalDate date = LocalDate.now().plusDays(i);
+                Appointment appointment = new Appointment();
+                appointment.setDate(date);
+                appointment.setContactCustomer(owner);
+                appointment.setProperty(listProperty.get(i));
+                appointment.setRequestCustomer(buyer);
+                appointment.setStatus(AppointmentStatus.pending);
+                listAppointment.add(appointmentReposity.save(appointment));
+            }
+            owner.setReceivedAppointments(listAppointment);
+            ownerReposity.save(owner);
+            buyer.setAppointmentRequestList(listAppointment);
+            buyerReposity.save(buyer);
+
 
 
         };

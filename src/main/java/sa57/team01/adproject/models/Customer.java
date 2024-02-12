@@ -14,15 +14,16 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Customer {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long customerId;
-
+    @NotNull
     private String name;
     @Email
     @NotNull
     private String email;
     @NotNull
     private String password;
+
     private String contactNumber;
     @OneToOne
     private Preferences preferences;
@@ -38,8 +39,7 @@ public class Customer {
         super();
     }
 
-    public Customer( String name, String email, String password, String contactNumber, Preferences preferences) {
-        //this.customerId = customerId;
+    public Customer(String name, String email, String password, String contactNumber, Preferences preferences) {
         this.name = name;
         this.email = email;
         this.password = password;

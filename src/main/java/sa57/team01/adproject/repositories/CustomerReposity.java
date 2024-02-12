@@ -10,4 +10,6 @@ public interface CustomerReposity extends JpaRepository<Customer,Long> {
 
     @Query("Select c from Customer c where c.email=:email")
     Customer findByEmail(String email);
+
+
 }

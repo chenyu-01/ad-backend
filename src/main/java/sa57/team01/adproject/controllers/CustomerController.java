@@ -21,18 +21,31 @@ public class CustomerController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String ,String> credentials, HttpSession session){
         if (session.getAttribute("customer")!=null){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Already logged in");
+            Map<String, Object> response = Map.of(
+                    "msg", "already log in ",
+                    "status", HttpStatus.CONFLICT
+            );
+            return new ResponseEntity<>(response,HttpStatus.CONFLICT);
         }
         String email=credentials.get("email");
         String password = credentials.get("password");
         Customer customer= customerService.findByEmail(email);
         if(customer == null ||!customer.getPassword().equals(password)){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Username and Password");
+            Map<String, Object> response = Map.of(
+                    "msg", "login failed",
+                    "status", HttpStatus.INTERNAL_SERVER_ERROR
+            );
+            return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
         long id=customer.getCustomerId();
         session.setAttribute("customerId", id);
+        session.setAttribute("customer", new CustomerDTO(customer));
 
-        return ResponseEntity.ok().build();
+        Map<String, Object> response = Map.of(
+                "msg", "login ok",
+                "status", HttpStatus.OK
+        );
+        return new ResponseEntity<>(response,HttpStatus.OK); // return 200 OK
     }
 
     @GetMapping("/check-auth")
@@ -41,9 +54,8 @@ public class CustomerController {
         if(session.getAttribute("customerId")==null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        long id=(long)session.getAttribute("customerId");
-        return ResponseEntity.ok(id);
-
+        CustomerDTO customerDTO = (CustomerDTO) session.getAttribute("customer");
+        return ResponseEntity.ok(customerDTO);
     }
 
     @PostMapping("/logout")
@@ -54,16 +66,30 @@ public class CustomerController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Map<String, String> credentials){
-        Customer existingCustomer=customerService.findByEmail(credentials.get("email"));
+    public ResponseEntity<?> register(@RequestBody CustomerDTO customerDTO){
+        Customer existingCustomer=customerService.findByEmail(customerDTO.getEmail());
         if(existingCustomer!=null){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
+
+            Map<String, Object> response = Map.of(
+                    "msg", "Email already exists",
+                     "status", HttpStatus.CONFLICT
+            );
+            return new ResponseEntity<>(response,HttpStatus.CONFLICT);
         }
-        customerService.saveByRole(credentials);
-        return ResponseEntity.ok().build();
+
+        Customer customer = new Customer();
+        customer.setName(customerDTO.getName());
+        customer.setEmail(customerDTO.getEmail());
+        customer.setContactNumber(customerDTO.getContactNumber());
+        customer.setPassword(customerDTO.getPassword());
+        customer.setRole(customerDTO.getRole());
+        customerService.save(customer);
+
+        Map<String, Object> response = Map.of(
+                "msg", "Registration ok",
+                "status", HttpStatus.OK
+        );
+        return new ResponseEntity<>(response,HttpStatus.OK);
 
     }
-
-
-
 }
