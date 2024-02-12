@@ -264,11 +264,15 @@ public class CustomerServiceImpl implements CustomerService {
         MixPropertyDTO mixPropertyDTO = new MixPropertyDTO();
         mixPropertyDTO.setId(property.getPropertyid());
         mixPropertyDTO.setBedrooms(String.valueOf(property.getBedrooms()));
+        mixPropertyDTO.setStoreyRange(property.getStoreyRange());
+        mixPropertyDTO.setStreetName(property.getStreetName());
+        mixPropertyDTO.setFloorArea(String.valueOf(property.getFloorArea()));
         mixPropertyDTO.setBlock(property.getBlock());
         mixPropertyDTO.setPropertyStatus(String.valueOf(property.getPropertyStatus()));
         mixPropertyDTO.setFlatType(String.valueOf(property.getFlatType()));
         mixPropertyDTO.setPrice(String.valueOf(property.getPrice()));
         mixPropertyDTO.setTown(String.valueOf(property.getTown()));
+        mixPropertyDTO.setOwnerid(property.getOwner().getCustomerId());
         PropertyStatus propertyStatus = property.getPropertyStatus();
         if(propertyStatus.equals(PropertyStatus.forSale) || propertyStatus.equals(PropertyStatus.soldOut)){
             SaleProperty saleProperty = salePropertyReposity.findById(property.getPropertyid()).get();
@@ -333,6 +337,36 @@ public class CustomerServiceImpl implements CustomerService {
         mixPropertyDTO.setContractMonthPeriod(String.valueOf(rentalProperty.getContractMonthPeriod()));
         return new ResponseEntity<>(mixPropertyDTO,HttpStatus.OK);
 
+    }
+
+
+    @Override
+    public ResponseEntity<?> getPropertyListsDivide(long id, int page, int itemsPerPage){
+        int totalPages = 0;
+        Map<String, Object> response = new HashMap<>();
+        Optional<Owner> optOwner = ownerReposity.findById(id);
+        if (optOwner.isEmpty()) {
+            response.put("message", "Customer Not Found");
+            return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+        }
+        Owner owner = optOwner.get();
+        List<Property> propertyList = owner.getProperties();
+        List<MixPropertyDTO> mixPropertyDTOS = new ArrayList<>();
+        for(int i = (page - 1)*10; i < ((page - 1)*10 + 10); i++ ){
+            if(i < propertyList.size()){
+                Property property = propertyList.get(i);
+                mixPropertyDTOS.add( propertyConvertToDTO(property));
+            }
+        }
+        if(propertyList.size() % itemsPerPage != 0){
+            totalPages = propertyList.size() / itemsPerPage + 1;
+        }else{
+            totalPages = propertyList.size() / itemsPerPage;
+        }
+        response.put("results",mixPropertyDTOS);
+
+        response.put("totalPages",totalPages);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
