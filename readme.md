@@ -16,17 +16,6 @@ Set up a mysql database with the following properties:
 - username: ${MYSQL_USER}
 - password: ${MYSQL_PASSWORD}
 
-### Set up environment variables
-![how to set up environment variables](./docs/how-to-set-environment-var.png)
-## Todo List
-
-- [x] finish endpoints list
-- [x] design the page
-- [ ] implement the page
-- [ ] implement the backend endpoints
-- [ ] if you have time, add validation to entities
-- [ ] if you have time, add unit tests
-
 ## REST API Endpoints
 
 - `/api/property/salelist` - GET method, return a list of properties for sale
@@ -42,4 +31,12 @@ Set up a mysql database with the following properties:
 - Properties
 - `/api/property/list`- GET method, return a list of properties 
 - `/api/property/{id}`-GET, return the detail of a property
+
+## Set up environment variables
+- MYSQL_USER - the username of the mysql database
+- MYSQL_PASSWORD - the password of the mysql database
+- EXTERNAL - the external storage for the images
+
+## Set up the database
+- Create a database with the name `hdbinsight`
 

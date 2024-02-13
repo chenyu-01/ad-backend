@@ -116,13 +116,16 @@ public class PropertyServiceImpl implements PropertyService {
             return ResponseEntity.notFound().build();
         }
         if (property.getImageUrl() != null) {
+
             // delete existing image
             String filename = property.getImageUrl().substring(property.getImageUrl().lastIndexOf("/") + 1);
             Path path = Paths.get(uploadDir + filename);
-            try {
-                Files.delete(path);
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (path.toFile().exists()) {
+                try {
+                    Files.delete(path);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         try {
