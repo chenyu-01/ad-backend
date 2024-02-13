@@ -22,9 +22,11 @@ public class AdprojectApplication {
 
     @Value("${upload.path}")
     private String uploadDir;
+
     public static void main(String[] args) {
         SpringApplication.run(AdprojectApplication.class, args);
     }
+
     @Bean
     CommandLineRunner initDatabase(BuyerReposity buyerReposity, OwnerReposity ownerReposity,
                                    PreferencesReposity preferencesReposity,
@@ -46,13 +48,9 @@ public class AdprojectApplication {
             Path path = Path.of(uploadDir);
             if (path.toFile().exists()) {
                 for (java.io.File file : path.toFile().listFiles()) {
-                    // if file is a image file
-                    if (file.getName().endsWith(".png")) {
-                        file.delete();
-                    }
+                    file.delete();
                 }
             }
-
 
 
             // add preference
@@ -81,7 +79,7 @@ public class AdprojectApplication {
 
             List<Property> listProperty = new ArrayList<>();
             //add properties
-            for(int i = 0; i < 20; i++) {
+            for (int i = 0; i < 20; i++) {
                 //add rentalproperty
                 RentalProperty rentalProperty = new RentalProperty();
                 rentalProperty.setTown(TownName.getRandomTown());
@@ -97,7 +95,7 @@ public class AdprojectApplication {
                 rentalProperty.setContractMonthPeriod(1);
                 rentalProperty.setForSale(false);
                 rentalProperty.setImageUrl("http://localhost:8080/images/" + (2 * i + 1) + ".png");
-                rentalProperty =  rentalPropertyReposity.save(rentalProperty);
+                rentalProperty = rentalPropertyReposity.save(rentalProperty);
                 //add saleproperty
                 SaleProperty saleProperty = new SaleProperty();
                 saleProperty.setTown(TownName.getRandomTown());
@@ -140,7 +138,6 @@ public class AdprojectApplication {
             ownerReposity.save(owner);
             buyer.setAppointmentRequestList(listAppointment);
             buyerReposity.save(buyer);
-
 
 
         };
