@@ -42,11 +42,14 @@ public class AdprojectApplication {
             salePropertyReposity.deleteAll();
             appointmentReposity.deleteAll();
             propertyService.deleteAll();
-            // clean external upload folder
+            // clean external upload folder images
             Path path = Path.of(uploadDir);
             if (path.toFile().exists()) {
                 for (java.io.File file : path.toFile().listFiles()) {
-                    file.delete();
+                    // if file is a image file
+                    if (file.getName().endsWith(".png")) {
+                        file.delete();
+                    }
                 }
             }
 
