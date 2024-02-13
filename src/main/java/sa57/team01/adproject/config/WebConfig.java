@@ -29,5 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
         String resourceLocation = "file:///" + uploadDir.replace("\\", "/"); // windows fix
         String macLocation = "file:" + uploadDir.replace("\\", "/"); // mac fix
         registry.addResourceHandler("/uploads/**").addResourceLocations(resourceLocation);
+
+        registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/");
     }
 }

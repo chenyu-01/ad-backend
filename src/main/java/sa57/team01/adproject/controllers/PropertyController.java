@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sa57.team01.adproject.DTO.SearchDTO;
 import sa57.team01.adproject.DTO.PropertyDTO;
 import sa57.team01.adproject.DTO.RentalPropertyDTO;
@@ -18,14 +17,8 @@ import sa57.team01.adproject.services.PropertyService;
 import sa57.team01.adproject.services.RentalPropertyService;
 import sa57.team01.adproject.services.SalePropertyService;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/property")
@@ -47,7 +40,7 @@ public class PropertyController {
 
 
     @PostMapping("/list/search/")
-    public ResponseEntity<?> getListByPrice(@RequestBody SearchDTO searchDTO){
+    public ResponseEntity<?> getListBySearchParams(@RequestBody SearchDTO searchDTO){
         try {
             List<Property> properties = propertyService.getAllPropertiesWithSearchDTO(searchDTO);
             if(properties.isEmpty()){

@@ -8,7 +8,6 @@ import sa57.team01.adproject.models.*;
 import sa57.team01.adproject.repositories.*;
 import sa57.team01.adproject.services.PropertyService;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +83,7 @@ public class AdprojectApplication {
                 rentalProperty.setOwner(owner);
                 rentalProperty.setContractMonthPeriod(1);
                 rentalProperty.setForSale(false);
+                rentalProperty.setImageUrl("http://localhost:8080/images/" + (2 * i + 1) + ".png");
                 rentalProperty =  rentalPropertyReposity.save(rentalProperty);
                 //add saleproperty
                 SaleProperty saleProperty = new SaleProperty();
@@ -100,6 +100,7 @@ public class AdprojectApplication {
                 saleProperty.setOwner(owner);
                 saleProperty.setPrice(100000 + i * 11111);
                 saleProperty.setForSale(true);
+                saleProperty.setImageUrl("http://localhost:8080/images/" + (2 * i + 2) + ".png");
                 saleProperty = salePropertyReposity.save(saleProperty);
                 listProperty.add(rentalProperty);
                 listProperty.add(saleProperty);
