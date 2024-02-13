@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sa57.team01.adproject.DTO.CustomerDTO;
 import sa57.team01.adproject.DTO.MixPropertyDTO;
 import sa57.team01.adproject.DTO.PreferencesDTO;
@@ -176,5 +177,18 @@ public class UsersettingController {
         return customerService.deleteProperty(propertyid);
     }
 
+
+    @PostMapping("/upload/{propertyId}")
+    public ResponseEntity<?> uploadImage(@PathVariable String propertyId, @RequestParam("image") MultipartFile file) {
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("Please select a file to upload");
+        }
+        return customerService.uploadImage(propertyId, file);
+    }
+
+    @GetMapping("/fetchImg/{propertyId}")
+    public ResponseEntity<?> fetchImg(@PathVariable long propertyId){
+        return customerService.fetchImg(propertyId);
+    }
 
 }

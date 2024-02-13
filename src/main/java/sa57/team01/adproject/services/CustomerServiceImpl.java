@@ -6,15 +6,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sa57.team01.adproject.DTO.*;
 import sa57.team01.adproject.models.*;
 import sa57.team01.adproject.repositories.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.*;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
+    @Value("${upload.path}") // Define this property in your application.properties
+    private String uploadDir;
+
+    private int ifileid;
 
     public CustomerReposity customerReposity;
 
@@ -228,6 +239,7 @@ public class CustomerServiceImpl implements CustomerService {
         saleProperty.setRemainingLease(Integer.parseInt(mixPropertyDTO.getRemainingLease()));
         saleProperty.setLeaseCommenceDate(LocalDate.parse(mixPropertyDTO.getLeaseCommenceDate()));
         saleProperty.setBedrooms(Integer.parseInt(mixPropertyDTO.getBedrooms()));
+        saleProperty.setImageUrl(mixPropertyDTO.getImageUrl());
         return saleProperty;
     }
 
@@ -243,6 +255,7 @@ public class CustomerServiceImpl implements CustomerService {
         rentalProperty.setPrice(Double.parseDouble(mixPropertyDTO.getPrice()));
         rentalProperty.setContractMonthPeriod(Integer.parseInt(mixPropertyDTO.getContractMonthPeriod()));
         rentalProperty.setBedrooms(Integer.parseInt(mixPropertyDTO.getBedrooms()));
+        rentalProperty.setImageUrl(mixPropertyDTO.getImageUrl());
         return rentalProperty;
     }
 
@@ -277,6 +290,7 @@ public class CustomerServiceImpl implements CustomerService {
         mixPropertyDTO.setPrice(String.valueOf(property.getPrice()));
         mixPropertyDTO.setTown(String.valueOf(property.getTown()));
         mixPropertyDTO.setOwnerid(property.getOwner().getCustomerId());
+        mixPropertyDTO.setImageUrl(property.getImageUrl());
         PropertyStatus propertyStatus = property.getPropertyStatus();
         if(propertyStatus.equals(PropertyStatus.forSale) || propertyStatus.equals(PropertyStatus.soldOut)){
             SaleProperty saleProperty = salePropertyReposity.findById(property.getPropertyid()).get();
@@ -322,6 +336,7 @@ public class CustomerServiceImpl implements CustomerService {
             mixPropertyDTO.setBedrooms(String.valueOf(saleProperty.getBedrooms()));
             mixPropertyDTO.setLeaseCommenceDate(String.valueOf(saleProperty.getLeaseCommenceDate()));
             mixPropertyDTO.setRemainingLease(String.valueOf(saleProperty.getRemainingLease()));
+            mixPropertyDTO.setImageUrl(saleProperty.getImageUrl());
             return new ResponseEntity<>(mixPropertyDTO,HttpStatus.OK);
 
         }
@@ -339,6 +354,7 @@ public class CustomerServiceImpl implements CustomerService {
         mixPropertyDTO.setBlock(rentalProperty.getBlock());
         mixPropertyDTO.setBedrooms(String.valueOf(rentalProperty.getBedrooms()));
         mixPropertyDTO.setContractMonthPeriod(String.valueOf(rentalProperty.getContractMonthPeriod()));
+        mixPropertyDTO.setImageUrl(rentalProperty.getImageUrl());
         return new ResponseEntity<>(mixPropertyDTO,HttpStatus.OK);
 
     }
@@ -390,6 +406,64 @@ public class CustomerServiceImpl implements CustomerService {
         propertyReposity.deleteById(propertyid);
 
         response.put("message","Delete Property Successfully");
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> uploadImage(String propertyid,MultipartFile file) {
+        Map<String,Object> response = new HashMap<>();
+        if(propertyid.equals("null")){
+            try {
+                String filename = UUID.randomUUID() + "_" + ifileid + "_" + file.getOriginalFilename();
+                ifileid = ifileid + 1;
+                Path path = Paths.get(uploadDir + filename);
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+                // Construct URL to access the uploaded file
+                String fileAccessUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/uploads/")
+                        .path(filename)
+                        .toUriString();
+                response.put("imageUrl",fileAccessUrl);
+                return new ResponseEntity<>(response,HttpStatus.OK);
+            }catch (IOException e){
+                e.printStackTrace();
+                return ResponseEntity.internalServerError().body("Could not upload the file: " + file.getOriginalFilename());
+            }
+        }
+        Property property = propertyReposity.findById(Long.valueOf(propertyid)).get();
+        System.out.println(property.getImageUrl().lastIndexOf("/"));
+        String filename = property.getImageUrl().substring(property.getImageUrl().lastIndexOf("/") + 1);
+        Path path = Paths.get(uploadDir + filename);
+        try {
+            Files.delete(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            filename = UUID.randomUUID() + "_" + ifileid + "_" + file.getOriginalFilename();
+            ifileid = ifileid + 1;
+            path = Paths.get(uploadDir + filename);
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+            // Construct URL to access the uploaded file
+            String fileAccessUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/uploads/")
+                    .path(filename)
+                    .toUriString();
+            response.put("imageUrl",fileAccessUrl);
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }catch (IOException e){
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Could not upload the file: " + file.getOriginalFilename());
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> fetchImg(long propertyId){
+        Map<String,Object> response = new HashMap<>();
+        Property property = propertyReposity.findById(propertyId).get();
+        response.put("imageUrl",property.getImageUrl());
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
