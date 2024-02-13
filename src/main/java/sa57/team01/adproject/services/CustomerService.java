@@ -28,4 +28,5 @@ public interface CustomerService {
     ResponseEntity<?> deleteProperty(long propertyid);
 
 
+    Customer findById(long customerId);
 }

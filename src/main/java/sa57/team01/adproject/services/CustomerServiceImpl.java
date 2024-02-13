@@ -374,6 +374,15 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public Customer findById(long customerId) {
+        if (customerReposity.findById(customerId).isEmpty()) {
+            throw new NoSuchElementException("Customer Not Found");
+        } else {
+            return customerReposity.findById(customerId).get();
+        }
+    }
+
+    @Override
     public ResponseEntity<?> deleteProperty(long propertyid){
         Map<String,Object> response = new HashMap<>();
         List<Appointment> appointments = appointmentReposity.fingByPropertyId(propertyid);

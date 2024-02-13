@@ -13,7 +13,6 @@ public class CustomerDTO implements Serializable {
   private long customerId;
   private String name;
   private String email;
-  private String password;
   private String contactNumber;
   private String role;
   public CustomerDTO(){}
