@@ -1,5 +1,6 @@
 package sa57.team01.adproject;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +9,7 @@ import sa57.team01.adproject.models.*;
 import sa57.team01.adproject.repositories.*;
 import sa57.team01.adproject.services.PropertyService;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,8 @@ import static sa57.team01.adproject.models.PropertyStatus.forSale;
 @SpringBootApplication
 public class AdprojectApplication {
 
+    @Value("${upload.path}")
+    private String uploadDir;
     public static void main(String[] args) {
         SpringApplication.run(AdprojectApplication.class, args);
     }
@@ -38,7 +42,13 @@ public class AdprojectApplication {
             salePropertyReposity.deleteAll();
             appointmentReposity.deleteAll();
             propertyService.deleteAll();
-
+            // clean external upload folder
+            Path path = Path.of(uploadDir);
+            if (path.toFile().exists()) {
+                for (java.io.File file : path.toFile().listFiles()) {
+                    file.delete();
+                }
+            }
 
 
 
