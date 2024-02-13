@@ -27,4 +27,5 @@ public interface CustomerService {
     ResponseEntity<?> getPropertyListsDivide(long id, int page, int itemsPerPage);
 
 
+    Customer findById(long customerId);
 }

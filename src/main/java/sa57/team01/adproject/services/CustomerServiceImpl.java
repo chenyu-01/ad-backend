@@ -369,6 +369,15 @@ public class CustomerServiceImpl implements CustomerService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Override
+    public Customer findById(long customerId) {
+        if (customerReposity.findById(customerId).isEmpty()) {
+            throw new NoSuchElementException("Customer Not Found");
+        } else {
+            return customerReposity.findById(customerId).get();
+        }
+    }
+
 
 }
 

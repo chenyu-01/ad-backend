@@ -123,7 +123,6 @@ public class PropertyServiceImpl implements PropertyService {
                 Files.delete(path);
             } catch (IOException e) {
                 e.printStackTrace();
-                return ResponseEntity.internalServerError().body("Could not delete the existing file: " + filename);
             }
         }
         try {
