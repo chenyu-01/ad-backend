@@ -43,13 +43,6 @@ public class UsersettingController {
         return customerService.getProfile(id);
     }
 
-    //test
-    @GetMapping("/getProfile/2")
-    public ResponseEntity<?> getProfileByCustomerId() {
-
-
-        return customerService.getProfile(2);
-    }
 
     @PostMapping("/saveProfile")
     public ResponseEntity<?> saveProfileByCustomerId(HttpSession session,
@@ -176,6 +169,11 @@ public class UsersettingController {
         String role = customer.getRole();
         response.put("role",role);
         return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delProperty/{propertyid}")
+    public ResponseEntity<?> deleteProperty(@PathVariable("propertyid") long propertyid){
+        return customerService.deleteProperty(propertyid);
     }
 
 

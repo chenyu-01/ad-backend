@@ -60,7 +60,7 @@ public class UserTestController {
         Map<String , Object> response = new HashMap<>();
 
         try{
-            return customerService.savePreferences(1,preferenceDTO,result);
+            return customerService.savePreferences(2,preferenceDTO,result);
 
         }catch (Exception e){
             response.put("message",e.getMessage());

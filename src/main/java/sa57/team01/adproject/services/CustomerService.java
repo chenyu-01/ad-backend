@@ -25,6 +25,7 @@ public interface CustomerService {
     ResponseEntity<?> getProperty(long id,String status);
 
     ResponseEntity<?> getPropertyListsDivide(long id, int page, int itemsPerPage);
+    ResponseEntity<?> deleteProperty(long propertyid);
 
 
 }

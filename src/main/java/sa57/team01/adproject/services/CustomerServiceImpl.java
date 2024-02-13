@@ -32,11 +32,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     public RentalSeekerReposity rentalSeekerReposity;
 
+    public AppointmentReposity appointmentReposity;
+
     @Autowired
     public CustomerServiceImpl(CustomerReposity customerReposity, PreferencesReposity preferencesReposity,
                                OwnerReposity ownerReposity, PropertyReposity propertyReposity,
                                SalePropertyReposity salePropertyReposity, RentalPropertyReposity rentalPropertyReposity,
-                               BuyerReposity buyerReposity,RentalSeekerReposity rentalSeekerReposity) {
+                               BuyerReposity buyerReposity,RentalSeekerReposity rentalSeekerReposity,
+                               AppointmentReposity appointmentReposity) {
         this.customerReposity = customerReposity;
         this.preferencesReposity = preferencesReposity;
         this.ownerReposity = ownerReposity;
@@ -45,6 +48,7 @@ public class CustomerServiceImpl implements CustomerService {
         this.rentalPropertyReposity = rentalPropertyReposity;
         this.buyerReposity = buyerReposity;
         this.rentalSeekerReposity = rentalSeekerReposity;
+        this.appointmentReposity = appointmentReposity;
     }
 
 
@@ -367,6 +371,17 @@ public class CustomerServiceImpl implements CustomerService {
 
         response.put("totalPages",totalPages);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> deleteProperty(long propertyid){
+        Map<String,Object> response = new HashMap<>();
+        List<Appointment> appointments = appointmentReposity.fingByPropertyId(propertyid);
+        appointmentReposity.deleteAll(appointments);
+        propertyReposity.deleteById(propertyid);
+
+        response.put("message","Delete Property Successfully");
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
 

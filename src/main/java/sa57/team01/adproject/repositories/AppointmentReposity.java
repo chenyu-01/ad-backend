@@ -15,7 +15,11 @@ public interface AppointmentReposity extends JpaRepository<Appointment, Long> {
 
 
     @Query("select a.AppointmentId,a.date from Appointment as a where a.requestCustomer.customerId = :customer_id")
-    List <Appointment> findByCustomerId(@Param("customer_id") Long id);
+    List<Appointment> findByCustomerId(@Param("customer_id") Long id);
+
+
+    @Query("select a from Appointment as a where a.property.propertyid = :property_id ")
+    List<Appointment> fingByPropertyId(@Param("property_id") Long id);
 
 
 }
