@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 import sa57.team01.adproject.DTO.*;
 import sa57.team01.adproject.models.Customer;
 
@@ -25,7 +26,12 @@ public interface CustomerService {
     ResponseEntity<?> getProperty(long id,String status);
 
     ResponseEntity<?> getPropertyListsDivide(long id, int page, int itemsPerPage);
+    ResponseEntity<?> deleteProperty(long propertyid);
 
 
     Customer findById(long customerId);
+
+    ResponseEntity<?> uploadImage(String propertyid,MultipartFile file);
+
+    ResponseEntity<?> fetchImg(long propertyId);
 }
