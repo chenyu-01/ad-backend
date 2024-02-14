@@ -81,4 +81,27 @@ public class PropertyController {
         return propertyService.uploadImage(propertyId, file);
     }
 
+    @PostMapping("/list/sort/")
+    public ResponseEntity<?> sortProperties(@RequestParam String sortBy, @RequestParam(defaultValue = "asc") String sortDirection) {
+        try {
+            List<Property> properties = propertyService.getAllProperties();
+            if (properties.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT); // return 204 No Content
+            }
+            properties = propertyService.sortProperties(properties, sortBy, sortDirection);
+            List<PropertyDTO> propertyDTOS = properties.stream()
+                    .map(PropertyDTO::new)
+                    .toList();
+            Map<String, Object> response = Map.of(
+                    "properties", propertyDTOS,
+                    "totalRecords", properties.size()
+            );
+            return new ResponseEntity<>(response, HttpStatus.OK); // return 200 OK
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR); // return 500 Internal Server Error
+        }
+
+    }
+
+
 }

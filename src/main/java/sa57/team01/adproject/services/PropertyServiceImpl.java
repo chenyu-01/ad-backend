@@ -157,4 +157,27 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
 
+
+    public List<Property> sortProperties(List<Property> properties, String sortBy, String sortDirection){
+        if(sortBy.equals("price")){
+            if(sortDirection.equals("asc")){
+                return properties.stream().sorted((p1,p2)->Double.compare(p1.getPrice(),p2.getPrice())).toList();
+            }else if(sortDirection.equals("desc")){
+                return properties.stream().sorted((p1,p2)->Double.compare(p2.getPrice(),p1.getPrice())).toList();
+            }
+        }else if(sortBy.equals("town")){
+            if(sortDirection.equals("asc")){
+                return properties.stream().sorted((p1,p2)->p1.getTown().compareTo(p2.getTown())).toList();
+            }else if(sortDirection.equals("desc")){
+                return properties.stream().sorted((p1,p2)->p2.getTown().compareTo(p1.getTown())).toList();
+            }
+        }
+        return properties;
+    }
+
+    public List<Property> getAllProperties(){
+        return propertyReposity.findAll();
+    }
+
+
 }

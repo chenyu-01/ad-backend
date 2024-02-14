@@ -18,4 +18,9 @@ public interface PropertyService {
     ResponseEntity<?> uploadImage(long propertyId, MultipartFile file);
 
     void deleteAll();
+
+    List<Property> sortProperties(List<Property> properties, String sortBy, String sortDirection);
+
+
+    List<Property> getAllProperties();
 }
