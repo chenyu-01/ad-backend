@@ -48,7 +48,10 @@ public class AdprojectApplication {
             Path path = Path.of(uploadDir);
             if (path.toFile().exists()) {
                 for (java.io.File file : path.toFile().listFiles()) {
-                    file.delete();
+                    // if file is a image file
+                    if (file.getName().endsWith(".png") || file.getName().endsWith(".jpg") || file.getName().endsWith(".jpeg") || file.getName().endsWith(".gif")) {
+                        file.delete();
+                    }
                 }
             }
 
