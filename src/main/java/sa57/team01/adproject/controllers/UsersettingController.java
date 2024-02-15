@@ -1,5 +1,6 @@
 package sa57.team01.adproject.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,6 @@ public class UsersettingController {
 
     @GetMapping("/getProfile")
     public ResponseEntity<?> getProfileByCustomerId(HttpSession session) {
-
         if (session.getAttribute("customerId") == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
         }
