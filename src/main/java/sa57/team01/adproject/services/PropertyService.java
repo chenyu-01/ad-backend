@@ -19,7 +19,7 @@ public interface PropertyService {
 
     void deleteAll();
 
-    List<Property> sortProperties(List<Property> properties, String sortBy, String sortDirection);
+    List<Property> sortProperties(List<Property> properties, String sortDirection);
 
 
     List<Property> getAllProperties();

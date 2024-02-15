@@ -82,13 +82,16 @@ public class PropertyController {
     }
 
     @PostMapping("/list/sort/")
-    public ResponseEntity<?> sortProperties(@RequestParam String sortBy, @RequestParam(defaultValue = "asc") String sortDirection) {
+    public ResponseEntity<?> sortProperties(@RequestParam(defaultValue = "asc") String sortDirection) {
         try {
             List<Property> properties = propertyService.getAllProperties();
             if (properties.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT); // return 204 No Content
             }
-            properties = propertyService.sortProperties(properties, sortBy, sortDirection);
+
+            // Sort properties by price
+            properties = propertyService.sortProperties(properties, sortDirection);
+
             List<PropertyDTO> propertyDTOS = properties.stream()
                     .map(PropertyDTO::new)
                     .toList();
@@ -100,7 +103,6 @@ public class PropertyController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR); // return 500 Internal Server Error
         }
-
     }
 
 

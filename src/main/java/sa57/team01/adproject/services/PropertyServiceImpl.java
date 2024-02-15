@@ -20,6 +20,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PropertyServiceImpl implements PropertyService {
@@ -152,27 +153,27 @@ public class PropertyServiceImpl implements PropertyService {
         propertyReposity.deleteAll();
     }
 
+
+
     public void deleteProperty(Long id) {
         propertyReposity.deleteById(id);
     }
 
 
 
-    public List<Property> sortProperties(List<Property> properties, String sortBy, String sortDirection){
-        if(sortBy.equals("price")){
-            if(sortDirection.equals("asc")){
-                return properties.stream().sorted((p1,p2)->Double.compare(p1.getPrice(),p2.getPrice())).toList();
-            }else if(sortDirection.equals("desc")){
-                return properties.stream().sorted((p1,p2)->Double.compare(p2.getPrice(),p1.getPrice())).toList();
-            }
-        }else if(sortBy.equals("town")){
-            if(sortDirection.equals("asc")){
-                return properties.stream().sorted((p1,p2)->p1.getTown().compareTo(p2.getTown())).toList();
-            }else if(sortDirection.equals("desc")){
-                return properties.stream().sorted((p1,p2)->p2.getTown().compareTo(p1.getTown())).toList();
-            }
+    public List<Property> sortProperties(List<Property> properties, String sortDirection) {
+        if (sortDirection.equals("asc")) {
+            return properties.stream()
+                    .sorted((p1, p2) -> Double.compare(p1.getPrice(), p2.getPrice()))
+                    .collect(Collectors.toList());
+        } else if (sortDirection.equals("desc")) {
+            return properties.stream()
+                    .sorted((p1, p2) -> Double.compare(p2.getPrice(), p1.getPrice()))
+                    .collect(Collectors.toList());
+        } else {
+            // Handle invalid sort direction
+            throw new IllegalArgumentException("Invalid sort direction: " + sortDirection);
         }
-        return properties;
     }
 
     public List<Property> getAllProperties(){
