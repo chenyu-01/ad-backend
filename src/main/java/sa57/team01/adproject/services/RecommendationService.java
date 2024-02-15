@@ -17,10 +17,8 @@ import java.util.Map;
 @Service
 public class RecommendationService {
 
-    @Autowired
-    private RestTemplate restTemplate;
-
     public List<Long> getRecommendationsForNewCustomer(Customer customer) {
+        RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:5000/recommend_NN";
 
         HttpHeaders headers = new HttpHeaders();
@@ -77,6 +75,7 @@ public class RecommendationService {
     }
 
     public List<Long> getRecommendationsForExistingCustomer(Customer customer) {
+        RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:5000/recommend";
 
         HttpHeaders headers = new HttpHeaders();
