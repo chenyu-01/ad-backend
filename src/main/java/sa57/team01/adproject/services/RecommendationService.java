@@ -18,7 +18,7 @@ import java.util.Map;
 public class RecommendationService {
 
     @Autowired
-    private RestTemplate restTemplate; // 自动注入RestTemplate
+    private RestTemplate restTemplate;
 
     public List<Long> getRecommendationsForNewCustomer(Customer customer) {
         String url = "http://localhost:5000/recommend_NN";
