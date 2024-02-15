@@ -43,8 +43,8 @@ public class AdprojectApplication {
 
 
             // add preference
-            Preferences preferencesBuyer = preferencesReposity.save(new Preferences(true, true, true, true, "q", 10, true, true, true));
-            Preferences preferencesOwner = preferencesReposity.save(new Preferences(true, true, true, true, "q", 10, true, true, true));
+            Preferences preferencesBuyer = preferencesReposity.save(new Preferences(true, true, true, true, TownName.getRandomTown().toString(), 10, true, true, true));
+            Preferences preferencesOwner = preferencesReposity.save(new Preferences(true, true, true, true, TownName.getRandomTown().toString(), 10, true, true, true));
             // add buyer
             Buyer buyer = new Buyer();
             buyer.setName("buyer");

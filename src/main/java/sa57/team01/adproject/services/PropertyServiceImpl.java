@@ -51,6 +51,11 @@ public class PropertyServiceImpl implements PropertyService {
         return all;
     }
 
+    @Override
+    public Property findById(Long id) {
+        return propertyReposity.findById(id).orElse(null);
+    }
+
     public Optional<Property> getPropertyById(Long id) {
         return propertyReposity.findById(id);
     }

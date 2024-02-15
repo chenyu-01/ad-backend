@@ -8,4 +8,6 @@ public interface CustomerService {
     Customer findByEmail(String email);
 
     Customer save(Customer customer);
+
+    Customer findById(Long id);
 }

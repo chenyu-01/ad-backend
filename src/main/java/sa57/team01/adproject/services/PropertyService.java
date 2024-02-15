@@ -9,6 +9,5 @@ public interface PropertyService {
     List<Property> getAllPropertiesWithSearchDTO(SearchDTO searchDTO);
 
 
-
-
+    Property findById(Long id);
 }

@@ -8,14 +8,14 @@ import sa57.team01.adproject.DTO.SearchDTO;
 import sa57.team01.adproject.DTO.PropertyDTO;
 import sa57.team01.adproject.DTO.RentalPropertyDTO;
 import sa57.team01.adproject.DTO.SalePropertyDTO;
-import sa57.team01.adproject.models.Property;
-import sa57.team01.adproject.models.RentalProperty;
-import sa57.team01.adproject.models.SaleProperty;
-import sa57.team01.adproject.services.PropertyService;
-import sa57.team01.adproject.services.RentalPropertyService;
-import sa57.team01.adproject.services.SalePropertyService;
+import sa57.team01.adproject.models.*;
+import sa57.team01.adproject.services.*;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/property")
@@ -25,11 +25,26 @@ public class PropertyController {
     private final SalePropertyService salePropertyService;
 
     private final PropertyService propertyService;
+
+    private final CustomerService customerService;
+
+    private final InteractionService interactionService;
+
+    private final RecommendationService recommendationService;
+
+    private final PredictorService predictorService;
+
     @Autowired
-    public PropertyController(RentalPropertyService rentalPropertyService, SalePropertyService salePropertyService,PropertyService propertyService) {
+    public PropertyController(RentalPropertyService rentalPropertyService, SalePropertyService salePropertyService,PropertyService propertyService,CustomerService customerService
+    ,InteractionService interactionService,RecommendationService recommendationService,PredictorService predictorService) {
         this.rentalPropertyService = rentalPropertyService;
         this.salePropertyService = salePropertyService;
         this.propertyService=propertyService;
+        this.customerService=customerService;
+        this.interactionService=interactionService;
+        this.recommendationService=recommendationService;
+        this.predictorService=predictorService;
+
     }
     @GetMapping("/rentlist/{page}")
     public ResponseEntity<?> getRentPropertiesInPage(@PathVariable int page) {
@@ -79,4 +94,54 @@ public class PropertyController {
         }
         RentalPropertyDTO rentalPropertyDTO = new RentalPropertyDTO(rentalProperty);
         return ResponseEntity.ok(rentalPropertyDTO);}
+
+    @GetMapping("/recommand/{id}")
+    public ResponseEntity<?> getRecommandProperties(@PathVariable Long id) {
+        Customer customer = customerService.findById(id);
+        if (customer == null) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Long> result = null;
+
+        List<Long> recommend_first = recommendationService.getRecommendationsForNewCustomer(customer);
+
+        if (!interactionService.findByUserId(customer.getId()).isEmpty()) {
+            List<Long> recommend_second = recommendationService.getRecommendationsForExistingCustomer(customer);
+
+            //merge two list and remove duplicate, 3 from first and 7 from second
+            Iterator<Long> it1 = recommend_first.iterator();
+            Iterator<Long> it2 = recommend_second.iterator();
+            result = Stream.generate(() -> {
+                        if (it1.hasNext()) return it1.next();
+                        if (it2.hasNext()) return it2.next();
+                        return null;
+                    })
+                    .takeWhile(Objects::nonNull)
+                    .distinct()
+                    .limit(10)
+                    .collect(Collectors.toList());
+        }
+        else{
+            result = recommend_first;
+        }
+
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/predict/{id}")
+    public ResponseEntity<?> getPredictProperties(@PathVariable Long id) {
+        Property property = propertyService.findById(id);
+        if (property == null) {
+            return ResponseEntity.notFound().build();
+        }
+        // shall be sale property
+        if (property instanceof SaleProperty) {
+
+            List<Double> predict = predictorService.getPrediction((SaleProperty)property);
+            return ResponseEntity.ok(predict);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
