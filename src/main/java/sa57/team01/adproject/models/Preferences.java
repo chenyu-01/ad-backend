@@ -17,7 +17,7 @@ public class Preferences {
     private boolean bedroom2;
     private boolean bedroom3;
     private boolean bedroom4;
-    private String town;
+    private TownName town;
     private int storyRange;
     private boolean lowPriceRange;
     private boolean midPriceRange;
@@ -31,7 +31,7 @@ public class Preferences {
     }
 
     public Preferences(boolean bedroom1,boolean bedroom2,boolean bedroom3,boolean bedroom4,
-                       String town,int storyRange,boolean lowPriceRange,boolean midPriceRange,boolean highPriceRange){
+                       TownName town,int storyRange,boolean lowPriceRange,boolean midPriceRange,boolean highPriceRange){
         this.bedroom1 = bedroom1;
         this.bedroom2 = bedroom2;
         this.bedroom3 = bedroom3;

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Entity
 public class Appointment {
 
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long AppointmentId;
@@ -40,4 +41,6 @@ public class Appointment {
 
     public Appointment() {
     }
+
+
 }

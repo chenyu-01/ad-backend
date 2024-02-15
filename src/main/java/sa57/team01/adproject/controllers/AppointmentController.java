@@ -1,6 +1,8 @@
 package sa57.team01.adproject.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sa57.team01.adproject.services.*;
@@ -45,5 +47,40 @@ public class AppointmentController {
     }
         return ResponseEntity.ok("Success");
     }
+
+    @DeleteMapping("/cancel/{appointmentId}")
+    public ResponseEntity<String> cancelAppointment(@PathVariable Long appointmentId) {
+        boolean isCancelled = appointmentService.cancelAppointment(appointmentId);
+        if (isCancelled) {
+            return new ResponseEntity<>("Appointment with id " + appointmentId + " has been cancelled.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failed to cancel appointment with id " + appointmentId, HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/getAppointments")
+    public ResponseEntity<?> getAppointmentsByCustomerId(HttpSession session) {
+        if (session.getAttribute("customerId") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
+        }
+        long id = (long) session.getAttribute("customerId");
+        return appointmentService.getAppointmentsByCustomerId(id);
+    }
+
+    @GetMapping("/getAppointmentsForOwner")
+    public ResponseEntity<?> getAppointmentsByOwnerId(HttpSession session) {
+        if (session.getAttribute("customerId") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
+        }
+        long id = (long) session.getAttribute("customerId");
+        return ResponseEntity.ok(appointmentService.getAppointmentsByOwnerId(ownerService.findOwnerById(id)));
+    }
+
+    @GetMapping("/confirm/{appointmentId}")
+    public ResponseEntity<?> confirmAppointment(@PathVariable Long appointmentId) {
+        appointmentService.confirmAppointment(appointmentId);
+        return ResponseEntity.ok("Appointment confirmed");
+    }
+
+
 
 }

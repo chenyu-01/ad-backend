@@ -9,16 +9,18 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class CustomerDTO implements Serializable {
-  private long id;
+
+  private long customerId;
   private String name;
-  private String password;
-
+  private String email;
+  private String contactNumber;
   private String role;
-
-  public CustomerDTO(Customer other){
-      this.id= other.getId();
-      this.name=other.getName();
-      this.password=other.getPassword();
-      this.role=other.getRole();
+  public CustomerDTO(){}
+  public CustomerDTO(Customer customer){
+        this.customerId=customer.getCustomerId();
+        this.name=customer.getName();
+        this.email=customer.getEmail();
+        this.role=customer.getRole();
+        this.contactNumber=customer.getContactNumber();
   }
 }

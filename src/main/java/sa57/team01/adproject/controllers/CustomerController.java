@@ -19,50 +19,70 @@ public class CustomerController {
     public CustomerService customerService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String ,String> credentials, HttpSession session){
-        String email=credentials.get("email");
-        String password = credentials.get("password");
-        Customer customer=customerService.findByEmail(email);
-        if(customer == null ||!customer.getPassword().equals(password)){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Username and Password");
+    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials, HttpSession session) {
+        if (session.getAttribute("customer") != null) {
+            Map<String, Object> response = Map.of(
+                    "msg", "already log in ",
+                    "status", HttpStatus.CONFLICT
+            );
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
-        CustomerDTO customerDTO=new CustomerDTO(customer);
-        session.setAttribute("customer",customerDTO);
+        String email = credentials.get("email");
+        String password = credentials.get("password");
+        Customer customer = customerService.findByEmail(email);
+        if (customer == null || !customer.getPassword().equals(password)) {
+            Map<String, Object> response = Map.of(
+                    "msg", "login failed",
+                    "status", HttpStatus.INTERNAL_SERVER_ERROR
+            );
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        long id = customer.getCustomerId();
+        session.setAttribute("customerId", id);
 
-        return ResponseEntity.ok().build();
+        Map<String, Object> response = Map.of(
+                "msg", "login ok",
+                "status", HttpStatus.OK
+        );
+        return new ResponseEntity<>(response, HttpStatus.OK); // return 200 OK
     }
 
     @GetMapping("/check-auth")
-    public ResponseEntity<?> checkAuthentication(HttpSession session){
+    public ResponseEntity<?> checkAuthentication(HttpSession session) {
 
-        CustomerDTO customerDTO=(CustomerDTO)session.getAttribute("customer");
-        if(customerDTO != null){
-            return ResponseEntity.ok(customerDTO);
+        if (session.getAttribute("customerId") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-
+        long customerId = (long) session.getAttribute("customerId");
+        Customer customer = customerService.findById(customerId);
+        return ResponseEntity.ok(new CustomerDTO(customer));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpSession session){
+    public ResponseEntity<?> logout(HttpSession session) {
         session.invalidate();
         return ResponseEntity.ok().build();
 
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Customer customer){
-        Customer existingCustomer=customerService.findByEmail(customer.getName());
-        if(existingCustomer!=null){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
+    public ResponseEntity<?> register(@RequestBody Map<String, String> credentials, HttpSession session) {
+        Customer existingCustomer = customerService.findByEmail(credentials.get("email"));
+        if (existingCustomer != null) {
+            Map<String, Object> response = Map.of("msg", "Email already exists");
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
+
+        Customer customer = new Customer();
+        customer.setName(credentials.get("name"));
+        customer.setEmail(credentials.get("email"));
+        customer.setContactNumber(credentials.get("contactNumber"));
+        customer.setPassword(credentials.get("password"));
+        customer.setRole(credentials.get("role"));
         customerService.save(customer);
-        CustomerDTO customerDTO=new CustomerDTO(customer);
-        return ResponseEntity.ok(customerDTO);
+        session.setAttribute("customerId", customer.getCustomerId());
+        Map<String, Object> response = Map.of("msg", "Registration ok");
+        return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
-
-
-
-
 }

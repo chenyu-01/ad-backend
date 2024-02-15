@@ -14,6 +14,7 @@ public class Property {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long propertyid;
+    @Enumerated(EnumType.STRING)
     private TownName town;
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -25,9 +26,11 @@ public class Property {
     @NotNull
     private String streetName;
     @NotNull
-    private int floorArea;
+    private int floorArea; // in square meters
     @NotNull
     private String block;
+    @NotNull
+    private boolean forSale;
     @NotNull
     @ManyToOne
     private Owner owner;
@@ -37,6 +40,11 @@ public class Property {
 
     @OneToOne(mappedBy = "property")
     private Appointment appointment;
+
+    @NotNull
+    private int bedrooms;
+
+    private String imageUrl;
 
     public Property() {
         super();
@@ -50,7 +58,8 @@ public class Property {
                     String streetName,
                     int floorArea,
                     String block,
-                    Owner owner) {
+                    Owner owner,
+                    int bedrooms) {
 
         this.propertyid = propertyid;
         this.town = town;
@@ -61,5 +70,6 @@ public class Property {
         this.floorArea = floorArea;
         this.block = block;
         this.owner = owner;
+        this.bedrooms = bedrooms;
     }
 }

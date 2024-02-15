@@ -1,13 +1,15 @@
 package sa57.team01.adproject;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import sa57.team01.adproject.models.*;
 import sa57.team01.adproject.repositories.*;
+import sa57.team01.adproject.services.PropertyService;
 
-import java.text.SimpleDateFormat;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +20,19 @@ import static sa57.team01.adproject.models.PropertyStatus.forSale;
 @SpringBootApplication
 public class AdprojectApplication {
 
+    @Value("${upload.path}")
+    private String uploadDir;
+
     public static void main(String[] args) {
         SpringApplication.run(AdprojectApplication.class, args);
     }
+
     @Bean
     CommandLineRunner initDatabase(BuyerReposity buyerReposity, OwnerReposity ownerReposity,
                                    PreferencesReposity preferencesReposity,
                                    RentalPropertyReposity rentalPropertyReposity,
                                    RentalSeekerReposity rentalSeekerReposity, SalePropertyReposity salePropertyReposity,
-                                   AppointmentReposity appointmentReposity,PropertyReposity propertyReposity) {
+                                   AppointmentReposity appointmentReposity, PropertyService propertyService) {
         return args -> {
 
             // clean database
@@ -37,14 +43,22 @@ public class AdprojectApplication {
             rentalSeekerReposity.deleteAll();
             salePropertyReposity.deleteAll();
             appointmentReposity.deleteAll();
-            propertyReposity.deleteAll();
-
-
+            propertyService.deleteAll();
+            // clean external upload folder images
+            Path path = Path.of(uploadDir);
+            if (path.toFile().exists()) {
+                for (java.io.File file : path.toFile().listFiles()) {
+                    // if file is a image file
+                    if (file.getName().endsWith(".png") || file.getName().endsWith(".jpg") || file.getName().endsWith(".jpeg") || file.getName().endsWith(".gif")) {
+                        file.delete();
+                    }
+                }
+            }
 
 
             // add preference
-            Preferences preferencesBuyer = preferencesReposity.save(new Preferences(true, true, true, true, TownName.getRandomTown().toString(), 10, true, true, true));
-            Preferences preferencesOwner = preferencesReposity.save(new Preferences(true, true, true, true, TownName.getRandomTown().toString(), 10, true, true, true));
+            Preferences preferencesBuyer = preferencesReposity.save(new Preferences(true, true, true, true, TownName.QUEENSTOWN, 10, true, true, true));
+            Preferences preferencesOwner = preferencesReposity.save(new Preferences(true, true, true, true, TownName.QUEENSTOWN, 10, true, true, true));
             // add buyer
             Buyer buyer = new Buyer();
             buyer.setName("buyer");
@@ -52,36 +66,40 @@ public class AdprojectApplication {
             buyer.setPassword("123");
             buyer.setContactNumber("123");
             buyer.setPreferences(preferencesBuyer);
-
+            buyer.setRole("buyer");
             buyerReposity.save(buyer);
 
             // add owner
             Owner owner = new Owner();
-            owner.setName("owner");
+            owner.setRole("owner");
+            owner.setName("BAO");
             owner.setEmail("owner@qq.com");
             owner.setPassword("234");
             owner.setContactNumber("234");
             owner.setPreferences(preferencesOwner);
             ownerReposity.save(owner);
-            //add rentalproperty
-            RentalProperty rentalProperty = new RentalProperty();
-            rentalProperty.setTown(TownName.getRandomTown());
-            rentalProperty.setBlock("101");
-            rentalProperty.setFloorArea(100);
-            rentalProperty.setPropertyStatus(forRent);
-            rentalProperty.setFlatType(1);
-            rentalProperty.setStoreyRange("10 TO 12");
-            rentalProperty.setStreetName("BEDOK NTH ST 3");
-            rentalProperty.setFlatType(1);
-            rentalProperty.setPrice(1400);
-            rentalProperty.setOwner(owner);
-            rentalProperty.setContractMonthPeriod(1);
-            rentalPropertyReposity.save(rentalProperty);
+
 
             List<Property> listProperty = new ArrayList<>();
-            listProperty.add(rentalProperty);
-            //add saleproperty
-            for(int i = 0; i < 100; i++) {
+            //add properties
+            for (int i = 0; i < 20; i++) {
+                //add rentalproperty
+                RentalProperty rentalProperty = new RentalProperty();
+                rentalProperty.setTown(TownName.getRandomTown());
+                rentalProperty.setBlock("101");
+                rentalProperty.setFloorArea(100);
+                rentalProperty.setPropertyStatus(forRent);
+                rentalProperty.setFlatType(1);
+                rentalProperty.setStoreyRange("10 TO 12");
+                rentalProperty.setStreetName("BEDOK NTH ST 3");
+                rentalProperty.setFlatType(1);
+                rentalProperty.setPrice(990 + i * 100);
+                rentalProperty.setOwner(owner);
+                rentalProperty.setContractMonthPeriod(1);
+                rentalProperty.setForSale(false);
+                rentalProperty.setImageUrl("http://localhost:8080/images/" + (2 * i + 1) + ".png");
+                rentalProperty = rentalPropertyReposity.save(rentalProperty);
+                //add saleproperty
                 SaleProperty saleProperty = new SaleProperty();
                 saleProperty.setTown(TownName.getRandomTown());
                 saleProperty.setBlock("101");
@@ -90,12 +108,15 @@ public class AdprojectApplication {
                 saleProperty.setFlatType(1);
                 saleProperty.setStoreyRange("10 TO 12");
                 saleProperty.setStreetName("ANG MO KIO AVE 10");
-                saleProperty.setFlatType(1);
+                saleProperty.setFlatType(i % 4 + 1);
                 saleProperty.setLeaseCommenceDate(LocalDate.parse("2024-01-27"));
                 saleProperty.setRemainingLease(1);
                 saleProperty.setOwner(owner);
-                saleProperty.setPrice(1000 + i * 100);
-                salePropertyReposity.save(saleProperty);
+                saleProperty.setPrice(100000 + i * 11111);
+                saleProperty.setForSale(true);
+                saleProperty.setImageUrl("http://localhost:8080/images/" + (2 * i + 2) + ".png");
+                saleProperty = salePropertyReposity.save(saleProperty);
+                listProperty.add(rentalProperty);
                 listProperty.add(saleProperty);
             }
 
@@ -104,15 +125,22 @@ public class AdprojectApplication {
             ownerReposity.save(owner);
 
 
+            List<Appointment> listAppointment = new ArrayList<>();
             //add appointment
-            LocalDate date = LocalDate.parse("2024-01-27");
-            Appointment appointment = new Appointment();
-            appointment.setAppointmentId(1);
-            appointment.setDate(date);
-            appointment.setContactCustomer(owner);
-            appointment.setProperty(rentalProperty);
-            appointment.setRequestCustomer(buyer);
-            appointmentReposity.save(appointment);
+            for (int i = 0; i < 10; i++) {
+                LocalDate date = LocalDate.now().plusDays(i);
+                Appointment appointment = new Appointment();
+                appointment.setDate(date);
+                appointment.setContactCustomer(owner);
+                appointment.setProperty(listProperty.get(i));
+                appointment.setRequestCustomer(buyer);
+                appointment.setStatus(AppointmentStatus.pending);
+                listAppointment.add(appointmentReposity.save(appointment));
+            }
+            owner.setReceivedAppointments(listAppointment);
+            ownerReposity.save(owner);
+            buyer.setAppointmentRequestList(listAppointment);
+            buyerReposity.save(buyer);
 
 
         };

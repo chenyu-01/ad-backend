@@ -12,21 +12,22 @@ import java.util.List;
 @Setter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Customer {
+public class Customer {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long customerId;
-
+    @NotNull
     private String name;
     @Email
     @NotNull
     private String email;
     @NotNull
     private String password;
+
     private String contactNumber;
     @OneToOne
     private Preferences preferences;
-
+    @NotNull
     private String Role;
 
     @OneToMany(mappedBy = "requestCustomer")
@@ -38,8 +39,7 @@ public abstract class Customer {
         super();
     }
 
-    public Customer(long customerId, String name, String email, String password, String contactNumber, Preferences preferences) {
-        this.customerId = customerId;
+    public Customer(String name, String email, String password, String contactNumber, Preferences preferences) {
         this.name = name;
         this.email = email;
         this.password = password;

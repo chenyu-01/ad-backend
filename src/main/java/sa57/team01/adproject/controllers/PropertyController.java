@@ -8,14 +8,19 @@ import sa57.team01.adproject.DTO.SearchDTO;
 import sa57.team01.adproject.DTO.PropertyDTO;
 import sa57.team01.adproject.DTO.RentalPropertyDTO;
 import sa57.team01.adproject.DTO.SalePropertyDTO;
-import sa57.team01.adproject.models.*;
-import sa57.team01.adproject.services.*;
+import sa57.team01.adproject.models.Property;
+import sa57.team01.adproject.models.RentalProperty;
+import sa57.team01.adproject.models.SaleProperty;
+import sa57.team01.adproject.services.PropertyService;
+import sa57.team01.adproject.services.RentalPropertyService;
+import sa57.team01.adproject.services.SalePropertyService;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/property")
@@ -25,26 +30,11 @@ public class PropertyController {
     private final SalePropertyService salePropertyService;
 
     private final PropertyService propertyService;
-
-    private final CustomerService customerService;
-
-    private final InteractionService interactionService;
-
-    private final RecommendationService recommendationService;
-
-    private final PredictorService predictorService;
-
     @Autowired
-    public PropertyController(RentalPropertyService rentalPropertyService, SalePropertyService salePropertyService,PropertyService propertyService,CustomerService customerService
-    ,InteractionService interactionService,RecommendationService recommendationService,PredictorService predictorService) {
+    public PropertyController(RentalPropertyService rentalPropertyService, SalePropertyService salePropertyService,PropertyService propertyService) {
         this.rentalPropertyService = rentalPropertyService;
         this.salePropertyService = salePropertyService;
         this.propertyService=propertyService;
-        this.customerService=customerService;
-        this.interactionService=interactionService;
-        this.recommendationService=recommendationService;
-        this.predictorService=predictorService;
-
     }
     @GetMapping("/rentlist/{page}")
     public ResponseEntity<?> getRentPropertiesInPage(@PathVariable int page) {
@@ -144,4 +134,13 @@ public class PropertyController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping("/upload/{propertyId}")
+    public ResponseEntity<?> uploadImage(@PathVariable long propertyId, @RequestParam("image") MultipartFile file) {
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("Please select a file to upload");
+        }
+        return propertyService.uploadImage(propertyId, file);
+    }
+
 }
