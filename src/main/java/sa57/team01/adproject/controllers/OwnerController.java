@@ -14,16 +14,16 @@ import sa57.team01.adproject.services.OwnerService;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/user")
-public class UserController {
+@RequestMapping("/api/owner")
+public class OwnerController {
 
     private final OwnerService ownerService;
     @Autowired
-    public UserController(OwnerService ownerService) {
+    public OwnerController(OwnerService ownerService) {
         this.ownerService = ownerService;
     }
 
-    @GetMapping("/owner/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getOwnerById(@PathVariable Long id) {
         Optional<Owner> owner = Optional.ofNullable(ownerService.findOwnerById(id));
         if(owner.isPresent()) {
