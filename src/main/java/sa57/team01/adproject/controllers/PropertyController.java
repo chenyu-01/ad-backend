@@ -81,8 +81,8 @@ public class PropertyController {
         return propertyService.uploadImage(propertyId, file);
     }
 
-    @PostMapping("/list/sort/")
-    public ResponseEntity<?> sortProperties(@RequestParam(defaultValue = "asc") String sortDirection) {
+    @GetMapping("/list/sort/{sortDirection}")
+    public ResponseEntity<?> sortProperties(@PathVariable("sortDirection") String sortDirection) {
         try {
             List<Property> properties = propertyService.getAllProperties();
             if (properties.isEmpty()) {
