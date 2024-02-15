@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sa57.team01.adproject.DTO.SearchDTO;
+import sa57.team01.adproject.models.FlatType;
 import sa57.team01.adproject.models.Property;
 import sa57.team01.adproject.models.RentalProperty;
 import sa57.team01.adproject.models.SaleProperty;
@@ -94,10 +95,10 @@ public class PropertyServiceImpl implements PropertyService {
     private List<Property> filterByFlatType(List<Property> properties, boolean room1, boolean room2, boolean room3, boolean room4) {
         return properties.stream()
                 .filter(property -> {
-                    if (room1 && property.getFlatType() == 1) return true;
-                    if (room2 && property.getFlatType() == 2) return true;
-                    if (room3 && property.getFlatType() == 3) return true;
-                    if (room4 && property.getFlatType() == 4) return true;
+                    if (room1 && property.getFlatType() == FlatType.ONE_ROOM) return true;
+                    if (room2 && property.getFlatType() == FlatType.TWO_ROOM) return true;
+                    if (room3 && property.getFlatType() == FlatType.THREE_ROOM) return true;
+                    if (room4 && property.getFlatType() == FlatType.FOUR_ROOM) return true;
                     return false;
                 }).toList();
     }
@@ -116,7 +117,6 @@ public class PropertyServiceImpl implements PropertyService {
             return ResponseEntity.notFound().build();
         }
         if (property.getImageUrl() != null) {
-
             // delete existing image
             String filename = property.getImageUrl().substring(property.getImageUrl().lastIndexOf("/") + 1);
             Path path = Paths.get(uploadDir + filename);

@@ -39,26 +39,4 @@ public class MixPropertyDTO {
     public MixPropertyDTO(){}
 
 
-    public MixPropertyDTO(Long id, String town, String propertyStatus, String flatType,
-                          String storeyRange, String streetName, String floorArea, String price,
-                          String contractMonthPeriod,  String block, String  leaseCommenceDate,
-                          String remainingLease,String bedrooms,long ownerid,String imageUrl) {
-        this.id = id;
-        this.town = town;
-        this.propertyStatus = propertyStatus;
-        this.flatType = flatType;
-        this.storeyRange = storeyRange;
-        this.streetName = streetName;
-        this.floorArea = floorArea;
-        this.price = price;
-        this.contractMonthPeriod = contractMonthPeriod;
-
-        this.block = block;
-        this.leaseCommenceDate = leaseCommenceDate;
-        this.remainingLease = remainingLease;
-        this.bedrooms = bedrooms;
-        this.ownerid = ownerid;
-        this.imageUrl = imageUrl;
-
-    }
 }
