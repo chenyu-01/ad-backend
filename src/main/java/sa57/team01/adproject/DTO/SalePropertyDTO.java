@@ -20,8 +20,4 @@ public class SalePropertyDTO extends PropertyDTO implements Serializable{
         this.remainingLease = other.getRemainingLease();
     }
 
-    // convert list of SaleProperty to list of SalePropertyDTO
-    public static List<SalePropertyDTO> from(List<SaleProperty> saleProperties) {
-        return saleProperties.stream().map(SalePropertyDTO::new).toList();
-    }
 }

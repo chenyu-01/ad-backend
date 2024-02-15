@@ -12,4 +12,10 @@ public class Buyer extends Customer{
     public Buyer() {
         super();
     }
+
+    @Override
+    public void randomize() {
+        super.randomize();
+        this.setRole("Buyer");
+    }
 }

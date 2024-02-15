@@ -8,4 +8,10 @@ public class RentalSeeker extends Customer{
     public RentalSeeker() {
         super();
     }
+
+    @Override
+    public void randomize() {
+        super.randomize();
+        this.setRole("RentalSeeker");
+    }
 }

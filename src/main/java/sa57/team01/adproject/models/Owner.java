@@ -25,4 +25,10 @@ public class Owner extends Customer{
         super();
     }
 
+    @Override
+    public void randomize() {
+        super.randomize();
+        this.setRole("Owner");
+    }
+
 }

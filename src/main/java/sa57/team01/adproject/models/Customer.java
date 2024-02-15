@@ -47,6 +47,12 @@ public class Customer {
         this.preferences = preferences;
     }
 
+    public void randomize() {
+        this.name = "Customer" + (int) (Math.random() * 1000);
+        this.email = "customer" + (int) (Math.random() * 1000) + "@gmail.com";
+        this.password = "password";
+        this.contactNumber = 12345678 + (int) (Math.random() * 100000) + "";
+    }
 
     public long getId() {
         return this.customerId;
