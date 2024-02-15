@@ -177,7 +177,6 @@ public class CustomerServiceImpl implements CustomerService {
             }else if(currentPropertyStatus.equals(PropertyStatus.forRent) || currentPropertyStatus.equals(PropertyStatus.rented)){
                 RentalProperty rentalProperty = new RentalProperty();
                 rentalPropertyReposity.save(DTOtoRentalProperty(id,rentalProperty,mixPropertyDTO));
-                System.out.println("这里");
                 response.put("message", "Successfully Updated Property");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }else{
