@@ -11,8 +11,11 @@ public class SearchDTO {
 
     private boolean roomOne;
     private boolean roomTwo;
-    private boolean roomThree; // flatType == 3 && room3 == true
-    private boolean roomFour; // flatType == 4 && room4 == true
+    private boolean roomThree;
+    private boolean roomFour;
+    private boolean roomFive;
+    private boolean executive;
+    private boolean multiGen;
 
     private String town;
     private long page;

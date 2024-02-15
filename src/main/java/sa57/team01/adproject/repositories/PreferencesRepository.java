@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import sa57.team01.adproject.models.Preferences;
 
 @Repository
-public interface PreferencesReposity extends JpaRepository<Preferences, Long> {
+public interface PreferencesRepository extends JpaRepository<Preferences, Long> {
 }

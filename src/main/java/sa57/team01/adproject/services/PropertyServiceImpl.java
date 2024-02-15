@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sa57.team01.adproject.DTO.SearchDTO;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Transactional
 @Service
 public class PropertyServiceImpl implements PropertyService {
 
@@ -38,16 +40,18 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public List<Property> getAllPropertiesWithSearchDTO(SearchDTO searchDTO) {
 
-        boolean room1, room2, room3, room4;
+        boolean room1, room2, room3, room4, room5, executive, multiGen;
         boolean priceCondition = searchDTO.getLowPrice() != 0 && searchDTO.getHighPrice() != 0;
         boolean townCondition = !searchDTO.getTown().isEmpty();
-        boolean flatTypeCondition = searchDTO.isRoomOne() || searchDTO.isRoomTwo() || searchDTO.isRoomThree() || searchDTO.isRoomFour();
 
         room1 = searchDTO.isRoomOne();
         room2 = searchDTO.isRoomTwo();
         room3 = searchDTO.isRoomThree();
         room4 = searchDTO.isRoomFour();
-
+        room5 = searchDTO.isRoomFive();
+        executive = searchDTO.isExecutive();
+        multiGen = searchDTO.isMultiGen();
+        boolean flatTypeCondition = room1 || room2 || room3 || room4 || room5 || executive || multiGen;
         if (searchDTO.getLowPrice() > searchDTO.getHighPrice()) {
             throw new IllegalArgumentException("Low price cannot be higher than high price");
         }
@@ -64,7 +68,7 @@ public class PropertyServiceImpl implements PropertyService {
         }
         // if flatType is not set, then don't filter by flatType
         if (flatTypeCondition) {
-            all = filterByFlatType(all, room1, room2, room3, room4);
+            all = filterByFlatType(all, room1, room2, room3, room4, room5, executive, multiGen);
         }
         long page = searchDTO.getPage();
         String propertyType = searchDTO.getPropertyType();
@@ -92,13 +96,16 @@ public class PropertyServiceImpl implements PropertyService {
                 }).toList();
     }
 
-    private List<Property> filterByFlatType(List<Property> properties, boolean room1, boolean room2, boolean room3, boolean room4) {
+    private List<Property> filterByFlatType(List<Property> properties, boolean room1, boolean room2, boolean room3, boolean room4, boolean room5, boolean executive, boolean multiGen) {
         return properties.stream()
                 .filter(property -> {
                     if (room1 && property.getFlatType() == FlatType.ONE_ROOM) return true;
                     if (room2 && property.getFlatType() == FlatType.TWO_ROOM) return true;
                     if (room3 && property.getFlatType() == FlatType.THREE_ROOM) return true;
                     if (room4 && property.getFlatType() == FlatType.FOUR_ROOM) return true;
+                    if (room5 && property.getFlatType() == FlatType.FIVE_ROOM) return true;
+                    if (executive && property.getFlatType() == FlatType.EXECUTIVE) return true;
+                    if (multiGen && property.getFlatType() == FlatType.MULTI_GENERATION) return true;
                     return false;
                 }).toList();
     }

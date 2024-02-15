@@ -2,20 +2,22 @@ package sa57.team01.adproject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sa57.team01.adproject.models.Preferences;
-import sa57.team01.adproject.repositories.PreferencesReposity;
+import sa57.team01.adproject.repositories.PreferencesRepository;
 
+@Transactional
 @Service
 public class PreferencesServiceImpl implements PreferencesService {
-    private final PreferencesReposity preferencesReposity;
+    private final PreferencesRepository preferencesRepository;
 
     @Autowired
-    public PreferencesServiceImpl(PreferencesReposity preferencesReposity){
-        this.preferencesReposity = preferencesReposity;
+    public PreferencesServiceImpl(PreferencesRepository preferencesRepository){
+        this.preferencesRepository = preferencesRepository;
     }
 
     @Override
     public void savePreference(Preferences preferences){
-        preferencesReposity.save(preferences);
+        preferencesRepository.save(preferences);
     }
 }

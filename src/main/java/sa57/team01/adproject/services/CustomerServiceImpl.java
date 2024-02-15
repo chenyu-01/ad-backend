@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,6 +21,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.*;
 
+@Transactional
 @Service
 public class CustomerServiceImpl implements CustomerService {
     @Value("${upload.path}") // Define this property in your application.properties
@@ -29,7 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     public CustomerReposity customerReposity;
 
-    public PreferencesReposity preferencesReposity;
+    public PreferencesRepository preferencesRepository;
 
     public OwnerReposity ownerReposity;
 
@@ -46,13 +48,13 @@ public class CustomerServiceImpl implements CustomerService {
     public AppointmentReposity appointmentReposity;
 
     @Autowired
-    public CustomerServiceImpl(CustomerReposity customerReposity, PreferencesReposity preferencesReposity,
+    public CustomerServiceImpl(CustomerReposity customerReposity, PreferencesRepository preferencesRepository,
                                OwnerReposity ownerReposity, PropertyReposity propertyReposity,
                                SalePropertyReposity salePropertyReposity, RentalPropertyReposity rentalPropertyReposity,
                                BuyerReposity buyerReposity,RentalSeekerReposity rentalSeekerReposity,
                                AppointmentReposity appointmentReposity) {
         this.customerReposity = customerReposity;
-        this.preferencesReposity = preferencesReposity;
+        this.preferencesRepository = preferencesRepository;
         this.ownerReposity = ownerReposity;
         this.propertyReposity = propertyReposity;
         this.salePropertyReposity = salePropertyReposity;
@@ -148,7 +150,7 @@ public class CustomerServiceImpl implements CustomerService {
         preferences.setLowPriceRange(preferencesDTO.isLowPriceRange());
         preferences.setMidPriceRange(preferencesDTO.isMidPriceRange());
         preferences.setHighPriceRange(preferencesDTO.isHighPriceRange());
-        preferencesReposity.save(preferences);
+        preferencesRepository.save(preferences);
         response.put("message", "Successfully Updated Preferences");
         return new ResponseEntity<>(response, HttpStatus.OK);
 

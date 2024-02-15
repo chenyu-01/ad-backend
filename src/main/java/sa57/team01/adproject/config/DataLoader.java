@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static sa57.team01.adproject.models.PropertyStatus.forSale;
-
 @Configuration
 public class DataLoader {
 
@@ -30,7 +28,7 @@ public class DataLoader {
     @Bean
     CommandLineRunner commandLineRunner(OwnerReposity ownerReposity,
                                         BuyerReposity buyerReposity,
-                                        PreferencesReposity preferencesReposity,
+                                        PreferencesRepository preferencesRepository,
                                         RentalPropertyReposity rentalPropertyReposity,
                                         AppointmentReposity appointmentReposity,
                                         SalePropertyReposity salePropertyReposity,
@@ -42,7 +40,7 @@ public class DataLoader {
             // clean database
             buyerReposity.deleteAll();
             ownerReposity.deleteAll();
-            preferencesReposity.deleteAll();
+            preferencesRepository.deleteAll();
             rentalPropertyReposity.deleteAll();
             rentalSeekerReposity.deleteAll();
             salePropertyReposity.deleteAll();
@@ -50,8 +48,8 @@ public class DataLoader {
             propertyService.deleteAll();
             List<Customer> listCustomer = new ArrayList<>();
             // add preference
-            Preferences preferencesBuyer = preferencesReposity.save(new Preferences(true, true, true, true, TownName.QUEENSTOWN, 10, true, true, true));
-            Preferences preferencesOwner = preferencesReposity.save(new Preferences(true, true, true, true, TownName.QUEENSTOWN, 10, true, true, true));
+            Preferences preferencesBuyer = preferencesRepository.save(new Preferences(true, true, true, true, TownName.QUEENSTOWN, 10, true, true, true));
+            Preferences preferencesOwner = preferencesRepository.save(new Preferences(true, true, true, true, TownName.QUEENSTOWN, 10, true, true, true));
             // add buyer
             Buyer buyer = new Buyer();
             buyer.setName("buyer");
