@@ -167,7 +167,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
         Long propertyId = mixPropertyDTO.getId();
         PropertyStatus currentPropertyStatus = PropertyStatus.valueOf(mixPropertyDTO.getPropertyStatus());
-        if(propertyId == null){
+        if(propertyId == null || propertyId == 0){
             if(currentPropertyStatus.equals(PropertyStatus.forSale) || currentPropertyStatus.equals(PropertyStatus.soldOut)){
                 SaleProperty saleProperty = new SaleProperty();
                 salePropertyReposity.save(DTOtoSaleProperty(id,saleProperty,mixPropertyDTO));
@@ -177,6 +177,7 @@ public class CustomerServiceImpl implements CustomerService {
             }else if(currentPropertyStatus.equals(PropertyStatus.forRent) || currentPropertyStatus.equals(PropertyStatus.rented)){
                 RentalProperty rentalProperty = new RentalProperty();
                 rentalPropertyReposity.save(DTOtoRentalProperty(id,rentalProperty,mixPropertyDTO));
+                System.out.println("这里");
                 response.put("message", "Successfully Updated Property");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }else{
@@ -236,9 +237,9 @@ public class CustomerServiceImpl implements CustomerService {
         saleProperty.setBlock(mixPropertyDTO.getBlock());
         saleProperty.setOwner(ownerReposity.findById(id).get());
         saleProperty.setPrice(Double.parseDouble(mixPropertyDTO.getPrice()));
-        saleProperty.setRemainingLease(Integer.parseInt(mixPropertyDTO.getRemainingLease()));
         saleProperty.setLeaseCommenceDate(LocalDate.parse(mixPropertyDTO.getLeaseCommenceDate()));
         saleProperty.setImageUrl(mixPropertyDTO.getImageUrl());
+        saleProperty.setFlatModel(FlatModel.valueOf(mixPropertyDTO.getFlatModel()));
         return saleProperty;
     }
 
@@ -254,6 +255,7 @@ public class CustomerServiceImpl implements CustomerService {
         rentalProperty.setPrice(Double.parseDouble(mixPropertyDTO.getPrice()));
         rentalProperty.setContractMonthPeriod(Integer.parseInt(mixPropertyDTO.getContractMonthPeriod()));
         rentalProperty.setImageUrl(mixPropertyDTO.getImageUrl());
+        rentalProperty.setFlatModel(FlatModel.valueOf(mixPropertyDTO.getFlatModel()));
         return rentalProperty;
     }
 
@@ -288,10 +290,10 @@ public class CustomerServiceImpl implements CustomerService {
         mixPropertyDTO.setTown(String.valueOf(property.getTown()));
         mixPropertyDTO.setOwnerid(property.getOwner().getCustomerId());
         mixPropertyDTO.setImageUrl(property.getImageUrl());
+        mixPropertyDTO.setFlatModel(String.valueOf(property.getFlatModel()));
         PropertyStatus propertyStatus = property.getPropertyStatus();
         if(propertyStatus.equals(PropertyStatus.forSale) || propertyStatus.equals(PropertyStatus.soldOut)){
             SaleProperty saleProperty = salePropertyReposity.findById(property.getPropertyid()).get();
-            mixPropertyDTO.setRemainingLease(String.valueOf(saleProperty.getRemainingLease()));
             mixPropertyDTO.setLeaseCommenceDate(String.valueOf(saleProperty.getLeaseCommenceDate()));
             return mixPropertyDTO;
         }
@@ -331,8 +333,8 @@ public class CustomerServiceImpl implements CustomerService {
             mixPropertyDTO.setPrice(String.valueOf(saleProperty.getPrice()));
             mixPropertyDTO.setBlock(saleProperty.getBlock());
             mixPropertyDTO.setLeaseCommenceDate(String.valueOf(saleProperty.getLeaseCommenceDate()));
-            mixPropertyDTO.setRemainingLease(String.valueOf(saleProperty.getRemainingLease()));
             mixPropertyDTO.setImageUrl(saleProperty.getImageUrl());
+            mixPropertyDTO.setFlatModel(String.valueOf(saleProperty.getFlatModel()));
             return new ResponseEntity<>(mixPropertyDTO,HttpStatus.OK);
 
         }
@@ -350,6 +352,7 @@ public class CustomerServiceImpl implements CustomerService {
         mixPropertyDTO.setBlock(rentalProperty.getBlock());
         mixPropertyDTO.setContractMonthPeriod(String.valueOf(rentalProperty.getContractMonthPeriod()));
         mixPropertyDTO.setImageUrl(rentalProperty.getImageUrl());
+        mixPropertyDTO.setBlock(String.valueOf(rentalProperty.getFlatModel()));
         return new ResponseEntity<>(mixPropertyDTO,HttpStatus.OK);
 
     }
