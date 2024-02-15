@@ -89,15 +89,16 @@ public class AdprojectApplication {
                 rentalProperty.setBlock("101");
                 rentalProperty.setFloorArea(100);
                 rentalProperty.setPropertyStatus(forRent);
-                rentalProperty.setFlatType(1);
+                rentalProperty.setFlatType(FlatType.getRandomFlatType());
                 rentalProperty.setStoreyRange("10 TO 12");
                 rentalProperty.setStreetName("BEDOK NTH ST 3");
-                rentalProperty.setFlatType(1);
                 rentalProperty.setPrice(990 + i * 100);
                 rentalProperty.setOwner(owner);
                 rentalProperty.setContractMonthPeriod(1);
                 rentalProperty.setForSale(false);
                 rentalProperty.setImageUrl("http://localhost:8080/images/" + (2 * i + 1) + ".png");
+                rentalProperty.setContractMonthPeriod(i + 6);
+                rentalProperty.setFlatModel(FlatModel.getRandomFlatModel());
                 rentalProperty = rentalPropertyReposity.save(rentalProperty);
                 //add saleproperty
                 SaleProperty saleProperty = new SaleProperty();
@@ -105,16 +106,16 @@ public class AdprojectApplication {
                 saleProperty.setBlock("101");
                 saleProperty.setFloorArea(100);
                 saleProperty.setPropertyStatus(forSale);
-                saleProperty.setFlatType(1);
                 saleProperty.setStoreyRange("10 TO 12");
                 saleProperty.setStreetName("ANG MO KIO AVE 10");
-                saleProperty.setFlatType(i % 4 + 1);
                 saleProperty.setLeaseCommenceDate(LocalDate.parse("2024-01-27"));
                 saleProperty.setRemainingLease(1);
                 saleProperty.setOwner(owner);
                 saleProperty.setPrice(100000 + i * 11111);
                 saleProperty.setForSale(true);
                 saleProperty.setImageUrl("http://localhost:8080/images/" + (2 * i + 2) + ".png");
+                saleProperty.setFlatType(FlatType.getRandomFlatType());
+                saleProperty.setFlatModel(FlatModel.getRandomFlatModel());
                 saleProperty = salePropertyReposity.save(saleProperty);
                 listProperty.add(rentalProperty);
                 listProperty.add(saleProperty);

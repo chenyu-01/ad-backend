@@ -19,8 +19,7 @@ public class Property {
     @Enumerated(EnumType.STRING)
     @NotNull
     private PropertyStatus propertyStatus;
-    @NotNull
-    private int flatType;
+    private FlatType flatType;
     @NotNull
     private String storeyRange;
     @NotNull
@@ -38,11 +37,11 @@ public class Property {
     @NotNull
     private double price;
 
+    @NotNull
+    private FlatModel flatModel;
+
     @OneToOne(mappedBy = "property")
     private Appointment appointment;
-
-    @NotNull
-    private int bedrooms;
 
     private String imageUrl;
 
@@ -53,7 +52,7 @@ public class Property {
     public Property(long propertyid,
                     TownName town,
                     PropertyStatus propertyStatus,
-                    int flatType,
+                    FlatType flatType,
                     String storeyRange,
                     String streetName,
                     int floorArea,
@@ -70,6 +69,6 @@ public class Property {
         this.floorArea = floorArea;
         this.block = block;
         this.owner = owner;
-        this.bedrooms = bedrooms;
+
     }
 }
