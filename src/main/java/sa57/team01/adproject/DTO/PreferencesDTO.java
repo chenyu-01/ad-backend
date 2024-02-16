@@ -7,33 +7,32 @@ import sa57.team01.adproject.models.TownName;
 @Getter
 @Setter
 public class PreferencesDTO {
-    private boolean bedroom1;
-    private boolean bedroom2;
-    private boolean bedroom3;
-    private boolean bedroom4;
-    private boolean bedroom5;
-private boolean executive;
-private boolean multiGen;
+    private boolean ONE_ROOM;
+    private boolean TWO_ROOM;
+    private boolean THREE_ROOM;
+    private boolean FOUR_ROOM;
+    private boolean FIVE_ROOM;
+    private boolean EXECUTIVE;
+    private boolean MULTI_GENERATION;
     private TownName town;
     private int storyRange;
     private int lowPrice;
     private int highPrice;
 
 
-
     public PreferencesDTO(){
 
     }
 
-    public PreferencesDTO(boolean bedroom1,boolean bedroom2,boolean bedroom3,boolean bedroom4, boolean bedroom5, boolean executive, boolean multiGen,
+    public PreferencesDTO(boolean ONE_ROOM,boolean TWO_ROOM,boolean THREE_ROOM,boolean FOUR_ROOM, boolean FIVE_ROOM, boolean EXECUTIVE, boolean MULTI_GENERATION,
                        TownName town,int storyRange, int lowPrice, int highPrice){
-        this.bedroom1 = bedroom1;
-        this.bedroom2 = bedroom2;
-        this.bedroom3 = bedroom3;
-        this.bedroom4 = bedroom4;
-        this.bedroom5 = bedroom5;
-        this.executive = executive;
-        this.multiGen = multiGen;
+        this.ONE_ROOM = ONE_ROOM;
+        this.TWO_ROOM = TWO_ROOM;
+        this.THREE_ROOM = THREE_ROOM;
+        this.FOUR_ROOM = FOUR_ROOM;
+        this.FIVE_ROOM = FIVE_ROOM;
+        this.EXECUTIVE = EXECUTIVE;
+        this.MULTI_GENERATION = MULTI_GENERATION;
         this.town = town;
         this.storyRange = storyRange;
         this.lowPrice = lowPrice;
@@ -41,13 +40,13 @@ private boolean multiGen;
     }
 
     public PreferencesDTO (Preferences other) {
-        this.bedroom1 = other.isBedroom1();
-        this.bedroom2 = other.isBedroom2();
-        this.bedroom3 = other.isBedroom3();
-        this.bedroom4 = other.isBedroom4();
-        this.bedroom5 = other.isBedroom5();
-        this.executive = other.isExecutive();
-        this.multiGen = other.isMultiGen();
+        this.ONE_ROOM = other.isBedroom1();
+        this.TWO_ROOM = other.isBedroom2();
+        this.THREE_ROOM = other.isBedroom3();
+        this.FOUR_ROOM = other.isBedroom4();
+        this.FIVE_ROOM = other.isBedroom5();
+        this.EXECUTIVE = other.isExecutive();
+        this.MULTI_GENERATION = other.isMultiGen();
         this.town = other.getTown();
         this.storyRange = other.getStoryRange();
         this.lowPrice = other.getLowPrice();
