@@ -19,6 +19,7 @@ public class Property {
     @Enumerated(EnumType.STRING)
     @NotNull
     private PropertyStatus propertyStatus;
+    @Enumerated(EnumType.STRING)
     private FlatType flatType;
     @NotNull
     private String storeyRange;
