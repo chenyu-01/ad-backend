@@ -44,10 +44,21 @@ public class RecommendationService {
         if(preferences.isBedroom4()){
             preferredFlatTypes.add("4 ROOM");
         }
+        if(preferences.isBedroom5()){
+            preferredFlatTypes.add("5 ROOM");
+        }
+        if(preferences.isExecutive()){
+            preferredFlatTypes.add("EXECUTIVE");
+        }
+        if(preferences.isMultiGen()){
+            preferredFlatTypes.add("MULTI-GENERATION");
+        }
 
         requestMap.put("preferred_flat_type", preferredFlatTypes.toArray(new String[0]));
         //shall not be empty
 
+        requestMap.put("low_price", preferences.getLowPrice());
+        requestMap.put("high_price", preferences.getHighPrice());
 
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestMap, headers);
