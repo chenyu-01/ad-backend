@@ -15,6 +15,7 @@ public enum TownName {
         HOUGANG, 
         JURONG_EAST,
         JURONG_WEST,
+        KALLANG_WHAMPOA,
         MARINE_PARADE,
         PASIR_RIS,
         PUNGGOL, 
@@ -27,10 +28,26 @@ public enum TownName {
         WOODLANDS, 
         YISHUN;
 
+
     public static TownName getRandomTown() {
-        // generate a random number between 0 and length of the enum
-        int randomIndex = (int) (Math.random() * TownName.values().length);
-        return TownName.values()[randomIndex];
+        return values()[(int) (Math.random() * values().length)];
+    }
+
+    @Override
+    public String toString() {
+        return super.toString().replace('_', ' ');
+    }
+
+    public static TownName getByName(String name) {
+        for (TownName town : values()) {
+            // convert the enum name to lowercase and remove non-alphabetic characters
+            String townName = town.toString().toLowerCase().replaceAll("[^a-z]", "");
+            String search = name.toLowerCase().replaceAll("[^a-z]", "");
+            if (townName.equals(search)) {
+                return town;
+            }
+        }
+        return null;
     }
 
 

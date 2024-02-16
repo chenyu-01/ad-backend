@@ -17,6 +17,9 @@ public class Preferences {
     private boolean bedroom2;
     private boolean bedroom3;
     private boolean bedroom4;
+    private boolean bedroom5;
+    private boolean executive;
+    private boolean multiGen;
     private TownName town;
     private int storyRange;
     private boolean lowPriceRange;
@@ -41,5 +44,21 @@ public class Preferences {
         this.lowPriceRange = lowPriceRange;
         this.midPriceRange = midPriceRange;
         this.highPriceRange = highPriceRange;
+    }
+
+    public Preferences randomize() {
+        this.bedroom1 = Math.random() > 0.5;
+        this.bedroom2 = Math.random() > 0.5;
+        this.bedroom3 = Math.random() > 0.5;
+        this.bedroom4 = Math.random() > 0.5;
+        this.bedroom5 = Math.random() > 0.5;
+        this.executive = Math.random() > 0.5;
+        this.multiGen = Math.random() > 0.5;
+        this.town = TownName.values()[(int) (Math.random() * TownName.values().length)];
+        this.storyRange = (int) (Math.random() * 40) + 1;
+        this.lowPriceRange = Math.random() > 0.5;
+        this.midPriceRange = Math.random() > 0.5;
+        this.highPriceRange = Math.random() > 0.5;
+        return this;
     }
 }

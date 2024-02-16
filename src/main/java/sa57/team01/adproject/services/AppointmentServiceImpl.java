@@ -12,6 +12,7 @@ import sa57.team01.adproject.repositories.CustomerReposity;
 
 import java.util.*;
 
+@Transactional
 @Service
 public class AppointmentServiceImpl implements AppointmentService{
 

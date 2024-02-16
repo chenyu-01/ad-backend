@@ -8,28 +8,32 @@ public enum FlatType {
     EXECUTIVE,
     MULTI_GENERATION;
 
-    @Override
-    public String toString() {
-        switch (this) {
-            case ONE_ROOM:
-                return "1 ROOM";
-            case TWO_ROOM:
-                return "2 ROOM";
-            case THREE_ROOM:
-                return "3 ROOM";
-            case FOUR_ROOM:
-                return "4 ROOM";
-            case FIVE_ROOM:
-                return "5 ROOM";
-            case MULTI_GENERATION:
-                return "MULTI-GENERATION";
-            default:
-                // For the EXECUTIVE and any other types, we can directly use the name as it matches the data
-                return super.toString().replace('_', ' ').toUpperCase();
-        }
-    }
-
     public static FlatType getRandomFlatType() {
         return values()[(int) (Math.random() * values().length)];
+    }
+
+    @Override
+    public String toString() {
+        return switch (this) {
+            case ONE_ROOM -> "1 ROOM";
+            case TWO_ROOM -> "2 ROOM";
+            case THREE_ROOM -> "3 ROOM";
+            case FOUR_ROOM -> "4 ROOM";
+            case FIVE_ROOM -> "5 ROOM";
+            case MULTI_GENERATION -> "MULTI-GENERATION";
+            case EXECUTIVE -> "EXECUTIVE";
+        };
+    }
+
+    public static FlatType getByName(String name) {
+        for (FlatType flatType : values()) {
+            // convert the enum name to lowercase and remove non-alphabetic characters
+            String flatTypeName = flatType.toString().toLowerCase().replaceAll("[^a-z]", "");
+            String search = name.toLowerCase().replaceAll("[^a-z]", "");
+            if (flatTypeName.equals(search)) {
+                return flatType;
+            }
+        }
+        return null;
     }
 }
