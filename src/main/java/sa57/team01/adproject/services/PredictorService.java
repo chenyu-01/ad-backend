@@ -37,30 +37,30 @@ public class PredictorService {
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("town", property.getTown());
         requestMap.put("floor_area_sqm", property.getFloorArea());
-
-        switch(property.getFlatType()) {
-            case 1:
-                requestMap.put("flat_type", "1 ROOM");
-                break;
-            case 2:
-                requestMap.put("flat_type", "2 ROOM");
-                break;
-            case 3:
-                requestMap.put("flat_type", "3 ROOM");
-                break;
-            case 4:
-                requestMap.put("flat_type", "4 ROOM");
-                break;
-            case 5:
-                requestMap.put("flat_type", "5 ROOM");
-                break;
-            case 6:
-                requestMap.put("flat_type", "EXECUTIVE");
-                break;
-            case 7:
-                requestMap.put("flat_type", "MULTI-GENERATION");
-                break;
-        }
+        requestMap.put("flat_type", property.getFlatType().toString());
+//        switch(property.getFlatType()) {
+//            case 1:
+//                requestMap.put("flat_type", "1 ROOM");
+//                break;
+//            case 2:
+//                requestMap.put("flat_type", "2 ROOM");
+//                break;
+//            case 3:
+//                requestMap.put("flat_type", "3 ROOM");
+//                break;
+//            case 4:
+//                requestMap.put("flat_type", "4 ROOM");
+//                break;
+//            case 5:
+//                requestMap.put("flat_type", "5 ROOM");
+//                break;
+//            case 6:
+//                requestMap.put("flat_type", "EXECUTIVE");
+//                break;
+//            case 7:
+//                requestMap.put("flat_type", "MULTI-GENERATION");
+//                break;
+//        }
 
         requestMap.put("year", 2023);
         requestMap.put("resale_price", property.getPrice());

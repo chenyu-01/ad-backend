@@ -12,7 +12,7 @@ public class PropertyDTO implements Serializable {
     private Long id;
     private String town;
     private String propertyStatus;
-    private int flatType;
+    private String flatType;
     private String storeyRange;
     private String streetName;
     private int floorArea;
@@ -21,14 +21,13 @@ public class PropertyDTO implements Serializable {
     private Long ownerId;
     private String block;
     private Long appointmentId = -1L;
-    private int bedrooms;
     private String imageUrl;
 
     public PropertyDTO(Property other) {
         this.id = other.getPropertyid();
         this.town = other.getTown().toString();
         this.propertyStatus = other.getPropertyStatus().toString();
-        this.flatType = other.getFlatType();
+        this.flatType = other.getFlatType().toString();
         this.storeyRange = other.getStoreyRange();
         this.streetName = other.getStreetName();
         this.floorArea = other.getFloorArea();
@@ -38,7 +37,6 @@ public class PropertyDTO implements Serializable {
         if(other.getAppointment() != null) {
             this.appointmentId = other.getAppointment().getAppointmentId();
         }
-        this.bedrooms = other.getBedrooms();
         if(other.getImageUrl() != null) {
             this.imageUrl = other.getImageUrl();
         }

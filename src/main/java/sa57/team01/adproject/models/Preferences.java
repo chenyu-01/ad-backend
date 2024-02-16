@@ -3,6 +3,7 @@ package sa57.team01.adproject.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import sa57.team01.adproject.DTO.PreferencesDTO;
 
 @Entity
 @Getter
@@ -17,11 +18,13 @@ public class Preferences {
     private boolean bedroom2;
     private boolean bedroom3;
     private boolean bedroom4;
+    private boolean bedroom5;
+    private boolean executive;
+    private boolean multiGen;
     private TownName town;
     private int storyRange;
-    private boolean lowPriceRange;
-    private boolean midPriceRange;
-    private boolean highPriceRange;
+    private int lowPrice;
+    private int highPrice;
 
     @OneToOne(mappedBy = "preferences")
     private Customer customer;
@@ -30,16 +33,32 @@ public class Preferences {
         super();
     }
 
-    public Preferences(boolean bedroom1,boolean bedroom2,boolean bedroom3,boolean bedroom4,
-                       TownName town,int storyRange,boolean lowPriceRange,boolean midPriceRange,boolean highPriceRange){
-        this.bedroom1 = bedroom1;
-        this.bedroom2 = bedroom2;
-        this.bedroom3 = bedroom3;
-        this.bedroom4 = bedroom4;
-        this.town = town;
-        this.storyRange = storyRange;
-        this.lowPriceRange = lowPriceRange;
-        this.midPriceRange = midPriceRange;
-        this.highPriceRange = highPriceRange;
+    public void updatePreferences(PreferencesDTO other){
+        this.bedroom1 = other.isBedroom1();
+        this.bedroom2 = other.isBedroom2();
+        this.bedroom3 = other.isBedroom3();
+        this.bedroom4 = other.isBedroom4();
+        this.bedroom5 = other.isBedroom5();
+        this.executive = other.isExecutive();
+        this.multiGen = other.isMultiGen();
+        this.town = other.getTown();
+        this.storyRange = other.getStoryRange();
+        this.lowPrice = other.getLowPrice();
+        this.highPrice = other.getHighPrice();
     }
+
+    public void randomize() {
+        this.bedroom1 = Math.random() < 0.5;
+        this.bedroom2 = Math.random() < 0.5;
+        this.bedroom3 = Math.random() < 0.5;
+        this.bedroom4 = Math.random() < 0.5;
+        this.bedroom5 = Math.random() < 0.5;
+        this.executive = Math.random() < 0.5;
+        this.multiGen = Math.random() < 0.5;
+        this.town = TownName.values()[(int) (Math.random() * TownName.values().length)];
+        this.storyRange = (int) (Math.random() * 10);
+        this.lowPrice = (int) (Math.random() * 1000000);
+        this.highPrice = lowPrice + (int) (Math.random() * 1000000);
+    }
+
 }

@@ -30,19 +30,14 @@ public class MixPropertyDTO {
     //private Long appointmentId = -1L;
     @Nullable
     private String leaseCommenceDate;
-    @Nullable
-    private String remainingLease; // number of months
-    private String bedrooms;
+    private String flatModel;
     private long ownerid;
     private String imageUrl;
 
     public MixPropertyDTO(){}
-
-
-    public MixPropertyDTO(Long id, String town, String propertyStatus, String flatType,
-                          String storeyRange, String streetName, String floorArea, String price,
-                          String contractMonthPeriod,  String block, String  leaseCommenceDate,
-                          String remainingLease,String bedrooms,long ownerid,String imageUrl) {
+    public MixPropertyDTO(Long id,String town,String propertyStatus,String flatType,String storeyRange,
+                          String streetName,String floorArea,String price,String contractMonthPeriod,
+                          String block,String leaseCommenceDate,String flatModel,long ownerid,String imageUrl){
         this.id = id;
         this.town = town;
         this.propertyStatus = propertyStatus;
@@ -52,13 +47,13 @@ public class MixPropertyDTO {
         this.floorArea = floorArea;
         this.price = price;
         this.contractMonthPeriod = contractMonthPeriod;
-
         this.block = block;
         this.leaseCommenceDate = leaseCommenceDate;
-        this.remainingLease = remainingLease;
-        this.bedrooms = bedrooms;
+        this.flatModel = flatModel;
         this.ownerid = ownerid;
         this.imageUrl = imageUrl;
 
     }
+
+
 }

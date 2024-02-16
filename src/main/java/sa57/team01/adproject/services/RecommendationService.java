@@ -44,26 +44,22 @@ public class RecommendationService {
         if(preferences.isBedroom4()){
             preferredFlatTypes.add("4 ROOM");
         }
+        if(preferences.isBedroom5()){
+            preferredFlatTypes.add("5 ROOM");
+        }
+        if(preferences.isExecutive()){
+            preferredFlatTypes.add("EXECUTIVE");
+        }
+        if(preferences.isMultiGen()){
+            preferredFlatTypes.add("MULTI-GENERATION");
+        }
 
         requestMap.put("preferred_flat_type", preferredFlatTypes.toArray(new String[0]));
         //shall not be empty
 
-        //put low price and high price, because the setting is not record the exact price
-        //use mock data instead
-        if(preferences.isLowPriceRange()){
-            requestMap.put("low_price", 200000);
-            requestMap.put("high_price", 400000);
-        }
+        requestMap.put("low_price", preferences.getLowPrice());
+        requestMap.put("high_price", preferences.getHighPrice());
 
-        if(preferences.isMidPriceRange()){
-            requestMap.put("low_price", 400000);
-            requestMap.put("high_price", 600000);
-        }
-
-        if(preferences.isHighPriceRange()){
-            requestMap.put("low_price", 600000);
-            requestMap.put("high_price", 800000);
-        }
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestMap, headers);
 

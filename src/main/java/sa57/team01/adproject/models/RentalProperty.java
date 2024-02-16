@@ -16,4 +16,12 @@ public class RentalProperty extends Property {
     public RentalProperty() {
         super();
     }
+
+    @Override
+    public void randomize() {
+        super.randomize();
+        this.setContractMonthPeriod((int) (Math.random() * 12) + 1);
+        this.setForSale(false);
+        this.setPropertyStatus(PropertyStatus.forRent);
+    }
 }

@@ -21,5 +21,14 @@ public class SaleProperty extends Property {
     public SaleProperty(){
         super();
     }
+
+    @Override
+    public void randomize() {
+        super.randomize();
+        this.setLeaseCommenceDate(LocalDate.of(1972, 5, 1).plusMonths((int) (Math.random() * 400) + 1));
+        this.setRemainingLease(60 * 12 + (int) (Math.random() * 400) + 1);
+        this.setForSale(true);
+        this.setPropertyStatus(PropertyStatus.forSale);
+    }
 }
 

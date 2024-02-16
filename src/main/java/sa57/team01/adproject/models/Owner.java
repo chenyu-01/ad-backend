@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 public class Owner extends Customer{
 
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "owner") // owner is column name in Property table
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "owner") // owner is column name in Property table
     private List<Property> properties;
 
     @OneToMany(mappedBy = "contactCustomer") // contactCustomer is column name in Appointment table
@@ -23,6 +23,12 @@ public class Owner extends Customer{
 
     public Owner() {
         super();
+    }
+
+    @Override
+    public void randomize() {
+        super.randomize();
+        this.setRole("Owner");
     }
 
 }

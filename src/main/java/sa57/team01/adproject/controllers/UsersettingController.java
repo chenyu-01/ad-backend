@@ -1,5 +1,6 @@
 package sa57.team01.adproject.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,9 +12,7 @@ import sa57.team01.adproject.DTO.CustomerDTO;
 import sa57.team01.adproject.DTO.MixPropertyDTO;
 import sa57.team01.adproject.DTO.PreferencesDTO;
 import sa57.team01.adproject.DTO.ProfileDTO;
-import sa57.team01.adproject.models.Customer;
-import sa57.team01.adproject.models.PropertyStatus;
-import sa57.team01.adproject.models.TownName;
+import sa57.team01.adproject.models.*;
 import sa57.team01.adproject.repositories.CustomerReposity;
 import sa57.team01.adproject.services.CustomerService;
 
@@ -36,7 +35,6 @@ public class UsersettingController {
 
     @GetMapping("/getProfile")
     public ResponseEntity<?> getProfileByCustomerId(HttpSession session) {
-
         if (session.getAttribute("customerId") == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");
         }
@@ -105,19 +103,30 @@ public class UsersettingController {
             return customerService.saveProperty(id,mixPropertyDTO,result);
 
         }catch (Exception e){
+            System.out.println("错误");
             response.put("message",e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
-    @GetMapping("/getTownName")
-    public ResponseEntity<?> getTownName(){
+    @GetMapping("/getTownNames")
+    public ResponseEntity<?> getTownNames(){
         return new ResponseEntity<>(Arrays.asList(TownName.values()).stream().map(Enum::name).toList(),HttpStatus.OK);
     }
 
     @GetMapping("/getPropertyStatus")
     public ResponseEntity<?> getPropertyStatus(){
         return new ResponseEntity<>(Arrays.asList(PropertyStatus.values()).stream().map(Enum::name).toList(),HttpStatus.OK);
+    }
+
+    @GetMapping("/getFlatTypes")
+    public ResponseEntity<?> getFlatTypes(){
+        return new ResponseEntity<>(Arrays.asList(FlatType.values()).stream().map(Enum::name).toList(),HttpStatus.OK);
+    }
+
+    @GetMapping("/getFlatModels")
+    public ResponseEntity<?> getFlatModels(){
+        return new ResponseEntity<>(Arrays.asList(FlatModel.values()).stream().map(Enum::name).toList(),HttpStatus.OK);
     }
 
     @GetMapping("/getPropertyList")

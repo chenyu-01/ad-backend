@@ -40,7 +40,10 @@ public class Appointment {
     }
 
     public Appointment() {
+        this.status = AppointmentStatus.pending;
     }
+
+
 
 
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,6 +21,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.*;
 
+@Transactional
 @Service
 public class CustomerServiceImpl implements CustomerService {
     @Value("${upload.path}") // Define this property in your application.properties
@@ -29,7 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     public CustomerReposity customerReposity;
 
-    public PreferencesReposity preferencesReposity;
+    public PreferencesRepository preferencesRepository;
 
     public OwnerReposity ownerReposity;
 
@@ -46,13 +48,13 @@ public class CustomerServiceImpl implements CustomerService {
     public AppointmentReposity appointmentReposity;
 
     @Autowired
-    public CustomerServiceImpl(CustomerReposity customerReposity, PreferencesReposity preferencesReposity,
+    public CustomerServiceImpl(CustomerReposity customerReposity, PreferencesRepository preferencesRepository,
                                OwnerReposity ownerReposity, PropertyReposity propertyReposity,
                                SalePropertyReposity salePropertyReposity, RentalPropertyReposity rentalPropertyReposity,
                                BuyerReposity buyerReposity,RentalSeekerReposity rentalSeekerReposity,
                                AppointmentReposity appointmentReposity) {
         this.customerReposity = customerReposity;
-        this.preferencesReposity = preferencesReposity;
+        this.preferencesRepository = preferencesRepository;
         this.ownerReposity = ownerReposity;
         this.propertyReposity = propertyReposity;
         this.salePropertyReposity = salePropertyReposity;
@@ -120,9 +122,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
         Customer customer = optCustomer.get();
         Preferences preferences = customer.getPreferences();
-        PreferencesDTO preferencesDTO = new PreferencesDTO(preferences.isBedroom1(), preferences.isBedroom2(),
-                preferences.isBedroom3(), preferences.isBedroom4(), preferences.getTown(), preferences.getStoryRange(),
-                preferences.isLowPriceRange(), preferences.isMidPriceRange(), preferences.isHighPriceRange());
+        PreferencesDTO preferencesDTO = new PreferencesDTO(preferences);
         return new ResponseEntity<>(preferencesDTO, HttpStatus.OK);
     }
 
@@ -139,16 +139,8 @@ public class CustomerServiceImpl implements CustomerService {
         }
         Customer customer = optCustomer.get();
         Preferences preferences = customer.getPreferences();
-        preferences.setBedroom1(preferencesDTO.isBedroom1());
-        preferences.setBedroom2(preferencesDTO.isBedroom2());
-        preferences.setBedroom3(preferencesDTO.isBedroom3());
-        preferences.setBedroom4(preferencesDTO.isBedroom4());
-        preferences.setTown(preferencesDTO.getTown());
-        preferences.setStoryRange(preferencesDTO.getStoryRange());
-        preferences.setLowPriceRange(preferencesDTO.isLowPriceRange());
-        preferences.setMidPriceRange(preferencesDTO.isMidPriceRange());
-        preferences.setHighPriceRange(preferencesDTO.isHighPriceRange());
-        preferencesReposity.save(preferences);
+        preferences.updatePreferences(preferencesDTO);
+        preferencesRepository.save(preferences);
         response.put("message", "Successfully Updated Preferences");
         return new ResponseEntity<>(response, HttpStatus.OK);
 
@@ -167,7 +159,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
         Long propertyId = mixPropertyDTO.getId();
         PropertyStatus currentPropertyStatus = PropertyStatus.valueOf(mixPropertyDTO.getPropertyStatus());
-        if(propertyId == null){
+        if(propertyId == null || propertyId == 0){
             if(currentPropertyStatus.equals(PropertyStatus.forSale) || currentPropertyStatus.equals(PropertyStatus.soldOut)){
                 SaleProperty saleProperty = new SaleProperty();
                 salePropertyReposity.save(DTOtoSaleProperty(id,saleProperty,mixPropertyDTO));
@@ -229,24 +221,23 @@ public class CustomerServiceImpl implements CustomerService {
     public SaleProperty DTOtoSaleProperty(long id,SaleProperty saleProperty,MixPropertyDTO mixPropertyDTO){
         saleProperty.setTown(TownName.valueOf(mixPropertyDTO.getTown()));
         saleProperty.setPropertyStatus(PropertyStatus.valueOf(mixPropertyDTO.getPropertyStatus()));
-        saleProperty.setFlatType(Integer.parseInt(mixPropertyDTO.getFlatType()));
+        saleProperty.setFlatType(FlatType.valueOf((mixPropertyDTO.getFlatType())));
         saleProperty.setStoreyRange(mixPropertyDTO.getStoreyRange());
         saleProperty.setStreetName(mixPropertyDTO.getStreetName());
         saleProperty.setFloorArea(Integer.parseInt(mixPropertyDTO.getFloorArea()));
         saleProperty.setBlock(mixPropertyDTO.getBlock());
         saleProperty.setOwner(ownerReposity.findById(id).get());
         saleProperty.setPrice(Double.parseDouble(mixPropertyDTO.getPrice()));
-        saleProperty.setRemainingLease(Integer.parseInt(mixPropertyDTO.getRemainingLease()));
         saleProperty.setLeaseCommenceDate(LocalDate.parse(mixPropertyDTO.getLeaseCommenceDate()));
-        saleProperty.setBedrooms(Integer.parseInt(mixPropertyDTO.getBedrooms()));
         saleProperty.setImageUrl(mixPropertyDTO.getImageUrl());
+        saleProperty.setFlatModel(FlatModel.valueOf(mixPropertyDTO.getFlatModel()));
         return saleProperty;
     }
 
     public RentalProperty DTOtoRentalProperty(long id,RentalProperty rentalProperty,MixPropertyDTO mixPropertyDTO){
         rentalProperty.setTown(TownName.valueOf(mixPropertyDTO.getTown()));
         rentalProperty.setPropertyStatus(PropertyStatus.valueOf(mixPropertyDTO.getPropertyStatus()));
-        rentalProperty.setFlatType(Integer.parseInt(mixPropertyDTO.getFlatType()));
+        rentalProperty.setFlatType(FlatType.valueOf((mixPropertyDTO.getFlatType())));
         rentalProperty.setStoreyRange(mixPropertyDTO.getStoreyRange());
         rentalProperty.setStreetName(mixPropertyDTO.getStreetName());
         rentalProperty.setFloorArea(Integer.parseInt(mixPropertyDTO.getFloorArea()));
@@ -254,8 +245,8 @@ public class CustomerServiceImpl implements CustomerService {
         rentalProperty.setOwner(ownerReposity.findById(id).get());
         rentalProperty.setPrice(Double.parseDouble(mixPropertyDTO.getPrice()));
         rentalProperty.setContractMonthPeriod(Integer.parseInt(mixPropertyDTO.getContractMonthPeriod()));
-        rentalProperty.setBedrooms(Integer.parseInt(mixPropertyDTO.getBedrooms()));
         rentalProperty.setImageUrl(mixPropertyDTO.getImageUrl());
+        rentalProperty.setFlatModel(FlatModel.valueOf(mixPropertyDTO.getFlatModel()));
         return rentalProperty;
     }
 
@@ -280,7 +271,6 @@ public class CustomerServiceImpl implements CustomerService {
     public MixPropertyDTO propertyConvertToDTO(Property property){
         MixPropertyDTO mixPropertyDTO = new MixPropertyDTO();
         mixPropertyDTO.setId(property.getPropertyid());
-        mixPropertyDTO.setBedrooms(String.valueOf(property.getBedrooms()));
         mixPropertyDTO.setStoreyRange(property.getStoreyRange());
         mixPropertyDTO.setStreetName(property.getStreetName());
         mixPropertyDTO.setFloorArea(String.valueOf(property.getFloorArea()));
@@ -291,10 +281,10 @@ public class CustomerServiceImpl implements CustomerService {
         mixPropertyDTO.setTown(String.valueOf(property.getTown()));
         mixPropertyDTO.setOwnerid(property.getOwner().getCustomerId());
         mixPropertyDTO.setImageUrl(property.getImageUrl());
+        mixPropertyDTO.setFlatModel(String.valueOf(property.getFlatModel()));
         PropertyStatus propertyStatus = property.getPropertyStatus();
         if(propertyStatus.equals(PropertyStatus.forSale) || propertyStatus.equals(PropertyStatus.soldOut)){
             SaleProperty saleProperty = salePropertyReposity.findById(property.getPropertyid()).get();
-            mixPropertyDTO.setRemainingLease(String.valueOf(saleProperty.getRemainingLease()));
             mixPropertyDTO.setLeaseCommenceDate(String.valueOf(saleProperty.getLeaseCommenceDate()));
             return mixPropertyDTO;
         }
@@ -333,10 +323,9 @@ public class CustomerServiceImpl implements CustomerService {
             mixPropertyDTO.setOwnerid(saleProperty.getOwner().getCustomerId());
             mixPropertyDTO.setPrice(String.valueOf(saleProperty.getPrice()));
             mixPropertyDTO.setBlock(saleProperty.getBlock());
-            mixPropertyDTO.setBedrooms(String.valueOf(saleProperty.getBedrooms()));
             mixPropertyDTO.setLeaseCommenceDate(String.valueOf(saleProperty.getLeaseCommenceDate()));
-            mixPropertyDTO.setRemainingLease(String.valueOf(saleProperty.getRemainingLease()));
             mixPropertyDTO.setImageUrl(saleProperty.getImageUrl());
+            mixPropertyDTO.setFlatModel(String.valueOf(saleProperty.getFlatModel()));
             return new ResponseEntity<>(mixPropertyDTO,HttpStatus.OK);
 
         }
@@ -352,9 +341,9 @@ public class CustomerServiceImpl implements CustomerService {
         mixPropertyDTO.setOwnerid(rentalProperty.getOwner().getCustomerId());
         mixPropertyDTO.setPrice(String.valueOf(rentalProperty.getPrice()));
         mixPropertyDTO.setBlock(rentalProperty.getBlock());
-        mixPropertyDTO.setBedrooms(String.valueOf(rentalProperty.getBedrooms()));
         mixPropertyDTO.setContractMonthPeriod(String.valueOf(rentalProperty.getContractMonthPeriod()));
         mixPropertyDTO.setImageUrl(rentalProperty.getImageUrl());
+        mixPropertyDTO.setBlock(String.valueOf(rentalProperty.getFlatModel()));
         return new ResponseEntity<>(mixPropertyDTO,HttpStatus.OK);
 
     }
