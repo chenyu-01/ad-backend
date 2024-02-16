@@ -127,8 +127,8 @@ public class PropertyController {
         else{
             result = recommend_first;
         }
-
-
+        return ResponseEntity.ok(result);
+    }
 
     @PostMapping("/list/sort/{sortDirection}")
     public ResponseEntity<?> sortProperties(@PathVariable("sortDirection") String sortDirection) {
@@ -152,10 +152,6 @@ public class PropertyController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR); // return 500 Internal Server Error
         }
-    }
-
-
-        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/predict/{id}")
