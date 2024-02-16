@@ -122,9 +122,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
         Customer customer = optCustomer.get();
         Preferences preferences = customer.getPreferences();
-        PreferencesDTO preferencesDTO = new PreferencesDTO(preferences.isBedroom1(), preferences.isBedroom2(),
-                preferences.isBedroom3(), preferences.isBedroom4(), preferences.getTown(), preferences.getStoryRange(),
-                preferences.isLowPriceRange(), preferences.isMidPriceRange(), preferences.isHighPriceRange());
+        PreferencesDTO preferencesDTO = new PreferencesDTO(preferences);
         return new ResponseEntity<>(preferencesDTO, HttpStatus.OK);
     }
 
@@ -141,15 +139,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
         Customer customer = optCustomer.get();
         Preferences preferences = customer.getPreferences();
-        preferences.setBedroom1(preferencesDTO.isBedroom1());
-        preferences.setBedroom2(preferencesDTO.isBedroom2());
-        preferences.setBedroom3(preferencesDTO.isBedroom3());
-        preferences.setBedroom4(preferencesDTO.isBedroom4());
-        preferences.setTown(preferencesDTO.getTown());
-        preferences.setStoryRange(preferencesDTO.getStoryRange());
-        preferences.setLowPriceRange(preferencesDTO.isLowPriceRange());
-        preferences.setMidPriceRange(preferencesDTO.isMidPriceRange());
-        preferences.setHighPriceRange(preferencesDTO.isHighPriceRange());
+        preferences.updatePreferences(preferencesDTO);
         preferencesRepository.save(preferences);
         response.put("message", "Successfully Updated Preferences");
         return new ResponseEntity<>(response, HttpStatus.OK);

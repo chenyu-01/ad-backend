@@ -48,8 +48,13 @@ public class DataLoader {
             propertyService.deleteAll();
             List<Customer> listCustomer = new ArrayList<>();
             // add preference
-            Preferences preferencesBuyer = preferencesRepository.save(new Preferences(true, true, true, true, TownName.QUEENSTOWN, 10, true, true, true));
-            Preferences preferencesOwner = preferencesRepository.save(new Preferences(true, true, true, true, TownName.QUEENSTOWN, 10, true, true, true));
+            Preferences preferencesBuyer = new Preferences();
+            preferencesBuyer.randomize();
+            preferencesBuyer = preferencesRepository.save(preferencesBuyer);
+
+            Preferences preferencesOwner = new Preferences();
+            preferencesOwner.randomize();
+            preferencesOwner = preferencesRepository.save(preferencesOwner);
             // add buyer
             Buyer buyer = new Buyer();
             buyer.setName("buyer");
@@ -58,8 +63,9 @@ public class DataLoader {
             buyer.setContactNumber("123");
             buyer.setPreferences(preferencesBuyer);
             buyer.setRole("buyer");
-            buyerReposity.save(buyer);
+            buyer = buyerReposity.save(buyer);
             listCustomer.add(buyer);
+
             // add owner
             Owner owner = new Owner();
             owner.setRole("owner");
@@ -68,7 +74,7 @@ public class DataLoader {
             owner.setPassword("234");
             owner.setContactNumber("234");
             owner.setPreferences(preferencesOwner);
-            ownerReposity.save(owner);
+            owner = ownerReposity.save(owner);
             List<Property> listProperty = new ArrayList<>();
             List<Owner> listOwner = new ArrayList<>();
             listOwner.add(owner);

@@ -48,22 +48,7 @@ public class RecommendationService {
         requestMap.put("preferred_flat_type", preferredFlatTypes.toArray(new String[0]));
         //shall not be empty
 
-        //put low price and high price, because the setting is not record the exact price
-        //use mock data instead
-        if(preferences.isLowPriceRange()){
-            requestMap.put("low_price", 200000);
-            requestMap.put("high_price", 400000);
-        }
 
-        if(preferences.isMidPriceRange()){
-            requestMap.put("low_price", 400000);
-            requestMap.put("high_price", 600000);
-        }
-
-        if(preferences.isHighPriceRange()){
-            requestMap.put("low_price", 600000);
-            requestMap.put("high_price", 800000);
-        }
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestMap, headers);
 
