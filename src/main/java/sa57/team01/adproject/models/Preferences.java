@@ -37,14 +37,42 @@ public class Preferences {
 
     public void updatePreferences(Map<String, Object> other){
         try {
-            this.bedroom1 = Boolean.parseBoolean(other.get("one_ROOM").toString());
-            this.bedroom2 = Boolean.parseBoolean(other.get("two_ROOM").toString());
-            this.bedroom3 = Boolean.parseBoolean(other.get("three_ROOM").toString());
-            this.bedroom4 = Boolean.parseBoolean(other.get("four_ROOM").toString());
-            this.bedroom5 = Boolean.parseBoolean(other.get("five_ROOM").toString());
-            this.executive = Boolean.parseBoolean(other.get("executive").toString());
-            this.multiGen =  Boolean.parseBoolean(other.get("multi_GENERATION").toString());
-            if(String.valueOf(other.get("town")).isEmpty())
+            if(String.valueOf(other.get("one_ROOM")).isEmpty() || other.get("one_ROOM") == null)
+                this.bedroom1 = false;
+            else
+                this.bedroom1 = Boolean.parseBoolean(other.get("one_ROOM").toString());
+
+            if(String.valueOf(other.get("two_ROOM")).isEmpty() || other.get("two_ROOM") == null)
+                this.bedroom2 = false;
+            else
+                this.bedroom2 = Boolean.parseBoolean(other.get("two_ROOM").toString());
+
+            if(String.valueOf(other.get("three_ROOM")).isEmpty() || other.get("three_ROOM") == null)
+                this.bedroom3 = false;
+            else
+                this.bedroom3 = Boolean.parseBoolean(other.get("three_ROOM").toString());
+
+            if(String.valueOf(other.get("four_ROOM")).isEmpty() || other.get("four_ROOM") == null)
+                this.bedroom4 = false;
+            else
+                this.bedroom4 = Boolean.parseBoolean(other.get("four_ROOM").toString());
+
+            if(String.valueOf(other.get("five_ROOM")).isEmpty() || other.get("five_ROOM") == null)
+                this.bedroom5 = false;
+            else
+                this.bedroom5 = Boolean.parseBoolean(other.get("five_ROOM").toString());
+
+            if(String.valueOf(other.get("executive")).isEmpty() || other.get("executive") == null)
+                this.executive = false;
+            else
+                this.executive = Boolean.parseBoolean(other.get("executive").toString());
+
+            if(String.valueOf(other.get("multi_GENERATION")).isEmpty() || other.get("multi_GENERATION") == null)
+                this.multiGen = false;
+            else
+                this.multiGen = Boolean.parseBoolean(other.get("multi_GENERATION").toString());
+
+            if(String.valueOf(other.get("town")).isEmpty() || other.get("town") == null)
                 this.town = TownName.ANG_MO_KIO;
             else
                 this.town = TownName.valueOf((String) other.get("town"));
