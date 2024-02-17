@@ -121,4 +121,7 @@ public class Property {
     }
 
 
+    public boolean isBooked() {
+        return appointment != null;
+    }
 }

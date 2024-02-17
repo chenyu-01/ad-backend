@@ -155,7 +155,8 @@ public class PropertyController {
         Map<String, Object> response = Map.of(
                 "town", property.getTown().toString(),
                 "price", property.getPrice(),
-                "imageUrl", property.getImageUrl()
+                "imageUrl", property.getImageUrl(),
+                "id", property.getPropertyid()
         );
         return ResponseEntity.ok(response);
     }

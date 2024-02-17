@@ -16,6 +16,7 @@ public class AppointmentDTO implements Serializable {
     private Long propertyId;
     private String contactNumber;
     private String status;
+    private String propertyName;
 
 
 
@@ -27,5 +28,6 @@ public class AppointmentDTO implements Serializable {
         this.propertyId = appointment.getProperty().getPropertyid();
         this.contactNumber = appointment.getContactCustomer().getContactNumber();
         this.status = appointment.getStatus().toString();
+        this.propertyName = appointment.getProperty().getStreetName();
     }
 }
