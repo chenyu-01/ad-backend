@@ -155,8 +155,19 @@ public class PropertyController {
         Map<String, Object> response = Map.of(
                 "town", property.getTown().toString(),
                 "price", property.getPrice(),
-                "imageUrl", property.getImageUrl()
+                "imageUrl", property.getImageUrl(),
+                "id", property.getPropertyid()
         );
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/fetchImg/{propertyId}")
+    public ResponseEntity<?> fetchImg(@PathVariable long propertyId){
+        try {
+            String imageUrl = propertyService.findPropertyById(propertyId).getImageUrl();
+            return ResponseEntity.ok(imageUrl);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
