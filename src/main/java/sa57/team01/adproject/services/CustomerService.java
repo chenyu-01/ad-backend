@@ -17,7 +17,7 @@ public interface CustomerService {
     ResponseEntity<?> getProfile(long id);
     ResponseEntity<?> saveProfile(long id,ProfileDTO profileDTO, BindingResult result);
     ResponseEntity<?> getPreferences(long id);
-    ResponseEntity<?> savePreferences(long id, PreferencesDTO preferencesDTO, BindingResult result);
+    ResponseEntity<?> savePreferences(long id, Map<String,Object> preferencesDTO, BindingResult result);
     ResponseEntity<?> saveProperty(long id, MixPropertyDTO mixPropertyDTO, BindingResult result);
     ResponseEntity<?> getPropertyLists(long id);
 

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import sa57.team01.adproject.DTO.PreferencesDTO;
 
+import java.util.Map;
+
 @Entity
 @Getter
 @Setter
@@ -33,18 +35,22 @@ public class Preferences {
         super();
     }
 
-    public void updatePreferences(PreferencesDTO other){
-        this.bedroom1 = other.isONE_ROOM();
-        this.bedroom2 = other.isTWO_ROOM();
-        this.bedroom3 = other.isTHREE_ROOM();
-        this.bedroom4 = other.isFOUR_ROOM();
-        this.bedroom5 = other.isFIVE_ROOM();
-        this.executive = other.isEXECUTIVE();
-        this.multiGen = other.isMULTI_GENERATION();
-        this.town = other.getTown();
-        this.storyRange = other.getStoryRange();
-        this.lowPrice = other.getLowPrice();
-        this.highPrice = other.getHighPrice();
+    public void updatePreferences(Map<String, Object> other){
+        try {
+            this.bedroom1 = Boolean.parseBoolean(other.get("one_ROOM").toString());
+            this.bedroom2 = Boolean.parseBoolean(other.get("two_ROOM").toString());
+            this.bedroom3 = Boolean.parseBoolean(other.get("three_ROOM").toString());
+            this.bedroom4 = Boolean.parseBoolean(other.get("four_ROOM").toString());
+            this.bedroom5 = Boolean.parseBoolean(other.get("five_ROOM").toString());
+            this.executive = Boolean.parseBoolean(other.get("executive").toString());
+            this.multiGen =  Boolean.parseBoolean(other.get("multi_GENERATION").toString());
+            this.town = TownName.valueOf((String) other.get("town"));
+            this.storyRange = Integer.parseInt(other.get("storyRange").toString());
+            this.lowPrice = Integer.parseInt(other.get("lowPrice").toString());
+            this.highPrice = Integer.parseInt(other.get("highPrice").toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void randomize() {
