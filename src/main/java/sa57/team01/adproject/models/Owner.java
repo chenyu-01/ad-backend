@@ -28,7 +28,7 @@ public class Owner extends Customer{
     @Override
     public void randomize() {
         super.randomize();
-        this.setRole("Owner");
+        this.setRole("owner");
     }
 
 }

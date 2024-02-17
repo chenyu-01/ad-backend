@@ -6,4 +6,5 @@ import sa57.team01.adproject.models.Owner;
 
 @Repository
 public interface OwnerReposity extends JpaRepository<Owner, Long> {
+
 }

@@ -44,7 +44,10 @@ public class Preferences {
             this.bedroom5 = Boolean.parseBoolean(other.get("five_ROOM").toString());
             this.executive = Boolean.parseBoolean(other.get("executive").toString());
             this.multiGen =  Boolean.parseBoolean(other.get("multi_GENERATION").toString());
-            this.town = TownName.valueOf((String) other.get("town"));
+            if(String.valueOf(other.get("town")).isEmpty())
+                this.town = TownName.ANG_MO_KIO;
+            else
+                this.town = TownName.valueOf((String) other.get("town"));
             this.storyRange = Integer.parseInt(other.get("storyRange").toString());
             this.lowPrice = Integer.parseInt(other.get("lowPrice").toString());
             this.highPrice = Integer.parseInt(other.get("highPrice").toString());
