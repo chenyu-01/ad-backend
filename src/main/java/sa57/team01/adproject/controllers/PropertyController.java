@@ -121,13 +121,24 @@ public class PropertyController {
                     })
                     .takeWhile(Objects::nonNull)
                     .distinct()
-                    .limit(10)
+                    .limit(8)
                     .collect(Collectors.toList());
         }
         else{
             result = recommend_first;
         }
-        return ResponseEntity.ok(result);
+
+        List<Property> recommendedProperties = recommendationService.getRecommendedPropertiesByIds(result);
+        List<PropertyDTO> propertyDTOS = recommendedProperties.stream()
+                .map(PropertyDTO::new)
+                .toList();
+
+        Map<String, Object> response = Map.of(
+                "properties", propertyDTOS,
+                "totalRecords", propertyDTOS.size(),
+                "status", HttpStatus.OK
+        );
+        return new ResponseEntity<>(response,HttpStatus.OK); // return 200 OK
     }
 
     @PostMapping("/list/sort/{sortDirection}")
@@ -169,5 +180,7 @@ public class PropertyController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
 
 }

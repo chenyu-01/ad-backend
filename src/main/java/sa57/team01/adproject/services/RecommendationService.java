@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import sa57.team01.adproject.models.Customer;
 import sa57.team01.adproject.models.Preferences;
+import sa57.team01.adproject.models.Property;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -16,6 +17,9 @@ import java.util.Map;
 
 @Service
 public class RecommendationService {
+
+    @Autowired
+    private PropertyService propertyService;
 
     public List<Long> getRecommendationsForNewCustomer(Customer customer) {
         RestTemplate restTemplate = new RestTemplate();
@@ -86,5 +90,10 @@ public class RecommendationService {
         Gson gson = new Gson();
         Map<String, List<Long>> resultMap = gson.fromJson(response.getBody(), new TypeToken<Map<String, List<Long>>>(){}.getType());
         return resultMap.get("recommendation");
+    }
+
+    public List<Property> getRecommendedPropertiesByIds(List<Long> propertyIds) {
+        // Assuming you have a PropertyService to fetch properties
+        return propertyService.getPropertiesByIds(propertyIds);
     }
 }

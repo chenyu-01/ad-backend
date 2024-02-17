@@ -188,5 +188,9 @@ public class PropertyServiceImpl implements PropertyService {
         return propertyReposity.findAll();
     }
 
+    public List<Property> getPropertiesByIds(List<Long> propertyIds) {
+        return propertyReposity.findAllById(propertyIds);
+    }
+
 
 }
