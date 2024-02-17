@@ -139,6 +139,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
         Customer customer = optCustomer.get();
         Preferences preferences = customer.getPreferences();
+        System.out.println("impl低价"+preferencesDTO.getLowPrice());
         preferences.updatePreferences(preferencesDTO);
         preferencesRepository.save(preferences);
         response.put("message", "Successfully Updated Preferences");
