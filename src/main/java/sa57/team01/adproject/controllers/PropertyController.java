@@ -160,4 +160,14 @@ public class PropertyController {
         );
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/fetchImg/{propertyId}")
+    public ResponseEntity<?> fetchImg(@PathVariable long propertyId){
+        try {
+            String imageUrl = propertyService.findPropertyById(propertyId).getImageUrl();
+            return ResponseEntity.ok(imageUrl);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
