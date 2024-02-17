@@ -18,4 +18,6 @@ public interface PropertyService {
     ResponseEntity<?> uploadImage(long propertyId, MultipartFile file);
 
     void deleteAll();
+
+    Property findById(Long id);
 }
