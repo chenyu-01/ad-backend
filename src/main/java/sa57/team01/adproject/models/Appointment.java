@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -36,7 +38,12 @@ public class Appointment {
     private AppointmentStatus status;
 
     public Appointment(Owner owner, Buyer buyer, Property saleProperty, String appointmentDate) {
-
+        this.contactCustomer = owner;
+        this.requestCustomer = buyer;
+        this.property = saleProperty;
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+        this.date = ZonedDateTime.parse(appointmentDate, formatter).toLocalDate();
+        this.status = AppointmentStatus.pending;
     }
 
     public Appointment() {

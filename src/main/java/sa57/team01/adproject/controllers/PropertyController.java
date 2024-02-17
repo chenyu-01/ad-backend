@@ -108,7 +108,7 @@ public class PropertyController {
 
         List<Long> recommend_first = recommendationService.getRecommendationsForNewCustomer(customer);
 
-        if (!interactionService.findByUserId(customer.getId()).isEmpty()) {
+        if (interactionService.findByUserId(customer.getId()).isEmpty()) {
             List<Long> recommend_second = recommendationService.getRecommendationsForExistingCustomer(customer);
 
             //merge two list and remove duplicate, 3 from first and 7 from second
