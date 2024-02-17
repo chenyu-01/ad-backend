@@ -44,7 +44,8 @@ public class CustomerController {
                 "msg", "login ok",
                 "status", HttpStatus.OK,
                 "sessionID",session.getId(),
-                "role",role
+                "role",role,
+                "customerid",id
         );
         return new ResponseEntity<>(response, HttpStatus.OK); // return 200 OK
     }
