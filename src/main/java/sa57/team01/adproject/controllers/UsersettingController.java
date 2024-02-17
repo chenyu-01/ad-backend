@@ -89,8 +89,6 @@ public class UsersettingController {
         }
     }
 
-
-
     @PostMapping("/saveProperty")
     public ResponseEntity<?> savePropertyByCustomerId(HttpSession session,
                                                       @RequestBody MixPropertyDTO mixPropertyDTO, BindingResult result) {
@@ -185,7 +183,6 @@ public class UsersettingController {
     public ResponseEntity<?> deleteProperty(@PathVariable("propertyid") long propertyid){
         return customerService.deleteProperty(propertyid);
     }
-
 
     @PostMapping("/upload/{propertyId}")
     public ResponseEntity<?> uploadImage(@PathVariable String propertyId, @RequestParam("image") MultipartFile file) {

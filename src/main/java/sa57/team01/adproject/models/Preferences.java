@@ -34,13 +34,13 @@ public class Preferences {
     }
 
     public void updatePreferences(PreferencesDTO other){
-        this.bedroom1 = other.isBedroom1();
-        this.bedroom2 = other.isBedroom2();
-        this.bedroom3 = other.isBedroom3();
-        this.bedroom4 = other.isBedroom4();
-        this.bedroom5 = other.isBedroom5();
-        this.executive = other.isExecutive();
-        this.multiGen = other.isMultiGen();
+        this.bedroom1 = other.isONE_ROOM();
+        this.bedroom2 = other.isTWO_ROOM();
+        this.bedroom3 = other.isTHREE_ROOM();
+        this.bedroom4 = other.isFOUR_ROOM();
+        this.bedroom5 = other.isFIVE_ROOM();
+        this.executive = other.isEXECUTIVE();
+        this.multiGen = other.isMULTI_GENERATION();
         this.town = other.getTown();
         this.storyRange = other.getStoryRange();
         this.lowPrice = other.getLowPrice();

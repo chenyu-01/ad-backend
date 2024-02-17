@@ -163,6 +163,11 @@ public class PropertyServiceImpl implements PropertyService {
 
 
 
+    @Override
+    public Property findById(Long id) {
+        return propertyReposity.findById(id).orElse(null);
+    }
+
     public void deleteProperty(Long id) {
         propertyReposity.deleteById(id);
     }

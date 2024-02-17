@@ -181,6 +181,15 @@ public class PropertyController {
         }
     }
 
+    @GetMapping("/dashboard/{id}")
+    public ResponseEntity<?> getDashboard(@PathVariable Long id) {
+        Property property = propertyService.findById(id);
 
-
+        Map<String, Object> response = Map.of(
+                "town", property.getTown().toString(),
+                "price", property.getPrice(),
+                "imageUrl", property.getImageUrl()
+        );
+        return ResponseEntity.ok(response);
+    }
 }

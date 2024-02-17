@@ -25,4 +25,6 @@ public interface PropertyService {
     List<Property> getAllProperties();
 
     List<Property> getPropertiesByIds(List<Long> propertyIds);
+
+    Property findById(Long id);
 }
