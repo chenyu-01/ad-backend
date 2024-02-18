@@ -16,12 +16,26 @@ Set up a mysql database with the following properties:
 - username: ${MYSQL_USER}
 - password: ${MYSQL_PASSWORD}
 
+### Set up environment variables in the `application.properties`
+- MYSQL_USER - the username of the mysql database
+- MYSQL_PASSWORD - the password of the mysql database
+- EXTERNAL - the external storage for serving images in java spring boot
+> it should be empty and do not store image files because in commandlineRunner, all images in that folder will be deleted.
+
+### If you are using Mac or Linux
+in main/java/sa57/team01/adproject/config/WebConfig.java, change the following line
+```
+registry.addResourceHandler("/uploads/**").addResourceLocations(resourceLocation);
+```
+replace `resourceLocattion` with `macLocation`
+
+
 ## REST API Endpoints
 
 - `/api/property/salelist` - GET method, return a list of properties for sale
 - `/api/property/rentlist` - GET method, return a list of properties for rent
 - `/api/property/detail/{id}` - GET, return the detail of a property
-- `/api/property/list/search - POST, search properties, return a list of properties
+- `/api/property/list/search` - POST, search properties, return a list of properties
 - `/api/user/details/{id}` - GET, return the detail of a user
 - `/api/user/login` - POST, login a user
 - `/api/user/logout` - POST, logout a user
@@ -41,6 +55,8 @@ Set up a mysql database with the following properties:
 - `/api/property/recommend/{id}` - GET, recommend properties
 - `/api/property/predict/{id}` - GET, make prediction
 - `/api/property/dashboard/{id}` - GET, display property dashboard for users
+- `/api/property/fetchImg/{propertyId}` - GET, fetch images of a property
+- `/api/property/update/{id}` - POST, update a property
 - `/api/property/fetchImg/{propertyId}` - GET, fetch images of a property
 - `/api/usersetting/getProfile` - GET, get user profile
 
