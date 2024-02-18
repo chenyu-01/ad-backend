@@ -3,6 +3,7 @@ package sa57.team01.adproject.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sa57.team01.adproject.DTO.MixPropertyDTO;
 import sa57.team01.adproject.models.SaleProperty;
 import sa57.team01.adproject.repositories.SalePropertyReposity;
 
@@ -27,6 +28,12 @@ public class SalePropertyServiceImpl implements SalePropertyService{
     @Override
     public SaleProperty findSalePropertyById(Long id) {
         return salePropertyReposity.findById(id).orElse(null);
+    }
+
+    @Override
+    public void updateSaleProperty(SaleProperty saleProperty, MixPropertyDTO propertyDTO) {
+        saleProperty.updateProperty(propertyDTO);
+        salePropertyReposity.save(saleProperty);
     }
 
 }

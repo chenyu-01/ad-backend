@@ -5,4 +5,13 @@ import jakarta.persistence.Enumerated;
 
 public enum PropertyStatus {
     rented,soldOut,forRent,forSale;
+
+    public static PropertyStatus getByName(String propertyStatus) {
+        for (PropertyStatus status : PropertyStatus.values()) {
+            if (status.name().equals(propertyStatus)) {
+                return status;
+            }
+        }
+        return null;
+    }
 }

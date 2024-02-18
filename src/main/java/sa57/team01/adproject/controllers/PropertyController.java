@@ -6,14 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sa57.team01.adproject.DTO.SearchDTO;
-import sa57.team01.adproject.DTO.PropertyDTO;
-import sa57.team01.adproject.DTO.RentalPropertyDTO;
-import sa57.team01.adproject.DTO.SalePropertyDTO;
-import sa57.team01.adproject.models.Customer;
-import sa57.team01.adproject.models.Property;
-import sa57.team01.adproject.models.RentalProperty;
-import sa57.team01.adproject.models.SaleProperty;
+import sa57.team01.adproject.DTO.*;
+import sa57.team01.adproject.models.*;
 import sa57.team01.adproject.services.*;
 
 import java.util.Iterator;
@@ -169,5 +163,33 @@ public class PropertyController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity<?> updateProperty(@PathVariable long id, @RequestBody MixPropertyDTO propertyDTO) {
+        Property property = propertyService.findPropertyById(id);
+        if (property == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        PropertyStatus propertyStatus = property.getPropertyStatus();
+        if (propertyStatus == PropertyStatus.soldOut || propertyStatus == PropertyStatus.rented) {
+            return new ResponseEntity<>("Property is not available for update", HttpStatus.BAD_REQUEST);
+        }
+        if (propertyStatus == PropertyStatus.forRent && propertyDTO.getPropertyStatus() .equals("forSale") ||
+                propertyStatus == PropertyStatus.forSale && propertyDTO.getPropertyStatus() .equals("forRent")){
+            return new ResponseEntity<>("cannot change property type", HttpStatus.BAD_REQUEST);
+        }
+        try {
+            if (property instanceof SaleProperty) {
+                SaleProperty saleProperty = (SaleProperty) property;
+                salePropertyService.updateSaleProperty(saleProperty, propertyDTO);
+            } else {
+                RentalProperty rentalProperty = (RentalProperty) property;
+                rentalPropertyService.updateRentalProperty(rentalProperty, propertyDTO);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

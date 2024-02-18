@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import sa57.team01.adproject.DTO.MixPropertyDTO;
 
 @Getter
 @Setter
@@ -123,5 +124,18 @@ public class Property {
 
     public boolean isBooked() {
         return appointment != null;
+    }
+
+    public void updateProperty(MixPropertyDTO propertyDTO) {
+        this.town = TownName.valueOf(propertyDTO.getTown());
+        this.propertyStatus = PropertyStatus.valueOf(propertyDTO.getPropertyStatus());
+        this.flatType = FlatType.valueOf(propertyDTO.getFlatType());
+        this.storeyRange = propertyDTO.getStoreyRange();
+        this.streetName = propertyDTO.getStreetName();
+        this.floorArea = Integer.parseInt(propertyDTO.getFloorArea());
+        this.block = propertyDTO.getBlock();
+        this.forSale = Boolean.parseBoolean(propertyDTO.getContractMonthPeriod());
+        this.price = Float.parseFloat(propertyDTO.getPrice());
+        this.flatModel = FlatModel.valueOf(propertyDTO.getFlatModel());
     }
 }
