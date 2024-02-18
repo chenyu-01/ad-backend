@@ -197,6 +197,7 @@ public class CustomerServiceImpl implements CustomerService {
                 RentalProperty rentalProperty = new RentalProperty();
                 SaleProperty saleProperty = salePropertyReposity.findById(mixPropertyDTO.getId()).get();
                 rentalProperty.setPropertyid(saleProperty.getPropertyid());
+                propertyReposity.deleteAppointmentByPropertyId(propertyId);
                 salePropertyReposity.delete(saleProperty);
                 rentalPropertyReposity.save(DTOtoRentalProperty(id,rentalProperty,mixPropertyDTO));
             } else {
@@ -213,6 +214,7 @@ public class CustomerServiceImpl implements CustomerService {
                 SaleProperty saleProperty = new SaleProperty();
                 RentalProperty rentalProperty = rentalPropertyReposity.findById(mixPropertyDTO.getId()).get();
                 saleProperty.setPropertyid(saleProperty.getPropertyid());
+                propertyReposity.deleteAppointmentByPropertyId(propertyId);
                 rentalPropertyReposity.delete(rentalProperty);
                 salePropertyReposity.save(DTOtoSaleProperty(id,saleProperty,mixPropertyDTO));
             } else {
