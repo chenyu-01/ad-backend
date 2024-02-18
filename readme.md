@@ -35,6 +35,14 @@ Set up a mysql database with the following properties:
 - Properties
 - `/api/property/list`- GET method, return a list of properties 
 - `/api/property/{id}`- GET, return the detail of a property
+- `/api/property/list/search/` - POST, search properties, return a list of properties 
+- `/api/property/details/{id}` - POST, return the detail of a property
+- `/api/property/upload/{propertyId}` - POST, upload images of a property
+- `/api/property/recommend/{id}` - GET, recommend properties
+- `/api/property/predict/{id}` - GET, make prediction
+- `/api/property/dashboard/{id}` - GET, display property dashboard for users
+- `/api/property/fetchImg/{propertyId}` - GET, fetch images of a property
+- `/api/usersetting/getProfile` - GET, get user profile
 
 ## Set up environment variables
 - MYSQL_USER - the username of the mysql database
