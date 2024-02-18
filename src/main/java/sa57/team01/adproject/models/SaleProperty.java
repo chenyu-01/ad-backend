@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import sa57.team01.adproject.DTO.MixPropertyDTO;
 
 import java.time.LocalDate;
 
@@ -29,6 +30,11 @@ public class SaleProperty extends Property {
         this.setRemainingLease(60 * 12 + (int) (Math.random() * 400) + 1);
         this.setForSale(true);
         this.setPropertyStatus(PropertyStatus.forSale);
+    }
+
+    public void updateProperty(MixPropertyDTO propertyDTO) {
+        super.updateProperty(propertyDTO);
+        this.setLeaseCommenceDate(LocalDate.parse(propertyDTO.getLeaseCommenceDate()));
     }
 }
 

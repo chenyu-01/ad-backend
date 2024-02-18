@@ -14,6 +14,7 @@ import sa57.team01.adproject.models.*;
 import sa57.team01.adproject.repositories.*;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -115,13 +116,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ResponseEntity<?> getPreferences(long id) {
         Map<String, Object> response = new HashMap<>();
-        Optional<Customer> optCustomer = customerReposity.findById(id);
-        if (optCustomer.isEmpty()) {
-            response.put("message", "Customer Not Found");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        Optional<Preferences> Optpreferences = preferencesRepository.findByCustomerId(id);
+        if(Optpreferences.isEmpty()){
+            response.put("prefernces", "null");
+            return new ResponseEntity<>(response,HttpStatus.NO_CONTENT);
         }
-        Customer customer = optCustomer.get();
-        Preferences preferences = customer.getPreferences();
+        Preferences preferences = Optpreferences.get();
         PreferencesDTO preferencesDTO = new PreferencesDTO(preferences);
         return new ResponseEntity<>(preferencesDTO, HttpStatus.OK);
     }
@@ -137,8 +138,16 @@ public class CustomerServiceImpl implements CustomerService {
             response.put("message", "Customer Not Found");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        Customer customer = optCustomer.get();
-        Preferences preferences = customer.getPreferences();
+        Optional<Preferences> Optpreferences = preferencesRepository.findByCustomerId(id);
+        if(Optpreferences.isEmpty()){
+            Preferences newPreferences = new Preferences();
+            newPreferences.updatePreferences(preferencesDTO);
+            optCustomer.get().setPreferences(newPreferences);
+            preferencesRepository.save(newPreferences);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+
+        Preferences preferences = Optpreferences.get();
         preferences.updatePreferences(preferencesDTO);
         preferencesRepository.save(preferences);
         response.put("message", "Successfully Updated Preferences");
@@ -152,9 +161,9 @@ public class CustomerServiceImpl implements CustomerService {
         if (result.hasErrors()) {
             return new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
-        Optional<Owner> optOwner = ownerReposity.findById(id);
-        if (optOwner.isEmpty()) {
-            response.put("message", "Owner Not Found");
+        Optional<Customer> optCustomer = customerReposity.findById(id);
+        if (optCustomer.isEmpty()) {
+            response.put("message", "Customer Not Found");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
         Long propertyId = mixPropertyDTO.getId();
@@ -188,6 +197,7 @@ public class CustomerServiceImpl implements CustomerService {
                 RentalProperty rentalProperty = new RentalProperty();
                 SaleProperty saleProperty = salePropertyReposity.findById(mixPropertyDTO.getId()).get();
                 rentalProperty.setPropertyid(saleProperty.getPropertyid());
+                propertyReposity.deleteAppointmentByPropertyId(propertyId);
                 salePropertyReposity.delete(saleProperty);
                 rentalPropertyReposity.save(DTOtoRentalProperty(id,rentalProperty,mixPropertyDTO));
             } else {
@@ -204,6 +214,7 @@ public class CustomerServiceImpl implements CustomerService {
                 SaleProperty saleProperty = new SaleProperty();
                 RentalProperty rentalProperty = rentalPropertyReposity.findById(mixPropertyDTO.getId()).get();
                 saleProperty.setPropertyid(saleProperty.getPropertyid());
+                propertyReposity.deleteAppointmentByPropertyId(propertyId);
                 rentalPropertyReposity.delete(rentalProperty);
                 salePropertyReposity.save(DTOtoSaleProperty(id,saleProperty,mixPropertyDTO));
             } else {
@@ -219,6 +230,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     public SaleProperty DTOtoSaleProperty(long id,SaleProperty saleProperty,MixPropertyDTO mixPropertyDTO){
+
         saleProperty.setTown(TownName.valueOf(mixPropertyDTO.getTown()));
         saleProperty.setPropertyStatus(PropertyStatus.valueOf(mixPropertyDTO.getPropertyStatus()));
         saleProperty.setFlatType(FlatType.valueOf((mixPropertyDTO.getFlatType())));

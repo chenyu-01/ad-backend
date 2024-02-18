@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sa57.team01.adproject.DTO.MixPropertyDTO;
 import sa57.team01.adproject.models.RentalProperty;
 import sa57.team01.adproject.repositories.RentalPropertyReposity;
 
@@ -28,6 +29,12 @@ public class RentalPropertyServiceImpl implements RentalPropertyService{
     @Override
     public RentalProperty findRentalPropertyById(Long id) {
         return rentalPropertyReposity.findById(id).orElse(null);
+    }
+
+    @Override
+    public void updateRentalProperty(RentalProperty rentalProperty, MixPropertyDTO propertyDTO) {
+        rentalProperty.updateProperty(propertyDTO);
+        rentalPropertyReposity.save(rentalProperty);
     }
 
 

@@ -103,7 +103,6 @@ public class UsersettingController {
             return customerService.saveProperty(id,mixPropertyDTO,result);
 
         }catch (Exception e){
-            System.out.println("错误");
             response.put("message",e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
         }

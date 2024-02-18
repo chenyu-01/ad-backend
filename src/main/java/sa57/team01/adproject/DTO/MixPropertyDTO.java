@@ -33,6 +33,7 @@ public class MixPropertyDTO {
     private String flatModel;
     private long ownerid;
     private String imageUrl;
+    private String remainingLease;
 
     public MixPropertyDTO(){}
     public MixPropertyDTO(Long id,String town,String propertyStatus,String flatType,String storeyRange,

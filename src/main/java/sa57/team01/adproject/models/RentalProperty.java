@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import sa57.team01.adproject.DTO.MixPropertyDTO;
 
 @Entity
 @Getter
@@ -23,5 +24,11 @@ public class RentalProperty extends Property {
         this.setContractMonthPeriod((int) (Math.random() * 12) + 1);
         this.setForSale(false);
         this.setPropertyStatus(PropertyStatus.forRent);
+    }
+
+    @Override
+    public void updateProperty(MixPropertyDTO propertyDTO) {
+        super.updateProperty(propertyDTO);
+        this.setContractMonthPeriod(Integer.parseInt(propertyDTO.getContractMonthPeriod()));
     }
 }
