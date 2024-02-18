@@ -7,7 +7,11 @@ This application is using gradle as build tool and spring boot as framework. It 
 - spring-boot-starter-validation
 - spring-boot-starter-web
 - spring-session-core
-
+## Related repositories
+- [Frontend Next Js](https://github.com/chenyu-01/ad-frontend)
+- [Java Spring Boot](https://github.com/chenyu-01/ad-backend)
+- [Android](https://github.com/preethivenkat5/ad_android)
+- [ML Model](https://github.com/CsCesium/DNN-NCF-Transformer)
 ## How to run
 
 ### Prerequisite
