@@ -28,6 +28,10 @@ Set up a mysql database with the following properties:
 - `/api/user/register` - POST, register a user
 - `/api/user/update` - POST, update a user
 - `/api/appointment/create` - POST, create an appointment
+- `/api/appointment/cancel/{appointmentId}`- DELETE , cancelling an appointment
+- `/api/appointment/getAppointments`- GET , returns appointments for buyer and rental seeker
+- `/api/appointment/getAppointmentsForOwner`- GET, returns appointments for owner
+- `/api/appointment/confirm/{appointmentId}`-GET, confirms appointment
 - Properties
 - `/api/property/list`- GET method, return a list of properties 
 - `/api/property/{id}`- GET, return the detail of a property
