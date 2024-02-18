@@ -127,7 +127,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ResponseEntity<?> savePreferences(long id, PreferencesDTO preferencesDTO, BindingResult result) {
+    public ResponseEntity<?> savePreferences(long id, Map<String, Object> preferencesDTO, BindingResult result) {
         Map<String, Object> response = new HashMap<>();
         if (result.hasErrors()) {
             return new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST);

@@ -37,7 +37,7 @@ public class Appointment {
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 
-    public Appointment(Owner owner, Buyer buyer, Property saleProperty, String appointmentDate) {
+    public Appointment(Owner owner, Customer buyer, Property saleProperty, String appointmentDate) {
         this.contactCustomer = owner;
         this.requestCustomer = buyer;
         this.property = saleProperty;

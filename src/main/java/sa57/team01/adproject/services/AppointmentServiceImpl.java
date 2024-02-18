@@ -64,7 +64,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 
 
     @Override
-    public void createAppointment(Owner owner, Buyer buyer, Property saleProperty, String appointmentDate) {
+    public void createAppointment(Owner owner, Customer buyer, Property saleProperty, String appointmentDate) {
         try {
             Appointment appointment = new Appointment(owner, buyer, saleProperty, appointmentDate);
             appointmentReposity.save(appointment);

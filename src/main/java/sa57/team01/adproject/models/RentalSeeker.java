@@ -12,6 +12,6 @@ public class RentalSeeker extends Customer{
     @Override
     public void randomize() {
         super.randomize();
-        this.setRole("RentalSeeker");
+        this.setRole("rentalSeeker");
     }
 }

@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import sa57.team01.adproject.models.Owner;
 
 @Repository
-public interface OwnerReposity extends JpaRepository<Owner, Long> {
+    public interface OwnerReposity extends JpaRepository<Owner, Long> {
 }

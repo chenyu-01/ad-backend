@@ -22,7 +22,7 @@ public interface AppointmentService {
     void rejectAppointment(long id);
 
 
-    void createAppointment(Owner owner, Buyer buyer, Property saleProperty, String appointmentDate);
+    void createAppointment(Owner owner, Customer buyer, Property saleProperty, String appointmentDate);
 
     void confirmAppointment(Long appointmentId);
 

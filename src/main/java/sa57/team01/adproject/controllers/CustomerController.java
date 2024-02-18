@@ -39,10 +39,13 @@ public class CustomerController {
         }
         long id = customer.getCustomerId();
         session.setAttribute("customerId", id);
+        String role = customer.getRole();
         Map<String, Object> response = Map.of(
                 "msg", "login ok",
                 "status", HttpStatus.OK,
-                "sessionID",session.getId()
+                "sessionID",session.getId(),
+                "role", role,
+                "id", id
         );
         return new ResponseEntity<>(response, HttpStatus.OK); // return 200 OK
     }

@@ -16,6 +16,7 @@ import sa57.team01.adproject.models.*;
 import sa57.team01.adproject.repositories.CustomerReposity;
 import sa57.team01.adproject.services.CustomerService;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +75,8 @@ public class UsersettingController {
 
     @PostMapping("/savePreferences")
     public ResponseEntity<?> savePreferencesByCustomerId(HttpSession session,
-                                                         @RequestBody PreferencesDTO preferenceDTO, BindingResult result) {
+                                                         @RequestBody Map<String, Object> preferenceDTO, BindingResult result) {
+
         Map<String , Object> response = new HashMap<>();
         if (session.getAttribute("customerId") == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login first");

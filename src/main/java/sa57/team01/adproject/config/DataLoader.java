@@ -124,7 +124,7 @@ public class DataLoader {
 
 
             //add appointment
-            for (int i = 0; i < listProperty.size(); i++) {
+            for (int i = 0; i < 10; i++) {
                 Appointment appointment = new Appointment();
                 appointment.setDate(LocalDate.now().plusDays(i));
                 appointment.setContactCustomer(owner);

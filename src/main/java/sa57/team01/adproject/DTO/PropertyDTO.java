@@ -13,6 +13,7 @@ public class PropertyDTO implements Serializable {
     private String town;
     private String propertyStatus;
     private String flatType;
+    private String flatModel;
     private String storeyRange;
     private String streetName;
     private int floorArea;
@@ -40,5 +41,6 @@ public class PropertyDTO implements Serializable {
         if(other.getImageUrl() != null) {
             this.imageUrl = other.getImageUrl();
         }
+        this.flatModel = other.getFlatModel().toString();
     }
 }
