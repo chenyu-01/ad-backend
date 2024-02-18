@@ -30,7 +30,7 @@ Set up a mysql database with the following properties:
 - `/api/appointment/create` - POST, create an appointment
 - Properties
 - `/api/property/list`- GET method, return a list of properties 
-- `/api/property/{id}`-GET, return the detail of a property
+- `/api/property/{id}`- GET, return the detail of a property
 
 ## Set up environment variables
 - MYSQL_USER - the username of the mysql database
