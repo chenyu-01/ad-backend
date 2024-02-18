@@ -16,6 +16,6 @@ public class Buyer extends Customer{
     @Override
     public void randomize() {
         super.randomize();
-        this.setRole("Buyer");
+        this.setRole("buyer");
     }
 }
