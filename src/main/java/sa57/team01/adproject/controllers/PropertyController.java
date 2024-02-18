@@ -1,5 +1,6 @@
 package sa57.team01.adproject.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -10,10 +11,7 @@ import sa57.team01.adproject.DTO.SearchDTO;
 import sa57.team01.adproject.DTO.PropertyDTO;
 import sa57.team01.adproject.DTO.RentalPropertyDTO;
 import sa57.team01.adproject.DTO.SalePropertyDTO;
-import sa57.team01.adproject.models.Customer;
-import sa57.team01.adproject.models.Property;
-import sa57.team01.adproject.models.RentalProperty;
-import sa57.team01.adproject.models.SaleProperty;
+import sa57.team01.adproject.models.*;
 import sa57.team01.adproject.services.*;
 
 import java.util.Iterator;
@@ -78,17 +76,30 @@ public class PropertyController {
 
 
     @GetMapping("/details/{id}")
-    public ResponseEntity<?> getPropertyDetails(@PathVariable Long id) {
+    public ResponseEntity<?> getPropertyDetails(@PathVariable Long id, HttpSession session) {
         RentalProperty rentalProperty = rentalPropertyService.findRentalPropertyById(id);
+        long userId;
+        long customerId = (long) session.getAttribute("customerId");
+        //get user id from session
+        if (session.getAttribute("customerId") != null) {
+            userId = (long) session.getAttribute("customerId");
+        }else{// not login , goto main page
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
         if (rentalProperty == null) {
             SaleProperty saleProperty = salePropertyService.findSalePropertyById(id);
             if (saleProperty == null) {
                 return ResponseEntity.notFound().build();
             }
+            updateInteraction(userId, id);
+
             SalePropertyDTO salePropertyDTO = new SalePropertyDTO(saleProperty);
             return ResponseEntity.ok(salePropertyDTO);
         }
         RentalPropertyDTO rentalPropertyDTO = new RentalPropertyDTO(rentalProperty);
+        //record interaction
+        updateInteraction(userId, id);
         return ResponseEntity.ok(rentalPropertyDTO);}
 
     @PostMapping("/upload/{propertyId}")
@@ -155,8 +166,36 @@ public class PropertyController {
         Map<String, Object> response = Map.of(
                 "town", property.getTown().toString(),
                 "price", property.getPrice(),
-                "imageUrl", property.getImageUrl()
+                "imageUrl", property.getImageUrl(),
+                "id", property.getPropertyid()
         );
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/fetchImg/{propertyId}")
+    public ResponseEntity<?> fetchImg(@PathVariable long propertyId){
+        try {
+            String imageUrl = propertyService.findPropertyById(propertyId).getImageUrl();
+            return ResponseEntity.ok(imageUrl);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    private void updateInteraction(long userId, long id){
+
+        if (interactionService.findByUserIdAndPropertyId(userId, id) != null) {
+            //record interaction
+            Interaction interaction = interactionService.findByUserIdAndPropertyId(userId, id);
+            interaction.setTimes(interaction.getTimes() + 1);
+            interactionService.saveInteraction(interaction);
+        }else{
+            //record interaction
+            Interaction interaction = new Interaction();
+            interaction.setUserId(userId);
+            interaction.setPropertyId(id);
+            interaction.setTimes(1);
+            interactionService.saveInteraction(interaction);
+        }
     }
 }

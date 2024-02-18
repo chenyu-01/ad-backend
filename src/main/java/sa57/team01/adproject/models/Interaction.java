@@ -29,4 +29,11 @@ public class Interaction {
     }
     public Interaction() {
     }
+
+    public boolean isPresent() {
+        if (userId == null || propertyId == null) {
+            return false;
+        }
+        return times > 0;
+    }
 }
