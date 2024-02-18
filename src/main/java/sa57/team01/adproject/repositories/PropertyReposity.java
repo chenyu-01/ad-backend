@@ -1,7 +1,9 @@
 package sa57.team01.adproject.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import sa57.team01.adproject.models.Property;
 
@@ -18,4 +20,8 @@ public interface PropertyReposity extends JpaRepository<Property,Long> {
    List<Property> findBytown(String town);
     @Query("Select p from Property p where p.streetName = :street ")
    List<Property>findByStreet(String street);
+
+    @Modifying
+    @Query("DELETE FROM Appointment a where a.property.propertyid = :propertyId")
+    void deleteAppointmentByPropertyId(@Param("propertyId") Long propertyId);
 }
